@@ -54,8 +54,6 @@
 	db = [QuickLiteDatabase databaseWithFile:[path stringByAppendingString:@"/database.nijikon"]];
 	[db open];
 	
-	[db tables];
-	
 	[db close];
 	return true;
 }
