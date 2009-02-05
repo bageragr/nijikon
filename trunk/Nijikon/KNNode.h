@@ -10,6 +10,7 @@
 
 
 @interface KNNode : NSObject {
+	NSString* nodeName;
 	NSMutableDictionary* nodeProperties;
 }
 

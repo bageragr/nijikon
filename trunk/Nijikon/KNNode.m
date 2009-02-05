@@ -10,9 +10,9 @@
 
 
 @implementation KNNode
-- (id) init
+- (id)init
 {
-    if (self = [super init])
+    if(self = [super init])
     {
         NSArray * keys      = [NSArray arrayWithObjects: @"ID", @"name", nil];
         NSArray * values    = [NSArray arrayWithObjects: @"ID", @"name", nil];
@@ -21,23 +21,42 @@
     return self;
 }
 
-- (void) dealloc
+- (void)dealloc
 {
     [nodeProperties release];
     
     [super dealloc];
 }
 
-- (NSMutableDictionary *) nodeProperties
+- (NSString*)description
+{
+	return [self valueForKeyPath:@"nodeProperties.name"];
+}
+
+- (NSString*)nodeName
+{
+	return nodeName;
+}
+
+- (NSString*)setNodeName:(NSString*)newNodeName
+{
+	if (nodeName != newNodeName)
+	{
+		[nodeName release];
+		nodeName = [NSString stringWithString:newNodeName];
+	}
+}
+
+- (NSMutableDictionary*)nodeProperties
 {
     return nodeProperties;
 }
 
-- (void) setNodeProperties: (NSDictionary *)newNodeProperties
+- (void)setNodeProperties:(NSDictionary*)newNodeProperties
 {
     if (nodeProperties != newNodeProperties)
     {
-        [nodeProperties autorelease];
+        [nodeProperties release];
         nodeProperties = [[NSMutableDictionary alloc] initWithDictionary: newNodeProperties];
     }
 }

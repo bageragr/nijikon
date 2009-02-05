@@ -15,7 +15,7 @@
 	return NO;
 }
 
-- (id) init
+- (id)init
 {
 	if (self = [super init])
     {
@@ -24,11 +24,13 @@
         [self setProperties:[NSDictionary dictionaryWithObjects: values forKeys: keys]];
         
         children = [[NSMutableArray alloc] init];
+		
+		nodeName = @"romaji";
     }
     return self;
 }
 
-- (void) dealloc
+- (void)dealloc
 {
     [properties release];
     [children release];
@@ -36,10 +38,18 @@
     [super dealloc];
 }
 
-- (NSMutableDictionary *) nodeProperties
+- (NSString*)description
 {
-	[nodeProperties setObject:[properties objectForKey:@"animeID"] forKey:@"ID"];
-	[nodeProperties setObject:[NSString stringWithFormat:@"%@ (\"%@\" - \"%@\")", [properties objectForKey:@"romaji"], [properties objectForKey:@"kanji"], [properties objectForKey:@"english"]] forKey:@"name"];
+	return [properties valueForKey:@"romaji"];
+}
+
+- (NSMutableDictionary*)nodeProperties
+{
+	if (![[NSString stringWithFormat:@"A%@", [properties objectForKey:@"animeID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
+	{
+		[nodeProperties setObject:[NSString stringWithFormat:@"A%@", [properties objectForKey:@"animeID"]] forKey:@"ID"];
+		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:nodeName]] forKey:@"name"];
+	}
     return nodeProperties;
 }
 

@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <QuickLite/QuickLiteDatabase.h>
+#import <QuickLite/QuickLiteDatabaseExtras.h>
 #import <QuickLite/QuickLiteCursor.h>
 #import <QuickLite/QuickLiteRow.h>
 
@@ -18,13 +19,19 @@
 
 
 @interface KNController : NSObject {
+	IBOutlet NSBrowser* mainView;
+	
+	NSString* path;
 	QuickLiteDatabase* db;
 	NSMutableArray* anime;
+	NSMutableArray* groups;
 }
 
 - (NSMutableArray*)anime;
 - (void)setAnime:(NSArray*)newAnime;
+- (NSMutableArray*)groups;
+- (void)setGroups:(NSArray*)newGroups;
 
-- (BOOL)createDatabase:(NSString*)path;
-- (void)refreshDatabase;
+- (BOOL)createDatabase:(BOOL)verbose;
+- (void)refreshDatabase:(BOOL)verbose detailed:(BOOL)detailed;
 @end
