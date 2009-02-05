@@ -8,8 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "KNNode.h"
 
-@interface ADBGroup : NSObject {
+@interface ADBGroup : KNNode {
 	NSMutableDictionary* properties;
 }
 
