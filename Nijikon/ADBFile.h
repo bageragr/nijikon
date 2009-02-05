@@ -10,10 +10,15 @@
 
 #import "KNNode.h"
 
+#import "ADBGroup.h"
+
 @interface ADBFile : KNNode {
+	ADBGroup* group;
 	NSMutableDictionary* properties;
 }
 
 - (NSMutableDictionary*)properties;
 - (void)setProperties:(NSDictionary*)newProperties;
+- (ADBGroup*)group;
+- (void)setGroup:(ADBGroup*)newGroup;
 @end

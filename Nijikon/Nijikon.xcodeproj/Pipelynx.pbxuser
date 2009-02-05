@@ -117,8 +117,12 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 255505883;
-			PBXWorkspaceStateSaveDate = 255505883;
+			PBXPerProjectTemplateStateSaveDate = 255519751;
+			PBXWorkspaceStateSaveDate = 255519751;
+		};
+		perUserProjectItems = {
+			4BF9AF1D0F3B322E008E855F /* PBXTextBookmark */ = 4BF9AF1D0F3B322E008E855F /* PBXTextBookmark */;
+			4BF9AF1E0F3B322E008E855F /* PBXTextBookmark */ = 4BF9AF1E0F3B322E008E855F /* PBXTextBookmark */;
 		};
 		sourceControlManager = 4BE6C44E0F39FBD100123B94 /* Source Control */;
 		userBuildSettings = {
@@ -166,16 +170,17 @@
 	};
 	4BE6C44B0F39FBD000123B94 /* KNController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {867, 646}}";
-			sepNavSelRange = "{420, 0}";
-			sepNavVisRange = "{0, 582}";
+			sepNavIntBoundsRect = "{{0, 0}, {439, 532}}";
+			sepNavSelRange = "{442, 0}";
+			sepNavVisRange = "{383, 134}";
 		};
 	};
 	4BE6C44C0F39FBD000123B94 /* KNController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {867, 938}}";
-			sepNavSelRange = "{1045, 21}";
-			sepNavVisRange = "{428, 824}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1656, 14050}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 19846}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1620, 2394}}";
+			sepNavSelRange = "{1024, 0}";
+			sepNavVisRange = "{2399, 3398}";
 		};
 	};
 	4BE6C44E0F39FBD100123B94 /* Source Control */ = {
@@ -183,6 +188,7 @@
 		fallbackIsa = XCSourceControlManager;
 		isSCMEnabled = 0;
 		scmConfiguration = {
+			repositoryName = "Googlecode nijikon";
 		};
 	};
 	4BE6C44F0F39FBD100123B94 /* Code sense */ = {
@@ -191,44 +197,58 @@
 	};
 	4BE6C4510F39FE3500123B94 /* ADBAnime.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {963, 453}}";
-			sepNavSelRange = "{0, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {983, 896}}";
+			sepNavSelRange = "{209, 0}";
 			sepNavVisRange = "{0, 440}";
 		};
 	};
 	4BE6C4520F39FE3500123B94 /* ADBAnime.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1542, 1050}}";
-			sepNavSelRange = "{310, 195}";
-			sepNavVisRange = "{0, 951}";
+			sepNavIntBoundsRect = "{{0, 0}, {1542, 1120}}";
+			sepNavSelRange = "{1352, 0}";
+			sepNavVisRange = "{212, 1736}";
+		};
+	};
+	4BE6C4530F39FE3500123B94 /* ADBEpisode.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {983, 896}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 444}";
 		};
 	};
 	4BE6C4540F39FE3500123B94 /* ADBEpisode.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1044, 1092}}";
-			sepNavSelRange = "{325, 108}";
-			sepNavVisRange = "{0, 774}";
+			sepNavIntBoundsRect = "{{0, 0}, {1290, 1148}}";
+			sepNavSelRange = "{832, 0}";
+			sepNavVisRange = "{231, 1735}";
 		};
 	};
 	4BE6C4550F39FE3500123B94 /* ADBFile.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1011, 453}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 335}";
+			sepNavIntBoundsRect = "{{0, 0}, {983, 896}}";
+			sepNavSelRange = "{370, 57}";
+			sepNavVisRange = "{0, 433}";
 		};
 	};
 	4BE6C4560F39FE3500123B94 /* ADBFile.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {924, 770}}";
+			sepNavIntBoundsRect = "{{0, 0}, {983, 1022}}";
+			sepNavSelRange = "{1320, 0}";
+			sepNavVisRange = "{130, 1384}";
+		};
+	};
+	4BE6C4570F39FE3500123B94 /* ADBGroup.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {983, 896}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 724}";
+			sepNavVisRange = "{0, 320}";
 		};
 	};
 	4BE6C4580F39FE3500123B94 /* ADBGroup.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1038, 630}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 798}";
+			sepNavIntBoundsRect = "{{0, 0}, {1038, 896}}";
+			sepNavSelRange = "{822, 0}";
+			sepNavVisRange = "{0, 1130}";
 		};
 	};
 	4BE6C45A0F39FE3500123B94 /* KNLocalizeKeyTransformer.m */ = {
@@ -240,10 +260,35 @@
 	};
 	4BE6C45B0F39FE3500123B94 /* KNNode.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1011, 453}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 332}";
+			sepNavIntBoundsRect = "{{0, 0}, {983, 896}}";
+			sepNavSelRange = "{206, 0}";
+			sepNavVisRange = "{0, 353}";
 		};
+	};
+	4BE6C45C0F39FE3500123B94 /* KNNode.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {983, 896}}";
+			sepNavSelRange = "{860, 0}";
+			sepNavVisRange = "{0, 1193}";
+		};
+	};
+	4BF9AF1D0F3B322E008E855F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: syntax error before '*' token";
+		fRef = 4BE6C44B0F39FBD000123B94 /* KNController.h */;
+		rLen = 0;
+		rLoc = 20;
+		rType = 1;
+	};
+	4BF9AF1E0F3B322E008E855F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4BE6C44B0F39FBD000123B94 /* KNController.h */;
+		name = "KNController.h: 22";
+		rLen = 1;
+		rLoc = 442;
+		rType = 0;
+		vrLen = 148;
+		vrLoc = 383;
 	};
 	8D1107260486CEB800E47090 /* Nijikon */ = {
 		activeExec = 0;

@@ -22,6 +22,10 @@
         NSArray * keys      = [NSArray arrayWithObjects: @"episodeID", @"animeID", @"length", @"rate", @"vts", @"epnumber", @"english", @"romaji", @"kanji", @"aired", nil];
         NSArray * values    = [NSArray arrayWithObjects: @"episodeID", @"animeID", @"length", @"rate", @"vts", @"epnumber", @"english", @"romaji", @"kanji", @"aired", nil];
         [self setProperties:[NSDictionary dictionaryWithObjects: values forKeys: keys]];
+		
+		children = [[NSMutableArray alloc] init];
+		
+		nodeName = @"romaji";
     }
     return self;
 }
@@ -29,17 +33,22 @@
 - (void) dealloc
 {
     [properties release];
+	[children release];
     
     [super dealloc];
 }
 
+- (NSString*)description
+{
+	return [properties valueForKey:@"romaji"];
+}
+
 - (NSMutableDictionary *) nodeProperties
 {
-	if (![[properties objectForKey:@"episodeID"] isEqualToString:[nodeProperties objectForKey:@"ID"]])
+	if (![[NSString stringWithFormat:@"E%@", [properties objectForKey:@"episodeID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
 	{
-		[nodeProperties setObject:[properties objectForKey:@"episodeID"] forKey:@"ID"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"%@ (\"%@\" - \"%@\")", [properties objectForKey:@"romaji"], [properties objectForKey:@"kanji"], [properties objectForKey:@"english"]] forKey:@"name"];
-		NSLog(@"ID: %@", [nodeProperties objectForKey:@"ID"]);
+		[nodeProperties setObject:[NSString stringWithFormat:@"E%@", [properties objectForKey:@"episodeID"]] forKey:@"ID"];
+		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:nodeName]] forKey:@"name"];
 	}
     return nodeProperties;
 }
