@@ -38,6 +38,12 @@
     [super dealloc];
 }
 
+- (void)setValues:(NSArray*)values
+{
+	NSArray* keys =		[NSArray arrayWithObjects:@"animeID",@"allEps",@"nEps",@"sEps",@"rate",@"vts",@"tmprate",@"tmpvts",@"reviewrateavg",@"reviews",@"year",@"type",@"romaji",@"kanji",@"english",@"other",@"shortNames",@"synonyms",@"categories",nil];
+	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
+}
+
 - (NSString*)description
 {
 	return [properties valueForKey:@"romaji"];

@@ -15,6 +15,8 @@
 	NSMutableArray* children;
 }
 
+- (void)setValues:(NSArray*)values;
+
 - (NSMutableDictionary*)properties;
 - (void)setProperties:(NSDictionary*)newProperties;
 

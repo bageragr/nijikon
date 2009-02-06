@@ -12,10 +12,7 @@
 #import <QuickLite/QuickLiteCursor.h>
 #import <QuickLite/QuickLiteRow.h>
 
-#import "ADBAnime.h"
-#import "ADBEpisode.h"
-#import "ADBFile.h"
-#import "ADBGroup.h"
+#import "ADBConnection.h"
 
 
 @interface KNController : NSObject {
@@ -32,6 +29,6 @@
 - (NSMutableArray*)groups;
 - (void)setGroups:(NSArray*)newGroups;
 
-- (BOOL)createDatabase:(BOOL)verbose;
+- (BOOL)createDatabase:(BOOL)verbose withDummyData:(BOOL)createDummyData;
 - (void)refreshDatabase:(BOOL)verbose detailed:(BOOL)detailed;
 @end
