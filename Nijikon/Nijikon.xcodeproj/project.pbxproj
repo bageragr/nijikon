@@ -8,9 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
-		4B808EDC0F3BF86000001AF0 /* EDCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B808EDB0F3BF86000001AF0 /* EDCommon.framework */; };
 		4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
 		4BA7007A0F3AC8A8000E6A65 /* QuickLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BA700790F3AC8A8000E6A65 /* QuickLite.framework */; };
+		4BAB8F250F3C4C200073CAB4 /* EDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F1F0F3C4C200073CAB4 /* EDSocket.m */; };
+		4BAB8F260F3C4C200073CAB4 /* EDIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F210F3C4C200073CAB4 /* EDIPSocket.m */; };
+		4BAB8F270F3C4C200073CAB4 /* EDUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F240F3C4C200073CAB4 /* EDUDPSocket.m */; };
+		4BAB8F2B0F3C4C470073CAB4 /* NSObject+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F290F3C4C470073CAB4 /* NSObject+Extensions.m */; };
+		4BAB8F3B0F3C4C7E0073CAB4 /* functions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F390F3C4C7E0073CAB4 /* functions.m */; };
+		4BAB8F3F0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F3D0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.m */; };
 		4BE6C44D0F39FBD000123B94 /* KNController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C44C0F39FBD000123B94 /* KNController.m */; };
 		4BE6C45F0F39FE3500123B94 /* ADBAnime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C4520F39FE3500123B94 /* ADBAnime.m */; };
 		4BE6C4600F39FE3500123B94 /* ADBEpisode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C4540F39FE3500123B94 /* ADBEpisode.m */; };
@@ -33,10 +38,25 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* Nijikon_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nijikon_Prefix.pch; sourceTree = "<group>"; };
-		4B808EDB0F3BF86000001AF0 /* EDCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EDCommon.framework; path = /Library/Frameworks/EDCommon.framework; sourceTree = "<absolute>"; };
 		4B808EDD0F3BF88300001AF0 /* ADBConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBConnection.h; sourceTree = "<group>"; };
 		4B808EDE0F3BF88300001AF0 /* ADBConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBConnection.m; sourceTree = "<group>"; };
 		4BA700790F3AC8A8000E6A65 /* QuickLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLite.framework; path = /Library/Frameworks/QuickLite.framework; sourceTree = "<absolute>"; };
+		4BAB8F1F0F3C4C200073CAB4 /* EDSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EDSocket.m; sourceTree = "<group>"; };
+		4BAB8F200F3C4C200073CAB4 /* EDSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDSocket.h; sourceTree = "<group>"; };
+		4BAB8F210F3C4C200073CAB4 /* EDIPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EDIPSocket.m; sourceTree = "<group>"; };
+		4BAB8F220F3C4C200073CAB4 /* EDIPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDIPSocket.h; sourceTree = "<group>"; };
+		4BAB8F230F3C4C200073CAB4 /* EDUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDUDPSocket.h; sourceTree = "<group>"; };
+		4BAB8F240F3C4C200073CAB4 /* EDUDPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EDUDPSocket.m; sourceTree = "<group>"; };
+		4BAB8F290F3C4C470073CAB4 /* NSObject+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extensions.m"; sourceTree = "<group>"; };
+		4BAB8F2A0F3C4C470073CAB4 /* NSObject+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extensions.h"; sourceTree = "<group>"; };
+		4BAB8F2C0F3C4C5A0073CAB4 /* osdep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osdep.h; sourceTree = "<group>"; };
+		4BAB8F390F3C4C7E0073CAB4 /* functions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = functions.m; sourceTree = "<group>"; };
+		4BAB8F3A0F3C4C7E0073CAB4 /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = functions.h; sourceTree = "<group>"; };
+		4BAB8F3D0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileHandle+Extensions.m"; sourceTree = "<group>"; };
+		4BAB8F3E0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileHandle+Extensions.h"; sourceTree = "<group>"; };
+		4BAB8F410F3C4DB50073CAB4 /* EDCommonDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDCommonDefines.h; sourceTree = "<group>"; };
+		4BAB8F430F3C4DC50073CAB4 /* EDObjcRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDObjcRuntime.h; sourceTree = "<group>"; };
+		4BAB90900F3C87750073CAB4 /* ADBResponseCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBResponseCodes.h; sourceTree = "<group>"; };
 		4BE6C44B0F39FBD000123B94 /* KNController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNController.h; sourceTree = "<group>"; };
 		4BE6C44C0F39FBD000123B94 /* KNController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNController.m; sourceTree = "<group>"; };
 		4BE6C4510F39FE3500123B94 /* ADBAnime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBAnime.h; sourceTree = "<group>"; };
@@ -64,7 +84,6 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				4BA7007A0F3AC8A8000E6A65 /* QuickLite.framework in Frameworks */,
-				4B808EDC0F3BF86000001AF0 /* EDCommon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,16 +93,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				4B808EDD0F3BF88300001AF0 /* ADBConnection.h */,
-				4B808EDE0F3BF88300001AF0 /* ADBConnection.m */,
-				4BE6C4510F39FE3500123B94 /* ADBAnime.h */,
-				4BE6C4520F39FE3500123B94 /* ADBAnime.m */,
-				4BE6C4530F39FE3500123B94 /* ADBEpisode.h */,
-				4BE6C4540F39FE3500123B94 /* ADBEpisode.m */,
-				4BE6C4550F39FE3500123B94 /* ADBFile.h */,
-				4BE6C4560F39FE3500123B94 /* ADBFile.m */,
-				4BE6C4570F39FE3500123B94 /* ADBGroup.h */,
-				4BE6C4580F39FE3500123B94 /* ADBGroup.m */,
+				4BAB8F1E0F3C4BB90073CAB4 /* Networking classes */,
+				4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */,
 				4BE6C44B0F39FBD000123B94 /* KNController.h */,
 				4BE6C44C0F39FBD000123B94 /* KNController.m */,
 				4BE6C45B0F39FE3500123B94 /* KNNode.h */,
@@ -107,7 +118,6 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4B808EDB0F3BF86000001AF0 /* EDCommon.framework */,
 				4BA700790F3AC8A8000E6A65 /* QuickLite.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
@@ -139,6 +149,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4BAB8F2C0F3C4C5A0073CAB4 /* osdep.h */,
 				32CA4F630368D1EE00C91783 /* Nijikon_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -162,6 +173,45 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */ = {
+			isa = PBXGroup;
+			children = (
+				4BAB90900F3C87750073CAB4 /* ADBResponseCodes.h */,
+				4B808EDD0F3BF88300001AF0 /* ADBConnection.h */,
+				4B808EDE0F3BF88300001AF0 /* ADBConnection.m */,
+				4BE6C4510F39FE3500123B94 /* ADBAnime.h */,
+				4BE6C4520F39FE3500123B94 /* ADBAnime.m */,
+				4BE6C4530F39FE3500123B94 /* ADBEpisode.h */,
+				4BE6C4540F39FE3500123B94 /* ADBEpisode.m */,
+				4BE6C4550F39FE3500123B94 /* ADBFile.h */,
+				4BE6C4560F39FE3500123B94 /* ADBFile.m */,
+				4BE6C4570F39FE3500123B94 /* ADBGroup.h */,
+				4BE6C4580F39FE3500123B94 /* ADBGroup.m */,
+			);
+			name = "AniDB classes";
+			sourceTree = "<group>";
+		};
+		4BAB8F1E0F3C4BB90073CAB4 /* Networking classes */ = {
+			isa = PBXGroup;
+			children = (
+				4BAB8F430F3C4DC50073CAB4 /* EDObjcRuntime.h */,
+				4BAB8F410F3C4DB50073CAB4 /* EDCommonDefines.h */,
+				4BAB8F2A0F3C4C470073CAB4 /* NSObject+Extensions.h */,
+				4BAB8F290F3C4C470073CAB4 /* NSObject+Extensions.m */,
+				4BAB8F3E0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.h */,
+				4BAB8F3D0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.m */,
+				4BAB8F3A0F3C4C7E0073CAB4 /* functions.h */,
+				4BAB8F390F3C4C7E0073CAB4 /* functions.m */,
+				4BAB8F200F3C4C200073CAB4 /* EDSocket.h */,
+				4BAB8F1F0F3C4C200073CAB4 /* EDSocket.m */,
+				4BAB8F220F3C4C200073CAB4 /* EDIPSocket.h */,
+				4BAB8F210F3C4C200073CAB4 /* EDIPSocket.m */,
+				4BAB8F230F3C4C200073CAB4 /* EDUDPSocket.h */,
+				4BAB8F240F3C4C200073CAB4 /* EDUDPSocket.m */,
+			);
+			name = "Networking classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,6 +279,12 @@
 				4BE6C4640F39FE3500123B94 /* KNNode.m in Sources */,
 				4BE6C4650F39FE3500123B94 /* KNPropertiesTransformer.m in Sources */,
 				4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */,
+				4BAB8F250F3C4C200073CAB4 /* EDSocket.m in Sources */,
+				4BAB8F260F3C4C200073CAB4 /* EDIPSocket.m in Sources */,
+				4BAB8F270F3C4C200073CAB4 /* EDUDPSocket.m in Sources */,
+				4BAB8F2B0F3C4C470073CAB4 /* NSObject+Extensions.m in Sources */,
+				4BAB8F3B0F3C4C7E0073CAB4 /* functions.m in Sources */,
+				4BAB8F3F0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
