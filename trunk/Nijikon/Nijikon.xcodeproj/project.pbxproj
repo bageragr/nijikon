@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		4B808EDC0F3BF86000001AF0 /* EDCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B808EDB0F3BF86000001AF0 /* EDCommon.framework */; };
+		4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
 		4BA7007A0F3AC8A8000E6A65 /* QuickLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BA700790F3AC8A8000E6A65 /* QuickLite.framework */; };
 		4BE6C44D0F39FBD000123B94 /* KNController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C44C0F39FBD000123B94 /* KNController.m */; };
 		4BE6C45F0F39FE3500123B94 /* ADBAnime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C4520F39FE3500123B94 /* ADBAnime.m */; };
@@ -31,6 +33,9 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* Nijikon_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nijikon_Prefix.pch; sourceTree = "<group>"; };
+		4B808EDB0F3BF86000001AF0 /* EDCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EDCommon.framework; path = /Library/Frameworks/EDCommon.framework; sourceTree = "<absolute>"; };
+		4B808EDD0F3BF88300001AF0 /* ADBConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBConnection.h; sourceTree = "<group>"; };
+		4B808EDE0F3BF88300001AF0 /* ADBConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBConnection.m; sourceTree = "<group>"; };
 		4BA700790F3AC8A8000E6A65 /* QuickLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLite.framework; path = /Library/Frameworks/QuickLite.framework; sourceTree = "<absolute>"; };
 		4BE6C44B0F39FBD000123B94 /* KNController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNController.h; sourceTree = "<group>"; };
 		4BE6C44C0F39FBD000123B94 /* KNController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNController.m; sourceTree = "<group>"; };
@@ -59,6 +64,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				4BA7007A0F3AC8A8000E6A65 /* QuickLite.framework in Frameworks */,
+				4B808EDC0F3BF86000001AF0 /* EDCommon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +74,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4B808EDD0F3BF88300001AF0 /* ADBConnection.h */,
+				4B808EDE0F3BF88300001AF0 /* ADBConnection.m */,
 				4BE6C4510F39FE3500123B94 /* ADBAnime.h */,
 				4BE6C4520F39FE3500123B94 /* ADBAnime.m */,
 				4BE6C4530F39FE3500123B94 /* ADBEpisode.h */,
@@ -99,6 +107,7 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4B808EDB0F3BF86000001AF0 /* EDCommon.framework */,
 				4BA700790F3AC8A8000E6A65 /* QuickLite.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
@@ -219,6 +228,7 @@
 				4BE6C4630F39FE3500123B94 /* KNLocalizeKeyTransformer.m in Sources */,
 				4BE6C4640F39FE3500123B94 /* KNNode.m in Sources */,
 				4BE6C4650F39FE3500123B94 /* KNPropertiesTransformer.m in Sources */,
+				4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
