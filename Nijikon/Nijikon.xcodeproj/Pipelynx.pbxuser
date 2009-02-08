@@ -124,6 +124,9 @@
 		};
 		perUserProjectItems = {
 			4B0ED2270F3EFD040094236E /* PBXTextBookmark */ = 4B0ED2270F3EFD040094236E /* PBXTextBookmark */;
+			4B0ED2320F3EFDD10094236E /* PBXBookmark */ = 4B0ED2320F3EFDD10094236E /* PBXBookmark */;
+			4B0ED2340F3EFDD10094236E /* PBXTextBookmark */ = 4B0ED2340F3EFDD10094236E /* PBXTextBookmark */;
+			4B0ED2360F3EFDDD0094236E /* PBXTextBookmark */ = 4B0ED2360F3EFDDD0094236E /* PBXTextBookmark */;
 			4B48458D0F3E1D4400DD56C5 = 4B48458D0F3E1D4400DD56C5 /* PBXTextBookmark */;
 			4B48458F0F3E1D4400DD56C5 = 4B48458F0F3E1D4400DD56C5 /* PBXTextBookmark */;
 			4B4845900F3E1D4400DD56C5 = 4B4845900F3E1D4400DD56C5 /* PBXTextBookmark */;
@@ -227,6 +230,49 @@
 		};
 	};
 	4B0ED2270F3EFD040094236E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4BE6C44C0F39FBD000123B94 /* KNController.m */;
+		name = "KNController.m: 19";
+		rLen = 0;
+		rLoc = 359;
+		rType = 0;
+		vrLen = 1618;
+		vrLoc = 0;
+	};
+	4B0ED2320F3EFDD10094236E /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4B0ED2330F3EFDD10094236E /* Pipelynx.mode2v3 */;
+	};
+	4B0ED2330F3EFDD10094236E /* Pipelynx.mode2v3 */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.xml;
+		name = Pipelynx.mode2v3;
+		path = "/Users/Pipelynx/Documents/[Projects]/Nijikon/Nijikon.xcodeproj/Pipelynx.mode2v3";
+		sourceTree = "<absolute>";
+	};
+	4B0ED2340F3EFDD10094236E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4B0ED2350F3EFDD10094236E /* Pipelynx.mode2v3 */;
+		name = "Pipelynx.mode2v3: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 171;
+		vrLoc = 0;
+	};
+	4B0ED2350F3EFDD10094236E /* Pipelynx.mode2v3 */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.xml;
+		name = Pipelynx.mode2v3;
+		path = "/Users/Pipelynx/Documents/[Projects]/Nijikon/Nijikon.xcodeproj/Pipelynx.mode2v3";
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {624, 21994}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 171}";
+		};
+	};
+	4B0ED2360F3EFDDD0094236E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4BE6C44C0F39FBD000123B94 /* KNController.m */;
 		name = "KNController.m: 19";
