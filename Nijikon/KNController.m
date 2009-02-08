@@ -16,6 +16,7 @@
 	{
 		path = [@"~/Library/Application Support/Nijikon" stringByExpandingTildeInPath];
 		db = nil;
+		conn = [[ADBConnection alloc] init];
 		groups = [[NSMutableArray alloc] init];
 		anime = [[NSMutableArray alloc] init];
 		
@@ -43,12 +44,7 @@
 
 - (void)awakeFromNib
 {
-	ADBConnection* connection = [[ADBConnection alloc] init];
-	if([connection connect:1432])
-		if([connection authenticate:@"pipelynx" withPassword:@"53-Ln44~"])
-		{
-			NSLog(@"%@", [connection findAnimeByID:@"5557"]);
-		}
+	
 }
 
 - (void)dealloc
@@ -56,6 +52,21 @@
 	[db closeSavingChanges:YES];
 	[anime release];
 	[super dealloc];
+}
+
+- (IBAction)connect:(id)sender
+{
+	[conn connect:1432];
+}
+
+- (IBAction)authenticate:(id)sender
+{
+	[conn authenticate:@"pipelynx" withPassword:@"53-Ln44~"];
+}
+
+- (ADBConnection*)connection
+{
+	return conn;
 }
 
 - (NSMutableArray*)anime
