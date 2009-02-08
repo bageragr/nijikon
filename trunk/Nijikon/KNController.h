@@ -16,13 +16,16 @@
 
 
 @interface KNController : NSObject {
-	IBOutlet NSBrowser* mainView;
-	
 	NSString* path;
 	QuickLiteDatabase* db;
+	ADBConnection* conn;
 	NSMutableArray* anime;
 	NSMutableArray* groups;
 }
+- (IBAction)connect:(id)sender;
+- (IBAction)authenticate:(id)sender;
+
+- (ADBConnection*)connection;
 
 - (NSMutableArray*)anime;
 - (void)setAnime:(NSArray*)newAnime;

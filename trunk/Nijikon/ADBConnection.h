@@ -22,8 +22,12 @@
 
 @interface ADBConnection : NSObject {
 	EDUDPSocket* socket;
-	NSMutableArray* log;
+	NSMutableArray* connectionLog;
+	
+	NSNumber* status;
 	NSString* sessionKey;
+	NSString* username;
+	NSString* password;
 }
 void send(NSString* aString, EDSocket* socket, NSStringEncoding enc);
 NSString* receive(EDSocket* socket, NSStringEncoding enc);
@@ -38,7 +42,13 @@ NSString* receive(EDSocket* socket, NSStringEncoding enc);
 
 //Post-query methods
 
+- (NSNumber*)status;
 - (NSString*)sessionKey;
+- (NSString*)username;
+- (void)setUsername:(NSString*)newUsername;
+- (NSString*)password;
+- (void)setPassword:(NSString*)newPassword;
+
 - (NSString*)tailLog;
 - (NSArray*)log;
 @end

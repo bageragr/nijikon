@@ -15,8 +15,8 @@
 	if (self = [super init])
     {
         socket = [EDUDPSocket socket];
-		log = [[NSMutableArray alloc] init];
-		[log addObject:@"<> Log initialized"];
+		connectionLog = [[NSMutableArray alloc] initWithObjects:@"<> Log initialized",nil];
+		status = [NSNumber numberWithInt:0];
 		sessionKey = @"";
     }
     return self;
@@ -24,16 +24,16 @@
 
 - (void)dealloc
 {
-	send([NSString stringWithFormat:@"LOGOUT s=%@", sessionKey], socket, NSUTF8StringEncoding);
+	send([NSString stringWithFormat:@"LOGOUT s=%@&tag=%@", sessionKey, @"See you next time."], socket, NSUTF8StringEncoding);
+	NSLog(receive(socket, DEFAULT_ENCODING));
 	[socket release];
-	[log release];
+	[connectionLog release];
     [super dealloc];
 }
 
 void send(NSString* aString, EDSocket* socket, NSStringEncoding enc)
 {
 	[socket writeData:[aString dataUsingEncoding:enc]];
-	//[log addObject:[NSString stringWithFormat:@">> %@", aString]];
 }
 
 NSString* receive(EDSocket* socket, NSStringEncoding enc)
@@ -41,7 +41,6 @@ NSString* receive(EDSocket* socket, NSStringEncoding enc)
 	@try
 	{
 		NSString* string = [[NSString alloc] initWithData:[socket availableData] encoding:enc];
-		//[log addObject:[NSString stringWithFormat:@"<< %@", string]];
 		return string;
 	}
 	@catch (NSException* e)
@@ -53,29 +52,38 @@ NSString* receive(EDSocket* socket, NSStringEncoding enc)
 
 - (BOOL)connect:(unsigned short)port
 {
-	if ([NSHost hostWithName:@"api.anidb.info"] == nil)
+	NSHost* host = [NSHost hostWithName:@"api.anidb.info"];
+	if (host == nil)
 		return NO;
 	else
 	{
 		[socket setLocalPort:port];
-		[socket connectToHost:[NSHost hostWithName:@"api.anidb.info"] port:9000];
-		[socket setReceiveTimeout:2.5];
+		[socket connectToHost:host port:9000];
+		[socket setReceiveTimeout:2];
+		status = [NSNumber numberWithInt:1];
 		return YES;
 	}
 }
 
-- (BOOL)authenticate:(NSString*)username withPassword:(NSString*)password
+- (BOOL)authenticate:(NSString*)aUsername withPassword:(NSString*)aPassword
 {
-	send([NSString stringWithFormat:@"AUTH user=%@&pass=%@&protover=%d&client=%@&clientver=%d&nat=%d&enc=%@", [username lowercaseString], password, 3, @"nijikon", CLIENTVER, 1, @"ASCII"], socket, NSASCIIStringEncoding);
+	[self setUsername:aUsername];
+	[self setPassword:aPassword];
+	NSString* command = [NSString stringWithFormat:@"AUTH user=%@&pass=%@&protover=%d&client=%@&clientver=%d&nat=%d&enc=%@", [username lowercaseString], password, 3, @"nijikon", CLIENTVER, 1, @"UTF8"];
+	send(command, socket, NSASCIIStringEncoding);
+	[connectionLog addObject:[NSString stringWithFormat:@"IN # %@", command]];
 	NSArray* response = [receive(socket, DEFAULT_ENCODING) componentsSeparatedByString:@" "];
+	[connectionLog addObject:[NSString stringWithFormat:@"OUT # %@", response]];
 	NSLog(@"%d", [[response objectAtIndex:0] intValue]);
 	switch ([[response objectAtIndex:0] intValue]) {
 		//command specific
 		case LOGIN_ACCEPTED:
 			sessionKey = [response objectAtIndex:1];
+			status = [NSNumber numberWithInt:2];
 			return YES;
 		case LOGIN_ACCEPTED_NEW_VER:
 			sessionKey = [response objectAtIndex:1];
+			status = [NSNumber numberWithInt:2];
 			return YES;
 		case LOGIN_FAILED:
 			return NO;
@@ -110,8 +118,11 @@ NSString* receive(EDSocket* socket, NSStringEncoding enc)
 - (ADBAnime*)findAnimeByID:(NSString*)animeID
 {
 	ADBAnime* temp = [[ADBAnime alloc] init];
-	send([NSString stringWithFormat:@"ANIME aid=%@&s=%@", animeID, sessionKey], socket, DEFAULT_ENCODING);
+	NSString* command = [NSString stringWithFormat:@"ANIME aid=%@&s=%@", animeID, sessionKey];
+	send(command, socket, DEFAULT_ENCODING);
+	[connectionLog addObject:[NSString stringWithFormat:@"IN # %@", command]];
 	NSString* response = receive(socket, DEFAULT_ENCODING);
+	[connectionLog addObject:[NSString stringWithFormat:@"OUT # %@", response]];
 	switch ([[[response componentsSeparatedByString:@" "] objectAtIndex:0] intValue]) {
 			//command specific
 		case ANIME:
@@ -143,18 +154,51 @@ NSString* receive(EDSocket* socket, NSStringEncoding enc)
 	return temp;
 }
 
+- (NSNumber*)status
+{
+	return status;
+}
+
 - (NSString*)sessionKey
 {
 	return sessionKey;
 }
 
+- (NSString*)username
+{
+	return username;
+}
+
+- (void)setUsername:(NSString*)newUsername
+{
+	if(username != newUsername)
+	{
+		[username release];
+		username = [NSString stringWithString:newUsername];
+	}
+}
+
+- (NSString*)password
+{
+	return password;
+}
+
+- (void)setPassword:(NSString*)newPassword
+{
+	if(password != newPassword)
+	{
+		[password release];
+		password = [NSString stringWithString:newPassword];
+	}
+}
+
 - (NSString*)tailLog
 {
-	return [log objectAtIndex:[log count] - 1];
+	return [connectionLog objectAtIndex:[connectionLog count] - 1];
 }
 
 - (NSArray*)log
 {
-	return log;
+	return connectionLog;
 }
 @end

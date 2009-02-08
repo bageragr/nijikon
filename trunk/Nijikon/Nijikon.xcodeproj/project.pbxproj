@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		4B4845CF0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */; };
+		4B4845D30F3EC9DA00DD56C5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B4845D20F3EC9DA00DD56C5 /* Localizable.strings */; };
 		4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
 		4BA7007A0F3AC8A8000E6A65 /* QuickLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BA700790F3AC8A8000E6A65 /* QuickLite.framework */; };
 		4BAB8F250F3C4C200073CAB4 /* EDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F1F0F3C4C200073CAB4 /* EDSocket.m */; };
@@ -38,6 +40,10 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* Nijikon_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nijikon_Prefix.pch; sourceTree = "<group>"; };
+		4B4845CD0F3EC97F00DD56C5 /* KNStatusToStringTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNStatusToStringTransformer.h; sourceTree = "<group>"; };
+		4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNStatusToStringTransformer.m; sourceTree = "<group>"; };
+		4B4845D00F3EC9B900DD56C5 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4B4845D40F3EC9E700DD56C5 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4B808EDD0F3BF88300001AF0 /* ADBConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBConnection.h; sourceTree = "<group>"; };
 		4B808EDE0F3BF88300001AF0 /* ADBConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBConnection.m; sourceTree = "<group>"; };
 		4BA700790F3AC8A8000E6A65 /* QuickLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLite.framework; path = /Library/Frameworks/QuickLite.framework; sourceTree = "<absolute>"; };
@@ -94,15 +100,12 @@
 			isa = PBXGroup;
 			children = (
 				4BAB8F1E0F3C4BB90073CAB4 /* Networking classes */,
+				4B4845510F3E185200DD56C5 /* Transformer classes */,
 				4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */,
 				4BE6C44B0F39FBD000123B94 /* KNController.h */,
 				4BE6C44C0F39FBD000123B94 /* KNController.m */,
 				4BE6C45B0F39FE3500123B94 /* KNNode.h */,
 				4BE6C45C0F39FE3500123B94 /* KNNode.m */,
-				4BE6C4590F39FE3500123B94 /* KNLocalizeKeyTransformer.h */,
-				4BE6C45A0F39FE3500123B94 /* KNLocalizeKeyTransformer.m */,
-				4BE6C45D0F39FE3500123B94 /* KNPropertiesTransformer.h */,
-				4BE6C45E0F39FE3500123B94 /* KNPropertiesTransformer.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4B4845D20F3EC9DA00DD56C5 /* Localizable.strings */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
@@ -173,6 +177,19 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4B4845510F3E185200DD56C5 /* Transformer classes */ = {
+			isa = PBXGroup;
+			children = (
+				4BE6C4590F39FE3500123B94 /* KNLocalizeKeyTransformer.h */,
+				4BE6C45A0F39FE3500123B94 /* KNLocalizeKeyTransformer.m */,
+				4BE6C45D0F39FE3500123B94 /* KNPropertiesTransformer.h */,
+				4BE6C45E0F39FE3500123B94 /* KNPropertiesTransformer.m */,
+				4B4845CD0F3EC97F00DD56C5 /* KNStatusToStringTransformer.h */,
+				4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */,
+			);
+			name = "Transformer classes";
 			sourceTree = "<group>";
 		};
 		4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */ = {
@@ -259,6 +276,7 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+				4B4845D30F3EC9DA00DD56C5 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +303,7 @@
 				4BAB8F2B0F3C4C470073CAB4 /* NSObject+Extensions.m in Sources */,
 				4BAB8F3B0F3C4C7E0073CAB4 /* functions.m in Sources */,
 				4BAB8F3F0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.m in Sources */,
+				4B4845CF0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +324,15 @@
 				1DDD58150DA1D0A300B32029 /* English */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		4B4845D20F3EC9DA00DD56C5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4B4845D00F3EC9B900DD56C5 /* English */,
+				4B4845D40F3EC9E700DD56C5 /* German */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
