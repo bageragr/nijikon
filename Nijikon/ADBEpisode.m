@@ -10,11 +10,6 @@
 
 
 @implementation ADBEpisode
-- (BOOL)isLeaf
-{
-	return NO;
-}
-
 - (id) init
 {
     if (self = [super init])
@@ -40,7 +35,10 @@
 
 - (NSString*)description
 {
-	return [properties valueForKey:@"romaji"];
+	if ([[properties valueForKey:@"episodeID"] isEqualToString:@"episodeID"])
+		return @"No such episode";
+	else
+		return [properties valueForKey:nodeName];
 }
 
 - (NSMutableDictionary *) nodeProperties
@@ -48,7 +46,10 @@
 	if (![[NSString stringWithFormat:@"E%@", [properties objectForKey:@"episodeID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
 	{
 		[nodeProperties setObject:[NSString stringWithFormat:@"E%@", [properties objectForKey:@"episodeID"]] forKey:@"ID"];
+		[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"epnumber"] intValue]] forKey:@"number"];
 		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:nodeName]] forKey:@"name"];
+		[nodeProperties setObject:[NSNumber numberWithInt:1] forKey:@"inMylistMax"];
+		[nodeProperties setObject:[NSNumber numberWithInt:0] forKey:@"inMylistValue"];
 	}
     return nodeProperties;
 }

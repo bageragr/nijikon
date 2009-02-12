@@ -16,14 +16,19 @@
 
 
 @interface KNController : NSObject {
+	IBOutlet NSWindow* mainWindow;
+	IBOutlet NSPanel* connectionPanel;
+	
 	NSString* path;
 	QuickLiteDatabase* db;
 	ADBConnection* conn;
 	NSMutableArray* anime;
 	NSMutableArray* groups;
+	
+	NSMutableArray* animeFound;
 }
-- (IBAction)connect:(id)sender;
-- (IBAction)authenticate:(id)sender;
+- (IBAction)login:(id)sender;
+- (IBAction)logout:(id)sender;
 
 - (ADBConnection*)connection;
 
@@ -31,6 +36,9 @@
 - (void)setAnime:(NSArray*)newAnime;
 - (NSMutableArray*)groups;
 - (void)setGroups:(NSArray*)newGroups;
+
+- (NSMutableArray*)animeFound;
+- (void)setAnimeFound:(NSArray*)newAnimeFound;
 
 - (BOOL)createDatabase:(BOOL)verbose withDummyData:(BOOL)createDummyData;
 - (void)refreshDatabase:(BOOL)verbose detailed:(BOOL)detailed;

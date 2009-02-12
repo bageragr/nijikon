@@ -10,11 +10,6 @@
 
 
 @implementation ADBFile
-- (BOOL)isLeaf
-{
-	return YES;
-}
-
 - (id) init
 {
     if (self = [super init])
@@ -38,7 +33,10 @@
 
 - (NSString*)description
 {
-	return [properties valueForKey:@"filename"];
+	if ([[properties valueForKey:@"fileID"] isEqualToString:@"fileID"])
+		return @"No such file";
+	else
+		return [properties valueForKey:@"filename"];
 }
 
 - (NSMutableDictionary *) nodeProperties
@@ -46,7 +44,10 @@
 	if (![[NSString stringWithFormat:@"F%@", [properties objectForKey:@"fileID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
 	{
 		[nodeProperties setObject:[NSString stringWithFormat:@"F%@", [properties objectForKey:@"fileID"]] forKey:@"ID"];
+		[nodeProperties setObject:[NSString string] forKey:@"number"];
 		[nodeProperties setObject:[NSString stringWithFormat:@"File \"%@\"", [properties objectForKey:nodeName]] forKey:@"name"];
+		[nodeProperties setObject:[NSNumber numberWithInt:1] forKey:@"inMylistMax"];
+		[nodeProperties setObject:[NSNumber numberWithInt:0] forKey:@"inMylistValue"];
 	}
     return nodeProperties;
 }

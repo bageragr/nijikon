@@ -17,19 +17,21 @@
 		path = [@"~/Library/Application Support/Nijikon" stringByExpandingTildeInPath];
 		db = nil;
 		conn = [[ADBConnection alloc] init];
-		groups = [[NSMutableArray alloc] init];
-		anime = [[NSMutableArray alloc] init];
+		[conn retain];
+		[self setGroups:groups];
+		[self setAnime:anime];
+		[self setAnimeFound:animeFound];
 		
 		NSFileManager* fileManager = [NSFileManager defaultManager];
 		
 		if (![fileManager fileExistsAtPath:path])
 			[fileManager createDirectoryAtPath:path attributes:nil];
-		//[fileManager removeItemAtPath:[path stringByAppendingString:@"/database.nijikon"] error:nil];
+		[fileManager removeItemAtPath:[path stringByAppendingString:@"/database.nijikon"] error:nil];
 		if (![fileManager fileExistsAtPath:[path stringByAppendingString:@"/database.nijikon"]])
 		{
 			db = [QuickLiteDatabase databaseWithFile:[path stringByAppendingString:@"/database.nijikon"]];
 			[db open];//:YES cacheMethod:DoNotCacheData exposeSQLOnNotify:NO debugMode:YES];
-			[self createDatabase:NO withDummyData:YES];
+			[self createDatabase:NO withDummyData:NO];
 			[self refreshDatabase:NO detailed:NO];
 		}
 		else
@@ -50,18 +52,31 @@
 - (void)dealloc
 {
 	[db closeSavingChanges:YES];
+	[conn dealloc];
+	[groups release];
 	[anime release];
 	[super dealloc];
 }
 
-- (IBAction)connect:(id)sender
+- (IBAction)login:(id)sender
 {
-	[conn connect:1432];
+	[conn login:@"pipelynx" withPassword:@"53-Ln44~"];
+	[connectionPanel viewsNeedDisplay];
 }
 
-- (IBAction)authenticate:(id)sender
+- (IBAction)logout:(id)sender
 {
-	[conn authenticate:@"pipelynx" withPassword:@"53-Ln44~"];
+	[conn logout];
+	[connectionPanel viewsNeedDisplay];
+}
+
+-(BOOL)control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector {
+    BOOL result = NO;	
+    if (commandSelector == @selector(insertNewline:)) {
+		[animeResult setStringValue:[NSString stringWithFormat:@"%@", [conn findAnimeByName:[control stringValue]]]];
+		result = YES;
+    }
+    return result;
 }
 
 - (ADBConnection*)connection
@@ -80,6 +95,7 @@
 	{
 		[anime autorelease];
 		anime = [[NSMutableArray alloc] initWithArray:newAnime];
+		[anime retain];
 	}
 }
 
@@ -94,6 +110,22 @@
 	{
 		[groups autorelease];
 		groups = [[NSMutableArray alloc] initWithArray:newGroups];
+		[groups retain];
+	}
+}
+
+- (NSMutableArray*)animeFound
+{
+	return animeFound;
+}
+
+- (void)setAnimeFound:(NSArray*)newAnimeFound
+{
+	if(animeFound != newAnimeFound)
+	{
+		[animeFound release];
+		animeFound = [[NSMutableArray alloc] initWithArray:newAnimeFound];
+		[animeFound retain];
 	}
 }
 
@@ -259,6 +291,9 @@
 
 - (void)refreshDatabase:(BOOL)verbose detailed:(BOOL)detailed
 {
+	[self setAnime:[NSArray array]];
+	[self setGroups:[NSArray array]];
+	
 	QuickLiteCursor* groupCursor = [db performQuery:@"select * from groups"];
 	QuickLiteCursor* animeCursor = [db performQuery:@"select * from anime"];
 	QuickLiteCursor* episodeCursor;
@@ -329,6 +364,7 @@
 				}
 				if (verbose || detailed) NSLog(@"Group of file: %@", [tempFile group]);
 				
+				[tempFile setIsLeaf:YES];
 				[[tempEpisode children] addObject:tempFile];
 				if (detailed) NSLog(@"\"%@\" added", tempFile);
 			}
