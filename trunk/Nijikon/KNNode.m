@@ -14,8 +14,10 @@
 {
     if(self = [super init])
     {
-        NSArray * keys      = [NSArray arrayWithObjects: @"ID", @"name", nil];
-        NSArray * values    = [NSArray arrayWithObjects: @"ID", @"name", nil];
+		isLeaf = NO;
+		
+        NSArray * keys      = [NSArray arrayWithObjects: @"ID", @"number", @"name", @"inMylistValue", @"inMylistMax", nil];
+        NSArray * values    = [NSArray arrayWithObjects: @"ID", [NSNumber numberWithInt:0], @"name", [NSNumber numberWithInt:0], [NSNumber numberWithInt:1], nil];
         [self setNodeProperties:[NSDictionary dictionaryWithObjects: values forKeys: keys]];
     }
     return self;
@@ -33,12 +35,22 @@
 	return [self valueForKeyPath:@"nodeProperties.name"];
 }
 
+- (BOOL)isLeaf
+{
+	return isLeaf;
+}
+
+- (void)setIsLeaf:(BOOL)newIsLeaf
+{
+	isLeaf = newIsLeaf;
+}
+
 - (NSString*)nodeName
 {
 	return nodeName;
 }
 
-- (NSString*)setNodeName:(NSString*)newNodeName
+- (void)setNodeName:(NSString*)newNodeName
 {
 	if (nodeName != newNodeName)
 	{

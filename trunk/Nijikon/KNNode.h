@@ -10,9 +10,16 @@
 
 
 @interface KNNode : NSObject {
+	BOOL isLeaf;
 	NSString* nodeName;
 	NSMutableDictionary* nodeProperties;
 }
+
+- (BOOL)isLeaf;
+- (void)setIsLeaf:(BOOL)newIsLeaf;
+
+- (NSString*)nodeName;
+- (void)setNodeName:(NSString*)newNodeName;
 
 - (NSMutableDictionary*)nodeProperties;
 - (void)setNodeProperties:(NSDictionary*)newNodeProperties;

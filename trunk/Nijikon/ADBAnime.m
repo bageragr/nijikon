@@ -10,11 +10,6 @@
 
 
 @implementation ADBAnime
-- (BOOL)isLeaf
-{
-	return NO;
-}
-
 - (id)init
 {
 	if (self = [super init])
@@ -46,7 +41,7 @@
 
 - (NSString*)description
 {
-	return [properties valueForKey:@"romaji"];
+	return [NSString stringWithFormat:@"%@ (%@ %@)", [properties valueForKey:nodeName], [properties valueForKey:@"type"], [properties valueForKey:@"year"]];
 }
 
 - (NSMutableDictionary*)nodeProperties
@@ -54,7 +49,10 @@
 	if (![[NSString stringWithFormat:@"A%@", [properties objectForKey:@"animeID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
 	{
 		[nodeProperties setObject:[NSString stringWithFormat:@"A%@", [properties objectForKey:@"animeID"]] forKey:@"ID"];
+		[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"animeID"] intValue]] forKey:@"number"];
 		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:nodeName]] forKey:@"name"];
+		[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"allEps"] intValue]] forKey:@"inMylistMax"];
+		[nodeProperties setObject:[NSNumber numberWithInt:[children count]] forKey:@"inMylistValue"];
 	}
     return nodeProperties;
 }
