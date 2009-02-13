@@ -16,8 +16,8 @@
 	{
 		path = [@"~/Library/Application Support/Nijikon" stringByExpandingTildeInPath];
 		db = nil;
-		conn = [[ADBConnection alloc] init];
-		[conn retain];
+		anidbFacade = [[[ADBFacade alloc] init] retain];
+		[self setMylist:mylist];
 		[self setGroups:groups];
 		[self setAnime:anime];
 		[self setAnimeFound:animeFound];
@@ -31,7 +31,7 @@
 		{
 			db = [QuickLiteDatabase databaseWithFile:[path stringByAppendingString:@"/database.nijikon"]];
 			[db open];//:YES cacheMethod:DoNotCacheData exposeSQLOnNotify:NO debugMode:YES];
-			[self createDatabase:NO withDummyData:NO];
+			[self createDatabase:NO withDummyData:YES];
 			[self refreshDatabase:NO detailed:NO];
 		}
 		else
@@ -52,7 +52,8 @@
 - (void)dealloc
 {
 	[db closeSavingChanges:YES];
-	[conn dealloc];
+	[anidbFacade release];
+	[mylist release];
 	[groups release];
 	[anime release];
 	[super dealloc];
@@ -60,20 +61,45 @@
 
 - (IBAction)login:(id)sender
 {
-	[conn login:@"pipelynx" withPassword:@"53-Ln44~"];
+	[anidbFacade login:@"pipelynx" withPassword:@"53-Ln44~"];
 	[connectionPanel viewsNeedDisplay];
 }
 
 - (IBAction)logout:(id)sender
 {
-	[conn logout];
+	[anidbFacade logout];
 	[connectionPanel viewsNeedDisplay];
+}
+
+- (IBAction)getEpisode:(id)sender
+{
+	NSLog(@"%@", sender);
 }
 
 -(BOOL)control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector {
     BOOL result = NO;	
     if (commandSelector == @selector(insertNewline:)) {
-		[animeResult setStringValue:[NSString stringWithFormat:@"%@", [conn findAnimeByName:[control stringValue]]]];
+		ADBAnime* tempAnime = [anidbFacade findAnimeByName:[control stringValue]];
+		//ADBAnime* tempAnime = [anime objectAtIndex:0];
+		ADBEpisode* tempEpisode = nil;
+		NSMutableArray* episodes = [NSMutableArray array];
+		if (tempAnime == nil)
+		{
+		 	[self setAnimeFound:[NSArray array]];
+		}
+		else
+		{
+			for (int i = 0; i < [[tempAnime valueForKeyPath:@"properties.nEps"] intValue]; i++)
+			{
+				tempEpisode = [[ADBEpisode alloc] init];
+				[tempEpisode setValue:[NSString stringWithFormat:@"%d", i + 1] forKeyPath:@"properties.epnumber"];
+				[tempEpisode setIsLeaf:YES];
+				[episodes addObject:tempEpisode];
+			}
+			[tempAnime setChildren:episodes];
+			[self setAnimeFound:[NSArray arrayWithObject:tempAnime]];
+		}
+		
 		result = YES;
     }
     return result;
@@ -81,7 +107,22 @@
 
 - (ADBConnection*)connection
 {
-	return conn;
+	return [anidbFacade connection];
+}
+
+- (NSMutableArray*)mylist
+{
+	return mylist;
+}
+
+- (void)setMylist:(NSArray*)newMylist
+{
+	if(mylist != newMylist)
+	{
+		[mylist release];
+		mylist = [[NSMutableArray alloc] initWithArray:newMylist];
+		[mylist retain];
+	}
 }
 
 - (NSMutableArray*)anime
@@ -133,15 +174,21 @@
 {
 	[db beginTransaction];
 	
-	NSString* table = @"groups";
-	NSArray* columns = [NSArray arrayWithObjects:QLRecordUID,@"groupID", @"rate", @"vts", @"animecount", @"filecount", @"name", @"short", @"ircchan", @"ircserv", @"url", nil];
-    NSArray* datatypes = [NSArray arrayWithObjects:QLRecordUIDDatatype,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString, nil];
+	NSString* table = @"mylist";
+	NSArray* columns = [NSArray arrayWithObjects:QLRecordUID,@"mylistID", @"fileID", @"episodeID", @"animeID", @"groupID", @"date", @"state", @"viewdate", @"storage", @"source", @"other", @"filestate", nil];
+    NSArray* datatypes = [NSArray arrayWithObjects:QLRecordUIDDatatype,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString, nil];
+	[db createTable:table withColumns:columns andDatatypes:datatypes];
+	if (verbose) NSLog(@"Table \"%@\" created", table);
+	
+	table = @"groups";
+	columns = [NSArray arrayWithObjects:QLRecordUID,@"groupID", @"rate", @"vts", @"animecount", @"filecount", @"name", @"short", @"ircchan", @"ircserv", @"url", nil];
+    datatypes = [NSArray arrayWithObjects:QLRecordUIDDatatype,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString, nil];
 	[db createTable:table withColumns:columns andDatatypes:datatypes];
 	if (verbose) NSLog(@"Table \"%@\" created", table);
 	
 	table = @"anime";
-	columns = [NSArray arrayWithObjects:QLRecordUID,@"animeID",@"allEps",@"nEps",@"sEps",@"rate",@"vts",@"tmprate",@"tmpvts",@"reviewrateavg",@"reviews",@"year",@"type",@"romaji",@"kanji",@"english",@"other",@"shortNames",@"synonyms",@"categories", nil];
-    datatypes = [NSArray arrayWithObjects:QLRecordUIDDatatype,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString, nil];
+	columns = [NSArray arrayWithObjects:QLRecordUID,@"animeID",@"allEps",@"nEps",@"sEps",@"rate",@"vts",@"tmprate",@"tmpvts",@"reviewrateavg",@"reviews",@"year",@"type",@"romaji",@"kanji",@"english",@"other",@"shortNames",@"synonyms",@"categories",@"description", nil];
+    datatypes = [NSArray arrayWithObjects:QLRecordUIDDatatype,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString,QLString, nil];
 	[db createTable:table withColumns:columns andDatatypes:datatypes];
 	if (verbose) NSLog(@"Table \"%@\" created", table);
 	
@@ -159,6 +206,20 @@
 	
 	if(createDummyData)
 	{
+		/*mylist dummy data*/
+		table = @"mylist";
+		columns = [NSArray arrayWithObjects:QLRecordUID,@"mylistID", @"fileID", @"episodeID", @"animeID", @"groupID", @"date", @"state", @"viewdate", @"storage", @"source", @"other", @"filestate", nil];
+		if (verbose) NSLog(@"Inserting dummy data for table \"%@\"...", table);
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"1", @"443033", @"88811", @"5557", @"4489", @"date", @"state", @"viewdate", @"storage", @"source", @"other", @"filestate", nil]
+				  forColumns:columns inTable:table])
+			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"1", @"447180", @"88840", @"5557", @"4489", @"date", @"state", @"viewdate", @"storage", @"source", @"other", @"filestate", nil]
+				  forColumns:columns inTable:table])
+			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
+		if (verbose) NSLog(@"Dummy data for table \"%@\" inserted", table);
+		if (verbose) NSLog(@"Checking dummy data for table \"%@\"...", table);
+		if (verbose) NSLog(@"%@",[db performQuery:[NSString stringWithFormat:@"select * from %@", table] cacheMethod:DoNotCacheData]);
+		
 		/*groups dummy data*/
 		table = @"groups";
 		columns = [NSArray arrayWithObjects:QLRecordUID,@"groupID", @"rate", @"vts", @"animecount", @"filecount", @"name", @"short", @"ircchan", @"ircserv", @"url", nil];
@@ -175,12 +236,12 @@
 		
 		/*anime dummy data*/
 		table = @"anime";
-		columns = [NSArray arrayWithObjects:QLRecordUID,@"animeID",@"allEps",@"nEps",@"sEps",@"rate",@"vts",@"tmprate",@"tmpvts",@"reviewrateavg",@"reviews",@"year",@"type",@"romaji",@"kanji",@"english",@"other",@"shortNames",@"synonyms",@"categories", nil];
+		columns = [NSArray arrayWithObjects:QLRecordUID,@"animeID",@"allEps",@"nEps",@"sEps",@"rate",@"vts",@"tmprate",@"tmpvts",@"reviewrateavg",@"reviews",@"year",@"type",@"romaji",@"kanji",@"english",@"other",@"shortNames",@"synonyms",@"categories",@"description", nil];
 		if (verbose) NSLog(@"Inserting dummy data for table \"%@\"...", table);
-		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"106",@"26",@"26",@"11",@"854",@"5353",@"711",@"473",@"801",@"19",@"2002-2002",@"TV Series",@"Azumanga Daiou",@"あずまんが大王",@"Azumanga Daioh",@"Azu Manga Daioh,아즈망가 대왕,AZ Manga King",@"Адзуманга,AzuDai,Azumanga,azu,AD,Азуманґа",@"阿滋漫画大王,Адзуманга Дайо",@"Manga,High School,Asia,Earth,Present,Slapstick,Comedy,School Life,Seinen,Japan,Daily Life,Coming of Age,Fantasy,Contemporary Fantasy,Stereotypes,Sports,Plot Continuity,Romance", nil]
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"106",@"26",@"26",@"11",@"854",@"5353",@"711",@"473",@"801",@"19",@"2002-2002",@"TV Series",@"Azumanga Daiou",@"あずまんが大王",@"Azumanga Daioh",@"Azu Manga Daioh,아즈망가 대왕,AZ Manga King",@"Адзуманга,AzuDai,Azumanga,azu,AD,Азуманґа",@"阿滋漫画大王,Адзуманга Дайо",@"Manga,High School,Asia,Earth,Present,Slapstick,Comedy,School Life,Seinen,Japan,Daily Life,Coming of Age,Fantasy,Contemporary Fantasy,Stereotypes,Sports,Plot Continuity,Romance",@"description", nil]
 				  forColumns:columns inTable:table])
 			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
-		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"5557",@"25",@"25",@"9",@"723",@"553",@"712",@"256",@"658",@"2",@"2008-2008",@"TV Series",@"Wagaya no Oinari-sama",@"我が家のお稲荷さま。",@"Coo ~ Our Guardian",@"",@"Oinari,Oinarisama,Oinari-sama",@"Wagaya no Oinara-sama,Инари в нашем доме,Інарі нашого дому,我家有个狐仙大人",@"Contemporary Fantasy,Fantasy,Juujin", nil]
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"5557",@"24",@"24",@"9",@"723",@"553",@"712",@"256",@"658",@"2",@"2008-2008",@"TV Series",@"Wagaya no Oinari-sama",@"我が家のお稲荷さま。",@"Coo ~ Our Guardian",@"",@"Oinari,Oinarisama,Oinari-sama",@"Wagaya no Oinara-sama,Инари в нашем доме,Інарі нашого дому,我家有个狐仙大人",@"Contemporary Fantasy,Fantasy,Juujin",@"description", nil]
 				  forColumns:columns inTable:table]);
 		if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
 		if (verbose) NSLog(@"Dummy data for table \"%@\" inserted", table);
@@ -194,19 +255,19 @@
 		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"88811", @"5557", @"24", @"573", @"11", @"1", @"Oinari-sama. Undoing the Seal", @"Oinari-sama. Fuuin tokareru", @"お稲荷さま。封印解かれる", @"07.04.2008", nil]
 				  forColumns:columns inTable:table])
 			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
-		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"88840", @"5557", @"24", @"rate", @"vts", @"2", @"english", @"Oinari-sama. Wagaya ni Sumitsuku", @"kanji", @"14.04.2008", nil]
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"88840", @"5557", @"24", @"591", @"7", @"2", @"Oinari-sama. Settling Down In Our Home", @"Oinari-sama. Wagaya ni Sumitsuku", @"お稲荷さま。我が家に住みつく", @"14.04.2008", nil]
 				  forColumns:columns inTable:table])
 			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
-		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"88839", @"5557", @"24", @"rate", @"vts", @"3", @"english", @"Oinari-sama. Toukou Suru", @"kanji", @"21.04.2008", nil]
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"88839", @"5557", @"24", @"648", @"6", @"3", @"Oinari-sama. Goes to School", @"Oinari-sama. Toukou Suru", @"お稲荷さま。登校する", @"21.04.2008", nil]
 				  forColumns:columns inTable:table])
 			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
-		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"88838", @"5557", @"24", @"rate", @"vts", @"4", @"english", @"Oinari-sama. Shuukaku Suru", @"kanji", @"28.04.2008", nil]
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"88838", @"5557", @"24", @"629", @"5", @"4", @"Oinari-sama. Harvesting", @"Oinari-sama. Shuukaku Suru", @"お稲荷さま。収穫する", @"28.04.2008", nil]
 				  forColumns:columns inTable:table])
 			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
-		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"90431", @"5557", @"24", @"rate", @"vts", @"5", @"english", @"Oinari-sama. Kinki wo Okasu", @"kanji", @"5.05.2008", nil]
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"90431", @"5557", @"24", @"737", @"6", @"5", @"Oinari-sama. Violating a Taboo", @"Oinari-sama. Kinki wo Okasu", @"お稲荷さま。禁忌を侵す", @"5.05.2008", nil]
 				  forColumns:columns inTable:table])
 			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
-		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"90633", @"5557", @"24", @"rate", @"vts", @"6", @"english", @"Oinari-sama. Kuida Oreru", @"kanji", @"12.05.2008", nil]
+		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"90633", @"5557", @"24", @"rate", @"vts", @"6", @"Oinari-sama. Eats A Stomach Full", @"Oinari-sama. Kui Taoreru", @"お稲荷さま。食い倒れる", @"12.05.2008", nil]
 				  forColumns:columns inTable:table])
 			if (verbose) NSLog(@"%@ inserted", [table capitalizedString]);
 		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"90738", @"5557", @"24", @"rate", @"vts", @"7", @"english", @"Oinari-sama. Kogitsune wo Idaku", @"kanji", @"19.05.2008", nil]
@@ -287,19 +348,23 @@
 	
 	[db commitTransaction];
 	return YES;
+
 }
 
 - (void)refreshDatabase:(BOOL)verbose detailed:(BOOL)detailed
 {
+	[self setMylist:[NSArray array]];
 	[self setAnime:[NSArray array]];
 	[self setGroups:[NSArray array]];
 	
+	QuickLiteCursor* mylistCursor = [db performQuery:@"select * from mylist"];
 	QuickLiteCursor* groupCursor = [db performQuery:@"select * from groups"];
 	QuickLiteCursor* animeCursor = [db performQuery:@"select * from anime"];
 	QuickLiteCursor* episodeCursor;
 	QuickLiteCursor* fileCursor;
 	QuickLiteRow* row;
 	
+	ADBMylistEntry* tempMylistEntry;
 	ADBGroup* tempGroup;
 	ADBAnime* tempAnime;
 	ADBEpisode* tempEpisode;
@@ -312,6 +377,21 @@
 	
 	if (verbose || detailed) NSLog(@"%@", animeCursor);
 	if (verbose || detailed) NSLog(@"%@", groupCursor);
+	
+	for (int i = 0; i < [mylistCursor rowCount]; i++)
+	{
+		table = @"mylist";
+		if (verbose || detailed) NSLog(@"%@: Iteration %d", [table capitalizedString], i);
+		row = [mylistCursor rowAtIndex:i];
+		if (detailed) NSLog(@"%@", row);
+		tempMylistEntry = [[ADBMylistEntry alloc] init];
+		for (int j = 0; j < [[[tempMylistEntry properties] allKeys] count]; j++)
+			[tempMylistEntry setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", table, [[[tempMylistEntry properties] allKeys] objectAtIndex:j]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[tempMylistEntry properties] allKeys] objectAtIndex:j]]];
+		
+		[mylist addObject:tempMylistEntry];
+		if (detailed) NSLog(@"\"%@\" added", tempMylistEntry);
+	}
+	if (verbose || detailed) NSLog(@"Count of \"groups\" array: %d", [groups count]);
 	
 	for (int i = 0; i < [groupCursor rowCount]; i++)
 	{

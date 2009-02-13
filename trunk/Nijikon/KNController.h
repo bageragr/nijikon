@@ -12,7 +12,7 @@
 #import <QuickLite/QuickLiteCursor.h>
 #import <QuickLite/QuickLiteRow.h>
 
-#import "ADBConnection.h"
+#import "ADBFacade.h"
 
 
 @interface KNController : NSObject {
@@ -21,7 +21,8 @@
 	
 	NSString* path;
 	QuickLiteDatabase* db;
-	ADBConnection* conn;
+	ADBFacade* anidbFacade;
+	NSMutableArray* mylist;
 	NSMutableArray* anime;
 	NSMutableArray* groups;
 	
@@ -29,9 +30,12 @@
 }
 - (IBAction)login:(id)sender;
 - (IBAction)logout:(id)sender;
+- (IBAction)getEpisode:(id)sender;
 
 - (ADBConnection*)connection;
 
+- (NSMutableArray*)mylist;
+- (void)setMylist:(NSArray*)newMylist;
 - (NSMutableArray*)anime;
 - (void)setAnime:(NSArray*)newAnime;
 - (NSMutableArray*)groups;
