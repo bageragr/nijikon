@@ -44,10 +44,10 @@
 		32CA4F630368D1EE00C91783 /* Nijikon_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nijikon_Prefix.pch; sourceTree = "<group>"; };
 		4B23AA030F45CA4D007E5ECA /* ADBFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBFacade.h; sourceTree = "<group>"; };
 		4B23AA040F45CA4D007E5ECA /* ADBFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBFacade.m; sourceTree = "<group>"; };
+		4B23ACC60F461173007E5ECA /* ADBKeyArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBKeyArrays.h; sourceTree = "<group>"; };
 		4B4845CD0F3EC97F00DD56C5 /* KNStatusToStringTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNStatusToStringTransformer.h; sourceTree = "<group>"; };
 		4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNStatusToStringTransformer.m; sourceTree = "<group>"; };
 		4B4845D00F3EC9B900DD56C5 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		4B4845D40F3EC9E700DD56C5 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4B808EDD0F3BF88300001AF0 /* ADBConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBConnection.h; sourceTree = "<group>"; };
 		4B808EDE0F3BF88300001AF0 /* ADBConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBConnection.m; sourceTree = "<group>"; };
 		4B81E0490F45771A0030D3AC /* ADBMylistEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBMylistEntry.h; sourceTree = "<group>"; };
@@ -201,6 +201,7 @@
 		4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */ = {
 			isa = PBXGroup;
 			children = (
+				4B23ACC60F461173007E5ECA /* ADBKeyArrays.h */,
 				4BAB90900F3C87750073CAB4 /* ADBResponseCodes.h */,
 				4B808EDD0F3BF88300001AF0 /* ADBConnection.h */,
 				4B808EDE0F3BF88300001AF0 /* ADBConnection.m */,
@@ -208,14 +209,14 @@
 				4B23AA040F45CA4D007E5ECA /* ADBFacade.m */,
 				4B81E0490F45771A0030D3AC /* ADBMylistEntry.h */,
 				4B81E04A0F45771A0030D3AC /* ADBMylistEntry.m */,
+				4BE6C4570F39FE3500123B94 /* ADBGroup.h */,
+				4BE6C4580F39FE3500123B94 /* ADBGroup.m */,
 				4BE6C4510F39FE3500123B94 /* ADBAnime.h */,
 				4BE6C4520F39FE3500123B94 /* ADBAnime.m */,
 				4BE6C4530F39FE3500123B94 /* ADBEpisode.h */,
 				4BE6C4540F39FE3500123B94 /* ADBEpisode.m */,
 				4BE6C4550F39FE3500123B94 /* ADBFile.h */,
 				4BE6C4560F39FE3500123B94 /* ADBFile.m */,
-				4BE6C4570F39FE3500123B94 /* ADBGroup.h */,
-				4BE6C4580F39FE3500123B94 /* ADBGroup.m */,
 			);
 			name = "AniDB classes";
 			sourceTree = "<group>";
@@ -342,7 +343,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				4B4845D00F3EC9B900DD56C5 /* English */,
-				4B4845D40F3EC9E700DD56C5 /* German */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
