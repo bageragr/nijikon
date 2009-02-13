@@ -14,6 +14,9 @@
 	NSMutableDictionary* properties;
 }
 
++ (ADBGroup*)groupWithProperties:(NSDictionary*)newProperties;
+
 - (NSMutableDictionary*)properties;
+- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys;
 - (void)setProperties:(NSDictionary*)newProperties;
 @end

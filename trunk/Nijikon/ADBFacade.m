@@ -31,26 +31,19 @@
 }
 
 - (BOOL)login:(NSString*)aUsername withPassword:(NSString*)aPassword {
-	return NO;
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"AUTH user=%@&pass=%@&protover=%@&client=%@&clientver=%@&nat=%@&enc=%@", [aUsername lowercaseString], aPassword, PROTOCOLVER, CLIENT, CLIENTVER, @"1", DEFAULT_ENCODING]];
-	for (int i = 0; i < [response count]; i++)
-		NSLog([response objectAtIndex:i]);
-	
-	/*[self setUsername:aUsername];
-	[self setPassword:aPassword];
-	NSString* command = [NSString stringWithFormat:@"AUTH user=%@&pass=%@&protover=%d&client=%@&clientver=%d&nat=%d&enc=%@", [username lowercaseString], password, 3, @"nijikon", CLIENTVER, 1, @"UTF8"];
-	[self send:command usingEncoding:NSASCIIStringEncoding];
-	[connectionLog addObject:[NSString stringWithFormat:@"OUT # %@", command]];
-	NSString* response = [self receiveUsingEncoding:DEFAULT_ENCODING];
-	NSArray* spaceSeparatedResponse = [response componentsSeparatedByString:@" "];
-	[connectionLog addObject:[NSString stringWithFormat:@"IN # %@", response]];
-	switch ([[spaceSeparatedResponse objectAtIndex:0] intValue]) {
-			//command specific
-		case LOGIN_ACCEPTED:
-			[self setSessionKey:[spaceSeparatedResponse objectAtIndex:1]];
-			[self setStatus:[NSNumber numberWithInt:2]];
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"AUTH user=%@&pass=%@&protover=%@&client=%@&clientver=%@&nat=%@&enc=%@", [aUsername lowercaseString], aPassword, PROTOCOLVER, CLIENT, CLIENTVER, @"1", DEFAULT_ENCODING]
+																   appendSessionKey:NO];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case RC_LOGIN_ACCEPTED:
+			[anidb setSession:[[response objectAtIndex:1] substringToIndex:5] withUsername:aUsername andPassword:aPassword];
 			return YES;
-		case LOGIN_ACCEPTED_NEW_VER:
+		case RC_CLIENT_BANNED:
+			NSLog(@"%@", [response objectAtIndex:2]);
+			return NO;
+		default:
+			return NO;
+	}
+	/*case LOGIN_ACCEPTED_NEW_VER:
 			[self setSessionKey:[spaceSeparatedResponse objectAtIndex:1]];
 			[self setStatus:[NSNumber numberWithInt:2]];
 			return YES;
@@ -61,8 +54,6 @@
 		case ACCESS_DENIED:
 			return NO;
 		case CLIENT_VERSION_OUTDATED:
-			return NO;
-		case CLIENT_BANNED:
 			return NO;
 		case INVALID_SESSION:
 			return NO;
@@ -78,30 +69,22 @@
 		case ANIDB_OUT_OF_SERVICE:
 			return NO;
 		case SERVER_BUSY:
-			return NO;
-		default:
-			return NO;
-	}*/
+			return NO;*/
 }
 - (BOOL)logout {
-	return NO;
-	/*NSString* command = [NSString stringWithFormat:@"LOGOUT s=%@", sessionKey];
-	[self send:command usingEncoding:DEFAULT_ENCODING];
-	[connectionLog addObject:[NSString stringWithFormat:@"OUT # %@", command]];
-	NSString* response = [self receiveUsingEncoding:DEFAULT_ENCODING];
-	NSArray* spaceSeparatedResponse = [response componentsSeparatedByString:@" "];
-	[connectionLog addObject:[NSString stringWithFormat:@"IN # %@", response]];
-	NSLog(@"%@", response);
-	switch ([[spaceSeparatedResponse objectAtIndex:0] intValue]) {
-			//command specific
-		case LOGGED_OUT:
-			[self setSessionKey:@""];
-			[self setStatus:[NSNumber numberWithInt:1]];
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:@"LOGOUT s="
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case RC_LOGGED_OUT:
+			[anidb clearSession];
 			return YES;
-		case NOT_LOGGED_IN:
+		case RC_NOT_LOGGED_IN:
+			[anidb clearSession];
+			return YES;
+		default:
 			return NO;
-			//generic
-		case ILLEGAL_INPUT_OR_ACCESS_DENIED:
+	}
+	/*case ILLEGAL_INPUT_OR_ACCESS_DENIED:
 			return NO;
 		case BANNED:
 			return NO;
@@ -112,77 +95,228 @@
 		case ANIDB_OUT_OF_SERVICE:
 			return NO;
 		case SERVER_BUSY:
-			return NO;
-		default:
-			return NO;
-	}*/
+			return NO;*/
 }
 
 - (ADBMylistEntry*)findMylistEntryByID:(NSString*)mylistID {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	NSMutableArray* values = [NSMutableArray array];
+	for (int i = 2; i < [response count]; i++)
+		[values addObject:[response objectAtIndex:i]];
+	
+	switch ([[response objectAtIndex:0] intValue]) {
+		case RC_MYLIST:
+			return [ADBMylistEntry mylistEntryWithProperties:[NSDictionary dictionaryWithObjects:values
+																						 forKeys:ADBMylistEntryKeyArray]];
+		case RC_NO_SUCH_ENTRY:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBMylistEntry*)findMylistEntryByFileID:(NSString*)fileID {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBMylistEntry*)findMylistEntryBySize:(NSString*)sizeInBytes andED2k:(NSString*)hash {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBMylistEntry*)findMylistEntryByAnimeName:(NSString*)animeName groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBMylistEntry*)findMylistEntryByAnimeName:(NSString*)animeName groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBMylistEntry*)findMylistEntryByAnimeID:(NSString*)animeID groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBMylistEntry*)findMylistEntryByAnimeID:(NSString*)animeID groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 
 - (ADBGroup*)findGroupByID:(NSString*)groupID {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBGroup*)findGroupByName:(NSString*)name {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 
 - (ADBAnime*)findAnimeByID:(NSString*)animeID {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBAnime*)findAnimeByName:(NSString*)name {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (NSString*)findDescriptionForAnimeByID:(NSString*)animeID {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 
 - (ADBEpisode*)findEpisodeByID:(NSString*)episodeID {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBEpisode*)findEpisodeByAnimeName:(NSString*)animeName andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBEpisode*)findEpisodeByAnimeID:(NSString*)animeID andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 
 - (ADBFile*)findFileByID:(NSString*)fileID {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBFile*)findFileBySize:(NSString*)sizeInBytes andED2k:(NSString*)hash {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBFile*)findFileByAnimeName:(NSString*)animeName groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBFile*)findFileByAnimeName:(NSString*)animeName groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBFile*)findFileByAnimeID:(NSString*)animeID groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 - (ADBFile*)findFileByAnimeID:(NSString*)animeID groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber {
-	return nil;
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+																   appendSessionKey:YES];
+	switch ([[response objectAtIndex:0] intValue]) {
+		case 0:
+			return nil;
+		default:
+			return nil;
+	}
 }
 @end

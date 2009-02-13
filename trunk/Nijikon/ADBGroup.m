@@ -14,9 +14,7 @@
 {
     if (self = [super init])
     {
-        NSArray * keys      = [NSArray arrayWithObjects: @"groupID", @"rate", @"vts", @"animecount", @"filecount", @"name", @"short", @"ircchan", @"ircserv", @"url", nil];
-        NSArray * values    = [NSArray arrayWithObjects: @"groupID", @"rate", @"vts", @"animecount", @"filecount", @"name", @"short", @"ircchan", @"ircserv", @"url", nil];
-        [self setProperties:[NSDictionary dictionaryWithObjects: values forKeys: keys]];
+        [self setProperties:[NSDictionary dictionaryWithObjects: ADBGroupKeyArray forKeys: ADBGroupKeyArray]];
 		
 		nodeName = @"name";
     }
@@ -30,9 +28,19 @@
     [super dealloc];
 }
 
++ (ADBGroup*)groupWithProperties:(NSDictionary*)newProperties
+{
+	ADBGroup* temp = [[ADBGroup alloc] init];
+	[temp setProperties:newProperties];
+	return temp;
+}
+
 - (NSString*)description
 {
-	return [properties valueForKey:@"name"];
+	if ([[properties valueForKey:@"groupID"] isEqualToString:@"groupID"])
+		return @"No such group";
+	else
+		return [properties valueForKey:nodeName];
 }
 
 - (NSMutableDictionary *) nodeProperties
@@ -48,6 +56,11 @@
 - (NSMutableDictionary *) properties
 {
     return properties;
+}
+
+- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys
+{
+	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
 }
 
 - (void) setProperties: (NSDictionary *)newProperties
