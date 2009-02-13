@@ -9,8 +9,8 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="29"/>
-			<integer value="550"/>
 			<integer value="514"/>
+			<integer value="371"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -979,7 +979,7 @@
 			<object class="NSWindowTemplate" id="972006081">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{311, 194}, {640, 480}}</string>
+				<string key="NSWindowRect">{{300, 200}, {640, 480}}</string>
 				<int key="NSWTFlags">1946157056</int>
 				<string key="NSWindowTitle">Main</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -1906,7 +1906,7 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 					<string key="NSFrameSize">{640, 480}</string>
 					<reference key="NSSuperview"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1400, 1028}}</string>
 				<string key="NSMinSize">{640, 549}</string>
 				<string key="NSMaxSize">{800, 669}</string>
 			</object>
