@@ -15,7 +15,10 @@
 	NSMutableArray* children;
 }
 
++ (ADBEpisode*)episodeWithProperties:(NSDictionary*)newProperties;
+
 - (NSMutableDictionary*)properties;
+- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys;
 - (void)setProperties:(NSDictionary*)newProperties;
 
 - (NSMutableArray*)children;
