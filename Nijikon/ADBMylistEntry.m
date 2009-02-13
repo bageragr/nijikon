@@ -14,9 +14,7 @@
 {
 	if (self = [super init])
     {
-        NSArray* keys =		[NSArray arrayWithObjects:@"mylistID",@"fileID",@"episodeID",@"animeID",@"groupID",@"date",@"state",@"viewdate",@"storage",@"source",@"other",@"filestate",nil];
-		NSArray* values =	[NSArray arrayWithObjects:@"mylistID",@"fileID",@"episodeID",@"animeID",@"groupID",@"date",@"state",@"viewdate",@"storage",@"source",@"other",@"filestate",nil];
-        [self setProperties:[NSDictionary dictionaryWithObjects: values forKeys: keys]];
+        [self setProperties:[NSDictionary dictionaryWithObjects: ADBMylistEntryKeyArray forKeys: ADBMylistEntryKeyArray]];
         
         children = [[NSMutableArray alloc] init];
 		
@@ -33,6 +31,13 @@
     [super dealloc];
 }
 
++ (ADBMylistEntry*)mylistEntryWithProperties:(NSDictionary*)newProperties
+{
+	ADBMylistEntry* temp = [[ADBMylistEntry alloc] init];
+	[temp setProperties:newProperties];
+	return temp;
+}
+
 - (NSString*)description
 {
 	return [NSString stringWithFormat:@"%@ (%@ %@)", [properties valueForKey:nodeName], [properties valueForKey:@"type"], [properties valueForKey:@"year"]];
@@ -40,14 +45,14 @@
 
 - (NSMutableDictionary*)nodeProperties
 {
-	if (![[NSString stringWithFormat:@"A%@", [properties objectForKey:@"animeID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
+	if (![[NSString stringWithFormat:@"M%@", [properties objectForKey:@"mylistID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
 	{
-		[nodeProperties setObject:[NSString stringWithFormat:@"A%@", [properties objectForKey:@"animeID"]] forKey:@"ID"];
-		[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"animeID"] intValue]] forKey:@"number"];
+		[nodeProperties setObject:[NSString stringWithFormat:@"M%@", [properties objectForKey:@"mylistID"]] forKey:@"ID"];
+		[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"mylistID"] intValue]] forKey:@"number"];
 		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:nodeName]] forKey:@"name"];
 		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [nodeProperties objectForKey:@"name"]] forKey:@"epnumber"];
-		[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"nEps"] intValue]] forKey:@"inMylistMax"];
-		[nodeProperties setObject:[NSNumber numberWithInt:[children count]] forKey:@"inMylistValue"];
+		//[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"nEps"] intValue]] forKey:@"inMylistMax"];
+		//[nodeProperties setObject:[NSNumber numberWithInt:[children count]] forKey:@"inMylistValue"];
 	}
     return nodeProperties;
 }

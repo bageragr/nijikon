@@ -14,9 +14,7 @@
 {
     if (self = [super init])
     {
-        NSArray * keys      = [NSArray arrayWithObjects: @"fileID", @"animeID", @"episodeID", @"groupID", @"state", @"size", @"ed2k", @"filename", nil];
-        NSArray * values    = [NSArray arrayWithObjects: @"fileID", @"animeID", @"episodeID", @"groupID", @"state", @"size", @"ed2k", @"filename", nil];
-        [self setProperties:[NSDictionary dictionaryWithObjects: values forKeys: keys]];
+        [self setProperties:[NSDictionary dictionaryWithObjects: ADBEpisodeKeyArray forKeys: ADBEpisodeKeyArray]];
 		
 		nodeName = @"fileID";
     }
@@ -29,6 +27,13 @@
 	[self setGroup:nil];
     
     [super dealloc];
+}
+
++ (ADBFile*)fileWithProperties:(NSDictionary*)newProperties
+{
+	ADBFile* temp = [[ADBFile alloc] init];
+	[temp setProperties:newProperties];
+	return temp;
 }
 
 - (NSString*)description
@@ -46,6 +51,7 @@
 		[nodeProperties setObject:[NSString stringWithFormat:@"F%@", [properties objectForKey:@"fileID"]] forKey:@"ID"];
 		[nodeProperties setObject:[NSString string] forKey:@"number"];
 		[nodeProperties setObject:[NSString stringWithFormat:@"File \"%@\"", [properties objectForKey:nodeName]] forKey:@"name"];
+		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [nodeProperties objectForKey:@"name"]] forKey:@"epnumber"];
 		[nodeProperties setObject:[NSNumber numberWithInt:1] forKey:@"inMylistMax"];
 		[nodeProperties setObject:[NSNumber numberWithInt:0] forKey:@"inMylistValue"];
 	}
@@ -55,6 +61,11 @@
 - (NSMutableDictionary *) properties
 {
     return properties;
+}
+
+- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys
+{
+	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
 }
 
 - (void) setProperties: (NSDictionary *)newProperties
