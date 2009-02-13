@@ -3,7 +3,7 @@
 //  Nijikon
 //
 //  Created by Pipelynx on 2/13/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Martin Fellner. All rights reserved.
 //
 
 #define KNNodeKeyArray [NSArray arrayWithObjects: @"ID", @"number", @"name", @"epnumber", @"inMylistValue", @"inMylistMax", nil]

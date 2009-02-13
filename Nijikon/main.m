@@ -3,7 +3,7 @@
 //  Nijikon
 //
 //  Created by Pipelynx on 2/4/09.
-//  Copyright __MyCompanyName__ 2009. All rights reserved.
+//  Copyright Martin Fellner 2009. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

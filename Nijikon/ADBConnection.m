@@ -3,7 +3,7 @@
 //  Nijikon
 //
 //  Created by Pipelynx on 2/6/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Martin Fellner. All rights reserved.
 //
 
 #import "ADBConnection.h"
