@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "ADBKeyArrays.h"
+#import "KNKeyArrays.h"
 
 @interface KNNode : NSObject {
 	BOOL isLeaf;

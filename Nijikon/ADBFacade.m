@@ -30,6 +30,11 @@
 	return anidb;
 }
 
+- (NSString*)queryAniDB:(NSString*)query appendSessionKey:(BOOL)appendSessionKey
+{
+	return [anidb sendAndReceiveUsingDefaultEncoding:query appendSessionKey:appendSessionKey];
+}
+
 - (BOOL)login:(NSString*)aUsername withPassword:(NSString*)aPassword {
 	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"AUTH user=%@&pass=%@&protover=%@&client=%@&clientver=%@&nat=%@&enc=%@", [aUsername lowercaseString], aPassword, PROTOCOLVER, CLIENT, CLIENTVER, @"1", DEFAULT_ENCODING]
 																   appendSessionKey:NO];
@@ -37,7 +42,7 @@
 		case RC_LOGIN_ACCEPTED:
 			[anidb setSession:[[response objectAtIndex:1] substringToIndex:5] withUsername:aUsername andPassword:aPassword];
 			return YES;
-		case RC_CLIENT_BANNED:
+		case RC_BANNED:
 			NSLog(@"%@", [response objectAtIndex:2]);
 			return NO;
 		default:
@@ -119,7 +124,7 @@
 	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
 																   appendSessionKey:YES];
 	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
+		case RC_MYLIST:
 			return nil;
 		default:
 			return nil;
@@ -198,11 +203,17 @@
 }
 
 - (ADBAnime*)findAnimeByID:(NSString*)animeID {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"ANIME aid=%@&amask=%@&s=", animeID, DEFAULT_AMASK]
 																   appendSessionKey:YES];
+	NSMutableArray* values = [NSMutableArray array];
+	for (int i = 2; i < [response count]; i++)
+		[values addObject:[response objectAtIndex:i]];
+	[values addObject:@"No description"];
+	
 	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
-			return nil;
+		case RC_ANIME:
+			return [ADBAnime animeWithProperties:[NSDictionary dictionaryWithObjects:values
+																			 forKeys:ADBAnimeKeyArray]];
 		default:
 			return nil;
 	}

@@ -15,6 +15,7 @@
 	if (self = [super init])
     {
         socket = [[EDUDPSocket socket] retain];
+		[self clearSession];
 		NSHost* host = [NSHost hostWithName:@"api.anidb.info"];
 		if (host == nil) {
 			socket = nil;
@@ -23,7 +24,6 @@
 		else {
 			[socket connectToHost:host port:9000];
 			[socket setReceiveTimeout:5];
-			[self setStatus:[NSNumber numberWithInt:1]];
 		}
 		
 		lastAccess = [[NSDate distantPast] retain];
@@ -64,13 +64,18 @@
 	return nil;
 }
 
-- (NSArray*)sendAndReceiveUsingDefaultEncodingAndPrepareResponse:(NSString*)aString appendSessionKey:(BOOL)appendSessionKey
+- (NSString*)sendAndReceiveUsingDefaultEncoding:(NSString*)aString appendSessionKey:(BOOL)appendSessionKey
 {
 	if (appendSessionKey)
 		[self send:[aString stringByAppendingString:sessionKey] usingEncoding:DEFAULT_NSENCODING];
 	else
 		[self send:aString usingEncoding:DEFAULT_NSENCODING];
-	NSArray* lines = [[self receiveUsingEncoding:DEFAULT_NSENCODING] componentsSeparatedByString:@"\n"];
+	return [self receiveUsingEncoding:DEFAULT_NSENCODING];
+}
+
+- (NSArray*)sendAndReceiveUsingDefaultEncodingAndPrepareResponse:(NSString*)aString appendSessionKey:(BOOL)appendSessionKey
+{
+	NSArray* lines = [[self sendAndReceiveUsingDefaultEncoding:aString appendSessionKey:appendSessionKey] componentsSeparatedByString:@"\n"];
 	NSArray* temp = [NSMutableArray arrayWithObjects:[[[lines objectAtIndex:0] componentsSeparatedByString:@" "] objectAtIndex:0], [[lines objectAtIndex:0] substringFromIndex:4], nil];
 	if ([lines count] > 1)
 		temp = [temp arrayByAddingObjectsFromArray:[[lines objectAtIndex:1] componentsSeparatedByString:@"|"]];

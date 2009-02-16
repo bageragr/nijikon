@@ -24,6 +24,8 @@
 - (BOOL)login:(NSString*)username withPassword:(NSString*)password;
 - (BOOL)logout;
 
+- (NSString*)queryAniDB:(NSString*)query appendSessionKey:(BOOL)appendSessionKey;
+
 - (ADBMylistEntry*)findMylistEntryByID:(NSString*)mylistID;
 - (ADBMylistEntry*)findMylistEntryByFileID:(NSString*)fileID;
 - (ADBMylistEntry*)findMylistEntryBySize:(NSString*)sizeInBytes andED2k:(NSString*)hash;
