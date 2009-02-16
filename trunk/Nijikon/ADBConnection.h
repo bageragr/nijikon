@@ -27,6 +27,7 @@
 }
 - (void)send:(NSString*)aString usingEncoding:(NSStringEncoding)encoding;
 - (NSString*)receiveUsingEncoding:(NSStringEncoding)encoding;
+- (NSString*)sendAndReceiveUsingDefaultEncoding:(NSString*)aString appendSessionKey:(BOOL)appendSessionKey;
 - (NSArray*)sendAndReceiveUsingDefaultEncodingAndPrepareResponse:(NSString*)aString appendSessionKey:(BOOL)appendSessionKey;
 - (void)clearSession;
 

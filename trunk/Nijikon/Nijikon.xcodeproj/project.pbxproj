@@ -9,8 +9,12 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		4B23AA050F45CA4D007E5ECA /* ADBFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AA040F45CA4D007E5ECA /* ADBFacade.m */; };
+		4B290E340F482120001F51E6 /* NSXMLNode+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B290E330F482120001F51E6 /* NSXMLNode+Extensions.m */; };
+		4B290E550F4821D7001F51E6 /* ADBMylistExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B290E540F4821D7001F51E6 /* ADBMylistExport.m */; };
 		4B4845CF0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */; };
 		4B4845D30F3EC9DA00DD56C5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B4845D20F3EC9DA00DD56C5 /* Localizable.strings */; };
+		4B5B70810F48949000B070E5 /* KNED2k.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B70800F48949000B070E5 /* KNED2k.m */; };
+		4B5B73060F49919500B070E5 /* KNPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B73050F49919500B070E5 /* KNPreferences.m */; };
 		4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
 		4B81E04B0F45771A0030D3AC /* ADBMylistEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B81E04A0F45771A0030D3AC /* ADBMylistEntry.m */; };
 		4BA7007A0F3AC8A8000E6A65 /* QuickLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BA700790F3AC8A8000E6A65 /* QuickLite.framework */; };
@@ -45,9 +49,18 @@
 		4B23AA030F45CA4D007E5ECA /* ADBFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBFacade.h; sourceTree = "<group>"; };
 		4B23AA040F45CA4D007E5ECA /* ADBFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBFacade.m; sourceTree = "<group>"; };
 		4B23ACC60F461173007E5ECA /* ADBKeyArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBKeyArrays.h; sourceTree = "<group>"; };
+		4B290E320F482120001F51E6 /* NSXMLNode+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSXMLNode+Extensions.h"; sourceTree = "<group>"; };
+		4B290E330F482120001F51E6 /* NSXMLNode+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSXMLNode+Extensions.m"; sourceTree = "<group>"; };
+		4B290E530F4821D7001F51E6 /* ADBMylistExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBMylistExport.h; sourceTree = "<group>"; };
+		4B290E540F4821D7001F51E6 /* ADBMylistExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBMylistExport.m; sourceTree = "<group>"; };
 		4B4845CD0F3EC97F00DD56C5 /* KNStatusToStringTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNStatusToStringTransformer.h; sourceTree = "<group>"; };
 		4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNStatusToStringTransformer.m; sourceTree = "<group>"; };
 		4B4845D00F3EC9B900DD56C5 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4B5B707F0F48949000B070E5 /* KNED2k.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNED2k.h; sourceTree = "<group>"; };
+		4B5B70800F48949000B070E5 /* KNED2k.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNED2k.m; sourceTree = "<group>"; };
+		4B5B73040F49919500B070E5 /* KNPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNPreferences.h; sourceTree = "<group>"; };
+		4B5B73050F49919500B070E5 /* KNPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNPreferences.m; sourceTree = "<group>"; };
+		4B5B73120F49931000B070E5 /* KNKeyArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNKeyArrays.h; sourceTree = "<group>"; };
 		4B808EDD0F3BF88300001AF0 /* ADBConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBConnection.h; sourceTree = "<group>"; };
 		4B808EDE0F3BF88300001AF0 /* ADBConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBConnection.m; sourceTree = "<group>"; };
 		4B81E0490F45771A0030D3AC /* ADBMylistEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBMylistEntry.h; sourceTree = "<group>"; };
@@ -105,13 +118,19 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4B5B70770F4893D200B070E5 /* Hashing classes */,
 				4BAB8F1E0F3C4BB90073CAB4 /* Networking classes */,
 				4B4845510F3E185200DD56C5 /* Transformer classes */,
 				4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */,
+				4B5B73120F49931000B070E5 /* KNKeyArrays.h */,
 				4BE6C44B0F39FBD000123B94 /* KNController.h */,
 				4BE6C44C0F39FBD000123B94 /* KNController.m */,
 				4BE6C45B0F39FE3500123B94 /* KNNode.h */,
 				4BE6C45C0F39FE3500123B94 /* KNNode.m */,
+				4B5B73040F49919500B070E5 /* KNPreferences.h */,
+				4B5B73050F49919500B070E5 /* KNPreferences.m */,
+				4B290E320F482120001F51E6 /* NSXMLNode+Extensions.h */,
+				4B290E330F482120001F51E6 /* NSXMLNode+Extensions.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -198,11 +217,22 @@
 			name = "Transformer classes";
 			sourceTree = "<group>";
 		};
+		4B5B70770F4893D200B070E5 /* Hashing classes */ = {
+			isa = PBXGroup;
+			children = (
+				4B5B707F0F48949000B070E5 /* KNED2k.h */,
+				4B5B70800F48949000B070E5 /* KNED2k.m */,
+			);
+			name = "Hashing classes";
+			sourceTree = "<group>";
+		};
 		4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */ = {
 			isa = PBXGroup;
 			children = (
 				4B23ACC60F461173007E5ECA /* ADBKeyArrays.h */,
 				4BAB90900F3C87750073CAB4 /* ADBResponseCodes.h */,
+				4B290E530F4821D7001F51E6 /* ADBMylistExport.h */,
+				4B290E540F4821D7001F51E6 /* ADBMylistExport.m */,
 				4B808EDD0F3BF88300001AF0 /* ADBConnection.h */,
 				4B808EDE0F3BF88300001AF0 /* ADBConnection.m */,
 				4B23AA030F45CA4D007E5ECA /* ADBFacade.h */,
@@ -317,6 +347,10 @@
 				4B4845CF0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m in Sources */,
 				4B81E04B0F45771A0030D3AC /* ADBMylistEntry.m in Sources */,
 				4B23AA050F45CA4D007E5ECA /* ADBFacade.m in Sources */,
+				4B290E340F482120001F51E6 /* NSXMLNode+Extensions.m in Sources */,
+				4B290E550F4821D7001F51E6 /* ADBMylistExport.m in Sources */,
+				4B5B70810F48949000B070E5 /* KNED2k.m in Sources */,
+				4B5B73060F49919500B070E5 /* KNPreferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

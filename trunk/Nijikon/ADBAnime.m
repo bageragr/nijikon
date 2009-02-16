@@ -35,6 +35,13 @@
 {
 	ADBAnime* temp = [[ADBAnime alloc] init];
 	[temp setProperties:newProperties];
+	NSLog(@"Count: %d", [[[newProperties valueForKey:@"categList"] componentsSeparatedByString:@","] count]);
+	NSArray* commaSeparated = [NSArray arrayWithObjects:@"categList", @"categWheightList", @"categIDList", nil];
+	for (int i = 0; i < [commaSeparated count]; i++)
+		[[temp properties] setValue:[[newProperties valueForKey:[commaSeparated objectAtIndex:i]] componentsSeparatedByString:@","] forKey:[commaSeparated objectAtIndex:i]];
+	NSArray* apostropheSeparated = [NSArray arrayWithObjects:@"others", @"shortNames", @"synonyms", @"prodNameList", @"prodIDList", nil];
+	for (int i = 0; i < [apostropheSeparated count]; i++)
+		[[temp properties] setValue:[[newProperties valueForKey:[apostropheSeparated objectAtIndex:i]] componentsSeparatedByString:@"'"] forKey:[apostropheSeparated objectAtIndex:i]];
 	return temp;
 }
 

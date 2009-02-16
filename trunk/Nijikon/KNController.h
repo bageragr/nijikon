@@ -12,14 +12,24 @@
 #import <QuickLite/QuickLiteCursor.h>
 #import <QuickLite/QuickLiteRow.h>
 
+#import "KNED2k.h"
+#import "KNPreferences.h"
+#import "ADBMylistExport.h"
 #import "ADBFacade.h"
 
 
 @interface KNController : NSObject {
 	IBOutlet NSWindow* mainWindow;
+	IBOutlet NSWindow* configurationDialog;
 	IBOutlet NSPanel* connectionPanel;
 	
+	BOOL modal;
+	IBOutlet NSTextField* modalUsername;
+	IBOutlet NSSecureTextField* modalPassword;
+	IBOutlet NSTextField* modalStatus;
+	
 	NSString* path;
+	KNPreferences* preferences;
 	QuickLiteDatabase* db;
 	ADBFacade* anidbFacade;
 	NSMutableArray* mylist;
