@@ -8,6 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import <QuickLite/QuickLiteDatabase.h>
+#import <QuickLite/QuickLiteDatabaseExtras.h>
+#import <QuickLite/QuickLiteCursor.h>
+#import <QuickLite/QuickLiteRow.h>
+
 #import "ADBKeyArrays.h"
 #import "KNKeyArrays.h"
 

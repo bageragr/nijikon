@@ -14,16 +14,16 @@
 {
 	if (self = [super init])
     {
-        socket = [[EDUDPSocket socket] retain];
+        udpSocket = [[EDUDPSocket socket] retain];
 		[self clearSession];
 		NSHost* host = [NSHost hostWithName:@"api.anidb.info"];
 		if (host == nil) {
-			socket = nil;
+			udpSocket = nil;
 			[self setStatus:[NSNumber numberWithInt:0]];
 		}
 		else {
-			[socket connectToHost:host port:9000];
-			[socket setReceiveTimeout:5];
+			[udpSocket connectToHost:host port:9000];
+			[udpSocket setReceiveTimeout:5];
 		}
 		
 		lastAccess = [[NSDate distantPast] retain];
@@ -34,11 +34,20 @@
 
 - (void)dealloc
 {
-	[socket release];
+	[udpSocket release];
 	[status release];
 	[lastAccess release];
 	[connectionLog release];
     [super dealloc];
+}
+
++ (ADBConnection*)connectionWithLocalPort:(int)localPort
+{
+	EDUDPSocket* udpSocket = [[EDUDPSocket socket] retain];
+	[udpSocket setLocalPort:localPort];
+	ADBConnection* temp = [[ADBConnection alloc] init];
+	[temp setUdpSocket:udpSocket];
+	return temp;
 }
 
 - (void)send:(NSString*)aString usingEncoding:(NSStringEncoding)encoding
@@ -46,7 +55,7 @@
 	while ([lastAccess timeIntervalSinceNow] > -2.0) {
 		sleep(1);
 	}
-	[socket writeData:[aString dataUsingEncoding:encoding]];
+	[udpSocket writeData:[aString dataUsingEncoding:encoding]];
 	[lastAccess release];
 	lastAccess = [[NSDate date] retain];
 }
@@ -55,7 +64,7 @@
 {
 	@try
 	{
-		return [[NSString alloc] initWithData:[socket availableData] encoding:encoding];
+		return [[NSString alloc] initWithData:[udpSocket availableData] encoding:encoding];
 	}
 	@catch (NSException* e)
 	{
@@ -92,6 +101,31 @@
 	return status;
 }
 
+- (EDUDPSocket*)udpSocket
+{
+	return udpSocket;
+}
+
+- (void)setUdpSocket:(EDUDPSocket*)newUdpSocket
+{
+	if (udpSocket != newUdpSocket)
+	{
+		[udpSocket release];
+		[self clearSession];
+		NSHost* host = [NSHost hostWithName:@"api.anidb.info"];
+		if (host == nil) {
+			udpSocket = nil;
+			[self setStatus:[NSNumber numberWithInt:0]];
+		}
+		else {
+			[udpSocket connectToHost:host port:9000];
+			[udpSocket setReceiveTimeout:5];
+		}
+		
+		lastAccess = [[NSDate distantPast] retain];
+	}
+}
+
 - (void)setStatus:(NSNumber*)newStatus
 {
 	if(status != newStatus)
@@ -115,48 +149,16 @@
 	}
 }
 
-- (NSString*)username
-{
-	return username;
-}
-
-- (void)setUsername:(NSString*)newUsername
-{
-	if(username != newUsername)
-	{
-		[username release];
-		username = [NSString stringWithString:newUsername];
-	}
-}
-
-- (NSString*)password
-{
-	return password;
-}
-
-- (void)setPassword:(NSString*)newPassword
-{
-	if(password != newPassword)
-	{
-		[password release];
-		password = [NSString stringWithString:newPassword];
-	}
-}
-
-- (void)setSession:(NSString*)newSessionKey withUsername:(NSString*)newUsername andPassword:(NSString*)newPassword
+- (void)setSession:(NSString*)newSessionKey
 {
 	[self setStatus:[NSNumber numberWithInt:2]];
 	[self setSessionKey:newSessionKey];
-	[self setUsername:newUsername];
-	[self setPassword:newPassword];
 }
 
 - (void)clearSession
 {
 	[self setStatus:[NSNumber numberWithInt:1]];
 	[self setSessionKey:@""];
-	[self setUsername:@""];
-	[self setPassword:@""];
 }
 
 - (NSString*)tailLog

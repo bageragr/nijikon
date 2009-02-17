@@ -25,9 +25,11 @@
 	[super dealloc];
 }
 
-- (ADBConnection*)connection
++ (ADBFacade*)facadeWithLocalPort:(int)localPort
 {
-	return anidb;
+	ADBFacade* temp = [[ADBFacade alloc] init];
+	[temp setConnection:[ADBConnection connectionWithLocalPort:localPort]];
+	return temp;
 }
 
 - (NSString*)queryAniDB:(NSString*)query appendSessionKey:(BOOL)appendSessionKey
@@ -40,7 +42,8 @@
 																   appendSessionKey:NO];
 	switch ([[response objectAtIndex:0] intValue]) {
 		case RC_LOGIN_ACCEPTED:
-			[anidb setSession:[[response objectAtIndex:1] substringToIndex:5] withUsername:aUsername andPassword:aPassword];
+			NSLog(@"Logged in (%@)", [[response objectAtIndex:1] substringToIndex:5]);
+			[anidb setSession:[[response objectAtIndex:1] substringToIndex:5]];
 			return YES;
 		case RC_BANNED:
 			NSLog(@"%@", [response objectAtIndex:2]);
@@ -81,6 +84,7 @@
 																   appendSessionKey:YES];
 	switch ([[response objectAtIndex:0] intValue]) {
 		case RC_LOGGED_OUT:
+			NSLog(@"Logged out (%@)", [anidb sessionKey]);
 			[anidb clearSession];
 			return YES;
 		case RC_NOT_LOGGED_IN:
@@ -328,6 +332,20 @@
 			return nil;
 		default:
 			return nil;
+	}
+}
+
+- (ADBConnection*)connection
+{
+	return anidb;
+}
+
+- (void)setConnection:(ADBConnection*)newConnection
+{
+	if (anidb != newConnection)
+	{
+		[anidb release];
+		anidb = [newConnection retain];
 	}
 }
 @end

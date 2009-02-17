@@ -7,7 +7,7 @@
 //
 
 #import "ADBEpisode.h"
-
+#define TABLE @"episodes"
 
 @implementation ADBEpisode
 - (id) init
@@ -16,6 +16,7 @@
     {
         [self setProperties:[NSDictionary dictionaryWithObjects: ADBEpisodeKeyArray forKeys: ADBEpisodeKeyArray]];
 		
+		parents = [[NSMutableArray alloc] init];
 		children = [[NSMutableArray alloc] init];
 		
 		nodeName = @"romaji";
@@ -26,15 +27,25 @@
 - (void) dealloc
 {
     [properties release];
+	[parents release];
 	[children release];
     
     [super dealloc];
 }
 
-+ (ADBEpisode*)episodeWithProperties:(NSDictionary*)newProperties
++ (ADBEpisode*)episodeWithProperties:(NSDictionary*)newProperties andParents:(NSArray*)newParents
 {
 	ADBEpisode* temp = [[ADBEpisode alloc] init];
 	[temp setProperties:newProperties];
+	[temp setParents:newParents];
+	return temp;
+}
+
++ (ADBEpisode*)episodeWithQuickLiteRow:(QuickLiteRow*)row
+{
+	ADBEpisode* temp = [[ADBEpisode alloc] init];
+	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
 	return temp;
 }
 
@@ -79,17 +90,31 @@
     }
 }
 
-- (NSMutableArray *) children
+- (NSMutableArray*)parents
+{
+    return parents;
+}
+
+- (void)setParents:(NSArray*)newParents
+{
+    if (parents != newParents)
+    {
+        [parents autorelease];
+        parents = [[NSMutableArray alloc] initWithArray:newParents];
+    }
+}
+
+- (NSMutableArray*)children
 {
     return children;
 }
 
-- (void) setChildren: (NSArray *)newChildren
+- (void)setChildren:(NSArray*)newChildren
 {
     if (children != newChildren)
     {
         [children autorelease];
-        children = [[NSMutableArray alloc] initWithArray: newChildren];
+        children = [[NSMutableArray alloc] initWithArray:newChildren];
     }
 }
 @end

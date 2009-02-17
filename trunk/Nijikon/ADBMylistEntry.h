@@ -16,6 +16,9 @@
 }
 
 + (ADBMylistEntry*)mylistEntryWithProperties:(NSDictionary*)properties;
++ (ADBMylistEntry*)mylistEntryWithQuickLiteRow:(QuickLiteRow*)row;
+
+- (void)insertIntoDatabase:(QuickLiteDatabase*)database;
 
 - (NSMutableDictionary*)properties;
 - (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys;

@@ -24,9 +24,8 @@
 	IBOutlet NSPanel* connectionPanel;
 	
 	BOOL modal;
-	IBOutlet NSTextField* modalUsername;
-	IBOutlet NSSecureTextField* modalPassword;
-	IBOutlet NSTextField* modalStatus;
+	IBOutlet NSTextField* username;
+	IBOutlet NSSecureTextField* password;
 	
 	NSString* path;
 	KNPreferences* preferences;
@@ -40,9 +39,10 @@
 }
 - (IBAction)login:(id)sender;
 - (IBAction)logout:(id)sender;
-- (IBAction)getEpisode:(id)sender;
+- (IBAction)saveProperties:(id)sender;
 
 - (ADBConnection*)connection;
+- (KNPreferences*)preferences;
 
 - (NSMutableArray*)mylist;
 - (void)setMylist:(NSArray*)newMylist;
@@ -54,6 +54,6 @@
 - (NSMutableArray*)animeFound;
 - (void)setAnimeFound:(NSArray*)newAnimeFound;
 
-- (BOOL)createDatabase:(BOOL)verbose withDummyData:(BOOL)createDummyData;
-- (void)refreshDatabase:(BOOL)verbose detailed:(BOOL)detailed;
+- (BOOL)createDatabaseVerbose:(BOOL)verbose withDummyData:(BOOL)createDummyData;
+- (void)refreshDatabaseVerbose:(BOOL)verbose detailed:(BOOL)detailed;
 @end
