@@ -1,29 +1,27 @@
 //
-//  KNAnime.h
-//  ShowAnime
+//  ADBAnime.h
+//  Nijikon
 //
-//  Created by Pipelynx on 1/28/09.
-//  Copyright 2009 Martin Fellner. All rights reserved.
+//  Created by Pipelynx on 2/17/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-#import "KNNode.h"
+#import "ADBObject.h"
+#import "ADBMylistEntry.h"
 
-@interface ADBAnime : KNNode {
-	NSMutableDictionary* properties;
-	NSMutableArray* children;
+
+@interface ADBAnime : ADBObject {
+	ADBMylistEntry* parent;
 }
 
-+ (ADBAnime*)animeWithProperties:(NSDictionary*)newProperties;
++ (ADBAnime*)animeWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent;
++ (ADBAnime*)animeWithQuickliteRow:(QuickLiteRow*)row;
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database;
 
-- (NSMutableDictionary*)properties;
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys;
-- (void)setProperties:(NSDictionary*)newProperties;
-
-- (NSMutableArray*)children;
-- (void)setChildren:(NSArray*)newChildren;
+- (ADBMylistEntry*)parent;
+- (void)setParent:(ADBMylistEntry*)newParent;
 
 @end

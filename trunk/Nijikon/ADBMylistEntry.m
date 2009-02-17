@@ -2,99 +2,110 @@
 //  ADBMylistEntry.m
 //  Nijikon
 //
-//  Created by Pipelynx on 2/13/09.
-//  Copyright 2009 Martin Fellner. All rights reserved.
+//  Created by Pipelynx on 2/17/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#import "ADBMylistEntry.h"
+#define COMMA_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
+#define APOSTROPHE_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
 #define TABLE @"mylist"
 
+#import "ADBMylistEntry.h"
+
+#import "ADBAnime.h"
+#import "ADBEpisode.h"
+#import "ADBFile.h"
+#import "ADBGroup.h"
+
+
 @implementation ADBMylistEntry
-- (id)init
-{
-	if (self = [super init])
-    {
-        [self setProperties:[NSDictionary dictionaryWithObjects: ADBMylistEntryKeyArray forKeys: ADBMylistEntryKeyArray]];
-        
-        children = [[NSMutableArray alloc] init];
-		
-		nodeName = @"mylistID";
-    }
-    return self;
-}
-
-- (void)dealloc
-{
-    [properties release];
-    [children release];
-    
-    [super dealloc];
-}
-
-+ (ADBMylistEntry*)mylistEntryWithProperties:(NSDictionary*)newProperties
-{
-	ADBMylistEntry* temp = [[ADBMylistEntry alloc] init];
-	[temp setProperties:newProperties];
-	return temp;
-}
-
-+ (ADBMylistEntry*)mylistEntryWithQuickLiteRow:(QuickLiteRow*)row
-{
-	ADBMylistEntry* temp = [[ADBMylistEntry alloc] init];
-	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
-		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
-	return temp;
-}
-
-- (NSString*)description
-{
-	return [NSString stringWithFormat:@"%@ (%@ %@)", [properties valueForKey:nodeName], [properties valueForKey:@"type"], [properties valueForKey:@"year"]];
-}
-
-- (NSMutableDictionary*)nodeProperties
-{
-	if (![[NSString stringWithFormat:@"M%@", [properties objectForKey:@"mylistID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
-	{
-		[nodeProperties setObject:[NSString stringWithFormat:@"M%@", [properties objectForKey:@"mylistID"]] forKey:@"ID"];
-		[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"mylistID"] intValue]] forKey:@"number"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:nodeName]] forKey:@"name"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [nodeProperties objectForKey:@"name"]] forKey:@"epnumber"];
-		//[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"nEps"] intValue]] forKey:@"inMylistMax"];
-		//[nodeProperties setObject:[NSNumber numberWithInt:[children count]] forKey:@"inMylistValue"];
+- (id)init {
+	if ([super init]) {
+		att = [NSMutableDictionary dictionaryWithObjects:ADBMylistEntryKeyArray
+												 forKeys:ADBMylistEntryKeyArray];
 	}
-    return nodeProperties;
+	return self;
 }
 
-- (NSMutableDictionary*)properties
-{
-    return properties;
+- (void)dealloc {
+	[super dealloc];
 }
 
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys
-{
-	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
++ (ADBMylistEntry*)mylistEntryWithAttributes:(NSDictionary*)newAtt {
+	ADBMylistEntry* temp = [[ADBMylistEntry alloc] init];
+	[temp setAtt:newAtt];
+	
+	NSArray* commaSeparated = COMMA_SEPARATED_LISTS;
+	for (int i = 0; i < [commaSeparated count]; i++)
+		[[temp att] setValue:[[newAtt valueForKey:[commaSeparated objectAtIndex:i]] componentsSeparatedByString:@","] forKey:[commaSeparated objectAtIndex:i]];
+	
+	NSArray* apostropheSeparated = APOSTROPHE_SEPARATED_LISTS;
+	for (int i = 0; i < [apostropheSeparated count]; i++)
+		[[temp att] setValue:[[newAtt valueForKey:[apostropheSeparated objectAtIndex:i]] componentsSeparatedByString:@"'"] forKey:[apostropheSeparated objectAtIndex:i]];
+	
+	return temp;
 }
 
-- (void)setProperties:(NSDictionary*)newProperties
-{
-    if (properties != newProperties)
-    {
-        [properties autorelease];
-        properties = [[NSMutableDictionary alloc] initWithDictionary: newProperties];
-    }
++ (ADBMylistEntry*)mylistEntryWithQuickliteRow:(QuickLiteRow*)row {
+	ADBMylistEntry* temp = [[ADBMylistEntry alloc] init];
+	
+	for (int i = 0; i < [[[temp att] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp att] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"att.%@", [[[temp att] allKeys] objectAtIndex:i]]];
+	
+	return temp;
 }
 
-- (NSMutableArray*)children
-{
-    return children;
+- (void)insertIntoDatabase:(QuickLiteDatabase*)database {
+	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
+				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
 }
 
-- (void)setChildren:(NSArray*)newChildren
-{
-    if (children != newChildren)
-    {
-        [children autorelease];
-        children = [[NSMutableArray alloc] initWithArray: newChildren];
-    }
+- (ADBAnime*)anime {
+	return anime;
 }
+	
+- (void)setAnime:(ADBAnime*)newAnime {
+	if (anime != newAnime)
+	{
+		[anime release];
+		anime = [newAnime retain];
+	}
+}
+
+- (ADBEpisode*)episode {
+	return episode;
+}
+
+- (void)setEpisode:(ADBEpisode*)newEpisode {
+	if (episode != newEpisode)
+	{
+		[episode release];
+		episode = [newEpisode retain];
+	}
+}
+
+- (ADBGroup*)group {
+	return group;
+}
+
+- (void)setGroup:(ADBGroup*)newGroup {
+	if (group != newGroup)
+	{
+		[group release];
+		group = [newGroup retain];
+	}
+}
+
+- (ADBFile*)file {
+	return file;
+}
+
+- (void)setFile:(ADBFile*)newFile {
+	if (file != newFile)
+	{
+		[file release];
+		file = [newFile retain];
+	}
+}
+
 @end

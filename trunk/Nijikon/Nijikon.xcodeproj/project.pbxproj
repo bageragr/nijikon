@@ -13,6 +13,7 @@
 		4B290E550F4821D7001F51E6 /* ADBMylistExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B290E540F4821D7001F51E6 /* ADBMylistExport.m */; };
 		4B4845CF0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */; };
 		4B4845D30F3EC9DA00DD56C5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B4845D20F3EC9DA00DD56C5 /* Localizable.strings */; };
+		4B48BE1C0F4B01C8007B8F51 /* ADBObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B48BE1B0F4B01C8007B8F51 /* ADBObject.m */; };
 		4B5B70810F48949000B070E5 /* KNED2k.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B70800F48949000B070E5 /* KNED2k.m */; };
 		4B5B73060F49919500B070E5 /* KNPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B73050F49919500B070E5 /* KNPreferences.m */; };
 		4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
@@ -56,6 +57,8 @@
 		4B4845CD0F3EC97F00DD56C5 /* KNStatusToStringTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNStatusToStringTransformer.h; sourceTree = "<group>"; };
 		4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNStatusToStringTransformer.m; sourceTree = "<group>"; };
 		4B4845D00F3EC9B900DD56C5 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4B48BE1A0F4B01C8007B8F51 /* ADBObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBObject.h; sourceTree = "<group>"; };
+		4B48BE1B0F4B01C8007B8F51 /* ADBObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBObject.m; sourceTree = "<group>"; };
 		4B5B707F0F48949000B070E5 /* KNED2k.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNED2k.h; sourceTree = "<group>"; };
 		4B5B70800F48949000B070E5 /* KNED2k.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNED2k.m; sourceTree = "<group>"; };
 		4B5B73040F49919500B070E5 /* KNPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNPreferences.h; sourceTree = "<group>"; };
@@ -217,6 +220,30 @@
 			name = "Transformer classes";
 			sourceTree = "<group>";
 		};
+		4B48BEDB0F4B0F83007B8F51 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				4B23ACC60F461173007E5ECA /* ADBKeyArrays.h */,
+				4BAB90900F3C87750073CAB4 /* ADBResponseCodes.h */,
+				4B48BE1A0F4B01C8007B8F51 /* ADBObject.h */,
+				4B48BE1B0F4B01C8007B8F51 /* ADBObject.m */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		4B48BEDC0F4B0F98007B8F51 /* Data IO */ = {
+			isa = PBXGroup;
+			children = (
+				4B808EDD0F3BF88300001AF0 /* ADBConnection.h */,
+				4B808EDE0F3BF88300001AF0 /* ADBConnection.m */,
+				4B23AA030F45CA4D007E5ECA /* ADBFacade.h */,
+				4B23AA040F45CA4D007E5ECA /* ADBFacade.m */,
+				4B290E530F4821D7001F51E6 /* ADBMylistExport.h */,
+				4B290E540F4821D7001F51E6 /* ADBMylistExport.m */,
+			);
+			name = "Data IO";
+			sourceTree = "<group>";
+		};
 		4B5B70770F4893D200B070E5 /* Hashing classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,14 +256,8 @@
 		4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */ = {
 			isa = PBXGroup;
 			children = (
-				4B23ACC60F461173007E5ECA /* ADBKeyArrays.h */,
-				4BAB90900F3C87750073CAB4 /* ADBResponseCodes.h */,
-				4B290E530F4821D7001F51E6 /* ADBMylistExport.h */,
-				4B290E540F4821D7001F51E6 /* ADBMylistExport.m */,
-				4B808EDD0F3BF88300001AF0 /* ADBConnection.h */,
-				4B808EDE0F3BF88300001AF0 /* ADBConnection.m */,
-				4B23AA030F45CA4D007E5ECA /* ADBFacade.h */,
-				4B23AA040F45CA4D007E5ECA /* ADBFacade.m */,
+				4B48BEDB0F4B0F83007B8F51 /* Base */,
+				4B48BEDC0F4B0F98007B8F51 /* Data IO */,
 				4B81E0490F45771A0030D3AC /* ADBMylistEntry.h */,
 				4B81E04A0F45771A0030D3AC /* ADBMylistEntry.m */,
 				4BE6C4570F39FE3500123B94 /* ADBGroup.h */,
@@ -351,6 +372,7 @@
 				4B290E550F4821D7001F51E6 /* ADBMylistExport.m in Sources */,
 				4B5B70810F48949000B070E5 /* KNED2k.m in Sources */,
 				4B5B73060F49919500B070E5 /* KNPreferences.m in Sources */,
+				4B48BE1C0F4B01C8007B8F51 /* ADBObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

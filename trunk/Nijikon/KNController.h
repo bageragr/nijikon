@@ -32,8 +32,6 @@
 	QuickLiteDatabase* db;
 	ADBFacade* anidbFacade;
 	NSMutableArray* mylist;
-	NSMutableArray* anime;
-	NSMutableArray* groups;
 	
 	NSMutableArray* animeFound;
 }
@@ -46,10 +44,6 @@
 
 - (NSMutableArray*)mylist;
 - (void)setMylist:(NSArray*)newMylist;
-- (NSMutableArray*)anime;
-- (void)setAnime:(NSArray*)newAnime;
-- (NSMutableArray*)groups;
-- (void)setGroups:(NSArray*)newGroups;
 
 - (NSMutableArray*)animeFound;
 - (void)setAnimeFound:(NSArray*)newAnimeFound;
