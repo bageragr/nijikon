@@ -1,120 +1,72 @@
 //
 //  ADBFile.m
-//  iAniDB
+//  Nijikon
 //
-//  Created by Pipelynx on 1/31/09.
-//  Copyright 2009 Martin Fellner. All rights reserved.
+//  Created by Pipelynx on 2/17/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#import "ADBFile.h"
+#define COMMA_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
+#define APOSTROPHE_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
 #define TABLE @"files"
 
+#import "ADBFile.h"
+
 @implementation ADBFile
-- (id) init
-{
-    if (self = [super init])
-    {
-        [self setProperties:[NSDictionary dictionaryWithObjects: ADBEpisodeKeyArray forKeys: ADBEpisodeKeyArray]];
-		
-		nodeName = @"fileID";
-    }
-    return self;
+- (id)init {
+	if ([super init]) {
+		parent = nil;
+		att = [NSMutableDictionary dictionaryWithObjects:ADBFileKeyArray
+												 forKeys:ADBFileKeyArray];
+	}
+	return self;
 }
 
-- (void) dealloc
-{
-    [properties release];
-	[self setGroup:nil];
-    
-    [super dealloc];
+- (void)dealloc {
+	[parent release];
+	[super dealloc];
 }
 
-+ (ADBFile*)fileWithProperties:(NSDictionary*)newProperties group:(ADBGroup*)newGroup andParents:(NSArray*)newParents
-{
++ (ADBFile*)fileWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent {
 	ADBFile* temp = [[ADBFile alloc] init];
-	[temp setProperties:newProperties];
-	[temp setGroup:newGroup];
-	[temp setParents:newParents];
+	[temp setAtt:newAtt];
+	[temp setParent:newParent];
+	
+	NSArray* commaSeparated = COMMA_SEPARATED_LISTS;
+	for (int i = 0; i < [commaSeparated count]; i++)
+		[[temp att] setValue:[[newAtt valueForKey:[commaSeparated objectAtIndex:i]] componentsSeparatedByString:@","] forKey:[commaSeparated objectAtIndex:i]];
+	
+	NSArray* apostropheSeparated = APOSTROPHE_SEPARATED_LISTS;
+	for (int i = 0; i < [apostropheSeparated count]; i++)
+		[[temp att] setValue:[[newAtt valueForKey:[apostropheSeparated objectAtIndex:i]] componentsSeparatedByString:@"'"] forKey:[apostropheSeparated objectAtIndex:i]];
+	
 	return temp;
 }
 
-+ (ADBFile*)fileWithQuickLiteRow:(QuickLiteRow*)row
-{
++ (ADBFile*)fileWithQuickliteRow:(QuickLiteRow*)row {
 	ADBFile* temp = [[ADBFile alloc] init];
-	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
-		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
+	
+	for (int i = 0; i < [[[temp att] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp att] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"att.%@", [[[temp att] allKeys] objectAtIndex:i]]];
+	
 	return temp;
 }
 
-- (NSString*)description
-{
-	if ([[properties valueForKey:@"fileID"] isEqualToString:@"fileID"])
-		return @"No such file";
-	else
-		return [properties valueForKey:@"filename"];
+- (void)insertIntoDatabase:(QuickLiteDatabase*)database {
+	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
+				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
 }
 
-- (NSMutableDictionary *) nodeProperties
-{
-	if (![[NSString stringWithFormat:@"F%@", [properties objectForKey:@"fileID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
+- (ADBMylistEntry*)parent {
+	return parent;
+}
+
+- (void)setParent:(ADBMylistEntry*)newParent {
+	if (parent != newParent)
 	{
-		[nodeProperties setObject:[NSString stringWithFormat:@"F%@", [properties objectForKey:@"fileID"]] forKey:@"ID"];
-		[nodeProperties setObject:[NSString string] forKey:@"number"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"File \"%@\"", [properties objectForKey:nodeName]] forKey:@"name"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [nodeProperties objectForKey:@"name"]] forKey:@"epnumber"];
-		[nodeProperties setObject:[NSNumber numberWithInt:1] forKey:@"inMylistMax"];
-		[nodeProperties setObject:[NSNumber numberWithInt:0] forKey:@"inMylistValue"];
-	}
-    return nodeProperties;
-}
-
-- (NSMutableDictionary *) properties
-{
-    return properties;
-}
-
-- (NSMutableArray*)parents
-{
-    return parents;
-}
-
-- (void)setParents:(NSArray*)newParents
-{
-    if (parents != newParents)
-    {
-        [parents autorelease];
-        parents = [[NSMutableArray alloc] initWithArray:newParents];
-    }
-}
-
-- (ADBGroup*)group
-{
-	return group;
-}
-
-- (void)setGroup:(ADBGroup*)newGroup
-{
-	if (group != newGroup)
-	{
-		[group autorelease];
-		group = [newGroup retain];
+		[parent release];
+		parent = [newParent retain];
 	}
 }
 
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys
-{
-	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
-}
-
-- (void) setProperties: (NSDictionary *)newProperties
-{
-    if (properties != newProperties)
-    {
-        [properties autorelease];
-        properties = [[NSMutableDictionary alloc] initWithDictionary: newProperties];
-		
-		[nodeProperties setObject:[properties objectForKey:@"fileID"] forKey:@"ID"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"File %@", [properties objectForKey:@"fileID"]] forKey:@"name"];
-    }
-}
 @end

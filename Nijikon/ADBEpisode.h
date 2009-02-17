@@ -1,33 +1,27 @@
 //
-//  KNEpisode.h
-//  ShowAnime
+//  ADBEpisode.h
+//  Nijikon
 //
-//  Created by Pipelynx on 1/28/09.
-//  Copyright 2009 Martin Fellner. All rights reserved.
+//  Created by Pipelynx on 2/17/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-#import "KNNode.h"
+#import "ADBObject.h"
+#import "ADBMylistEntry.h"
 
-@interface ADBEpisode : KNNode {
-	NSMutableDictionary* properties;
-	NSMutableArray* parents;
-	NSMutableArray* children;
+
+@interface ADBEpisode : ADBObject {
+	ADBMylistEntry* parent;
 }
 
-+ (ADBEpisode*)episodeWithProperties:(NSDictionary*)newProperties;
-+ (ADBEpisode*)episodeWithQuickLiteRow:(QuickLiteRow*)row;
++ (ADBEpisode*)episodeWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent;
++ (ADBEpisode*)episodeWithQuickliteRow:(QuickLiteRow*)row;
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database;
 
-- (NSMutableDictionary*)properties;
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys;
-- (void)setProperties:(NSDictionary*)newProperties;
-
-- (NSMutableArray*)parents;
-- (void)setParents:(NSArray*)newParents;
-- (NSMutableArray*)children;
-- (void)setChildren:(NSArray*)newChildren;
+- (ADBMylistEntry*)parent;
+- (void)setParent:(ADBMylistEntry*)newParent;
 
 @end

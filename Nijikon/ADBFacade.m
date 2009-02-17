@@ -116,7 +116,7 @@
 	
 	switch ([[response objectAtIndex:0] intValue]) {
 		case RC_MYLIST:
-			return [ADBMylistEntry mylistEntryWithProperties:[NSDictionary dictionaryWithObjects:values
+			return [ADBMylistEntry mylistEntryWithAttributes:[NSDictionary dictionaryWithObjects:values
 																						 forKeys:ADBMylistEntryKeyArray]];
 		case RC_NO_SUCH_ENTRY:
 			return nil;
@@ -216,8 +216,8 @@
 	
 	switch ([[response objectAtIndex:0] intValue]) {
 		case RC_ANIME:
-			return [ADBAnime animeWithProperties:[NSDictionary dictionaryWithObjects:values
-																			 forKeys:ADBAnimeKeyArray]];
+			return [ADBAnime animeWithAttributes:[NSDictionary dictionaryWithObjects:values
+																			 forKeys:ADBAnimeKeyArray] andParent:nil];
 		default:
 			return nil;
 	}

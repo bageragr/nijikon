@@ -1,82 +1,73 @@
 //
 //  ADBGroup.m
-//  iAniDB
+//  Nijikon
 //
-//  Created by Pipelynx on 1/31/09.
-//  Copyright 2009 Martin Fellner. All rights reserved.
+//  Created by Pipelynx on 2/17/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#import "ADBGroup.h"
+#define COMMA_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
+#define APOSTROPHE_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
 #define TABLE @"groups"
 
+#import "ADBGroup.h"
+
+
 @implementation ADBGroup
-- (id) init
-{
-    if (self = [super init])
-    {
-        [self setProperties:[NSDictionary dictionaryWithObjects: ADBGroupKeyArray forKeys: ADBGroupKeyArray]];
-		
-		nodeName = @"name";
-    }
-    return self;
-}
-
-- (void) dealloc
-{
-    [properties release];
-    
-    [super dealloc];
-}
-
-+ (ADBGroup*)groupWithProperties:(NSDictionary*)newProperties
-{
-	ADBGroup* temp = [[ADBGroup alloc] init];
-	[temp setProperties:newProperties];
-	return temp;
-}
-
-+ (ADBGroup*)groupWithQuickLiteRow:(QuickLiteRow*)row
-{
-	ADBGroup* temp = [[ADBGroup alloc] init];
-	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
-		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
-	return temp;
-}
-
-- (NSString*)description
-{
-	if ([[properties valueForKey:@"groupID"] isEqualToString:@"groupID"])
-		return @"No such group";
-	else
-		return [properties valueForKey:nodeName];
-}
-
-- (NSMutableDictionary *) nodeProperties
-{
-	if (![[NSString stringWithFormat:@"G%@", [properties objectForKey:@"groupID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
-	{
-		[nodeProperties setObject:[NSString stringWithFormat:@"G%@", [properties objectForKey:@"groupID"]] forKey:@"ID"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:nodeName]] forKey:@"name"];
+- (id)init {
+	if ([super init]) {
+		parent = nil;
+		att = [NSMutableDictionary dictionaryWithObjects:ADBGroupKeyArray
+												 forKeys:ADBGroupKeyArray];
 	}
-    return nodeProperties;
+	return self;
 }
 
-- (NSMutableDictionary *) properties
-{
-    return properties;
+- (void)dealloc {
+	[parent release];
+	[super dealloc];
 }
 
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys
-{
-	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
++ (ADBGroup*)groupWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent {
+	ADBGroup* temp = [[ADBGroup alloc] init];
+	[temp setAtt:newAtt];
+	[temp setParent:newParent];
+	
+	NSArray* commaSeparated = COMMA_SEPARATED_LISTS;
+	for (int i = 0; i < [commaSeparated count]; i++)
+		[[temp att] setValue:[[newAtt valueForKey:[commaSeparated objectAtIndex:i]] componentsSeparatedByString:@","] forKey:[commaSeparated objectAtIndex:i]];
+	
+	NSArray* apostropheSeparated = APOSTROPHE_SEPARATED_LISTS;
+	for (int i = 0; i < [apostropheSeparated count]; i++)
+		[[temp att] setValue:[[newAtt valueForKey:[apostropheSeparated objectAtIndex:i]] componentsSeparatedByString:@"'"] forKey:[apostropheSeparated objectAtIndex:i]];
+	
+	return temp;
 }
 
-- (void) setProperties: (NSDictionary *)newProperties
-{
-    if (properties != newProperties)
-    {
-        [properties autorelease];
-        properties = [[NSMutableDictionary alloc] initWithDictionary: newProperties];
-    }
++ (ADBGroup*)groupWithQuickliteRow:(QuickLiteRow*)row {
+	ADBGroup* temp = [[ADBGroup alloc] init];
+	
+	for (int i = 0; i < [[[temp att] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp att] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"att.%@", [[[temp att] allKeys] objectAtIndex:i]]];
+	
+	return temp;
 }
+
+- (void)insertIntoDatabase:(QuickLiteDatabase*)database {
+	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
+				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
+}
+
+- (ADBMylistEntry*)parent {
+	return parent;
+}
+
+- (void)setParent:(ADBMylistEntry*)newParent {
+	if (parent != newParent)
+	{
+		[parent release];
+		parent = [newParent retain];
+	}
+}
+
 @end

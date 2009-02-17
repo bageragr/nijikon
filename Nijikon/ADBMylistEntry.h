@@ -2,29 +2,40 @@
 //  ADBMylistEntry.h
 //  Nijikon
 //
-//  Created by Pipelynx on 2/13/09.
-//  Copyright 2009 Martin Fellner. All rights reserved.
+//  Created by Pipelynx on 2/17/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-#import "KNNode.h"
+#import "ADBObject.h"
+@class ADBAnime;
+@class ADBEpisode;
+@class ADBGroup;
+@class ADBFile;
 
-@interface ADBMylistEntry : KNNode {
-	NSMutableDictionary* properties;
-	NSMutableArray* children;
+@interface ADBMylistEntry : ADBObject {
+	ADBAnime* anime;
+	ADBEpisode* episode;
+	ADBGroup* group;
+	ADBFile* file;
 }
 
-+ (ADBMylistEntry*)mylistEntryWithProperties:(NSDictionary*)properties;
-+ (ADBMylistEntry*)mylistEntryWithQuickLiteRow:(QuickLiteRow*)row;
++ (ADBMylistEntry*)mylistEntryWithAttributes:(NSDictionary*)newAtt;
++ (ADBMylistEntry*)mylistEntryWithQuickliteRow:(QuickLiteRow*)row;
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database;
 
-- (NSMutableDictionary*)properties;
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys;
-- (void)setProperties:(NSDictionary*)newProperties;
+- (ADBAnime*)anime;
+- (void)setAnime:(ADBAnime*)newAnime;
 
-- (NSMutableArray*)children;
-- (void)setChildren:(NSArray*)newChildren;
+- (ADBEpisode*)episode;
+- (void)setEpisode:(ADBEpisode*)newEpisode;
+
+- (ADBGroup*)group;
+- (void)setGroup:(ADBGroup*)newGroup;
+
+- (ADBFile*)file;
+- (void)setFile:(ADBFile*)newFile;
 
 @end

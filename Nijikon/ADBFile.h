@@ -1,34 +1,27 @@
 //
 //  ADBFile.h
-//  iAniDB
+//  Nijikon
 //
-//  Created by Pipelynx on 1/31/09.
-//  Copyright 2009 Martin Fellner. All rights reserved.
+//  Created by Pipelynx on 2/17/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-#import "KNNode.h"
+#import "ADBObject.h"
+#import "ADBMylistEntry.h"
 
-#import "ADBGroup.h"
 
-@interface ADBFile : KNNode {
-	ADBGroup* group;
-	NSMutableArray* parents;
-	NSMutableDictionary* properties;
+@interface ADBFile : ADBObject {
+	ADBMylistEntry* parent;
 }
 
-+ (ADBFile*)fileWithProperties:(NSDictionary*)newProperties group:(ADBGroup*)newGroup andParents:(NSArray*)newParents;
-+ (ADBFile*)fileWithQuickLiteRow:(QuickLiteRow*)row;
++ (ADBFile*)fileWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent;
++ (ADBFile*)fileWithQuickliteRow:(QuickLiteRow*)row;
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database;
 
-- (NSMutableArray*)parents;
-- (void)setParents:(NSArray*)newParents;
-- (ADBGroup*)group;
-- (void)setGroup:(ADBGroup*)newGroup;
+- (ADBMylistEntry*)parent;
+- (void)setParent:(ADBMylistEntry*)newParent;
 
-- (NSMutableDictionary*)properties;
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys;
-- (void)setProperties:(NSDictionary*)newProperties;
 @end

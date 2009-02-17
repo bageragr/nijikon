@@ -1,120 +1,72 @@
 //
-//  KNEpisode.m
-//  ShowAnime
+//  ADBEpisode.m
+//  Nijikon
 //
-//  Created by Pipelynx on 1/28/09.
-//  Copyright 2009 Martin Fellner. All rights reserved.
+//  Created by Pipelynx on 2/17/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#import "ADBEpisode.h"
+#define COMMA_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
+#define APOSTROPHE_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
 #define TABLE @"episodes"
 
+#import "ADBEpisode.h"
+
 @implementation ADBEpisode
-- (id) init
-{
-    if (self = [super init])
-    {
-        [self setProperties:[NSDictionary dictionaryWithObjects: ADBEpisodeKeyArray forKeys: ADBEpisodeKeyArray]];
-		
-		parents = [[NSMutableArray alloc] init];
-		children = [[NSMutableArray alloc] init];
-		
-		nodeName = @"romaji";
-    }
-    return self;
-}
-
-- (void) dealloc
-{
-    [properties release];
-	[parents release];
-	[children release];
-    
-    [super dealloc];
-}
-
-+ (ADBEpisode*)episodeWithProperties:(NSDictionary*)newProperties andParents:(NSArray*)newParents
-{
-	ADBEpisode* temp = [[ADBEpisode alloc] init];
-	[temp setProperties:newProperties];
-	[temp setParents:newParents];
-	return temp;
-}
-
-+ (ADBEpisode*)episodeWithQuickLiteRow:(QuickLiteRow*)row
-{
-	ADBEpisode* temp = [[ADBEpisode alloc] init];
-	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
-		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
-	return temp;
-}
-
-- (NSString*)description
-{
-	if ([[properties valueForKey:@"episodeID"] isEqualToString:@"episodeID"])
-		return @"No such episode";
-	else
-		return [properties valueForKey:nodeName];
-}
-
-- (NSMutableDictionary*)nodeProperties
-{
-	if (![[NSString stringWithFormat:@"E%@", [properties objectForKey:@"episodeID"]] isEqualToString:[nodeProperties objectForKey:@"ID"]])
-	{
-		[nodeProperties setObject:[NSString stringWithFormat:@"E%@", [properties objectForKey:@"episodeID"]] forKey:@"ID"];
-		[nodeProperties setObject:[NSNumber numberWithInt:[[properties objectForKey:@"epnumber"] intValue]] forKey:@"number"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:nodeName]] forKey:@"name"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"%@", [properties objectForKey:@"epnumber"]] forKey:@"epnumber"];
-		[nodeProperties setObject:[NSNumber numberWithInt:1] forKey:@"inMylistMax"];
-		[nodeProperties setObject:[NSNumber numberWithInt:0] forKey:@"inMylistValue"];
+- (id)init {
+	if ([super init]) {
+		parent = nil;
+		att = [NSMutableDictionary dictionaryWithObjects:ADBEpisodeKeyArray
+												 forKeys:ADBEpisodeKeyArray];
 	}
-    return nodeProperties;
+	return self;
 }
 
-- (NSMutableDictionary *) properties
-{
-    return properties;
+- (void)dealloc {
+	[parent release];
+	[super dealloc];
 }
 
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys
-{
-	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
++ (ADBEpisode*)episodeWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent {
+	ADBEpisode* temp = [[ADBEpisode alloc] init];
+	[temp setAtt:newAtt];
+	[temp setParent:newParent];
+	
+	NSArray* commaSeparated = COMMA_SEPARATED_LISTS;
+	for (int i = 0; i < [commaSeparated count]; i++)
+		[[temp att] setValue:[[newAtt valueForKey:[commaSeparated objectAtIndex:i]] componentsSeparatedByString:@","] forKey:[commaSeparated objectAtIndex:i]];
+	
+	NSArray* apostropheSeparated = APOSTROPHE_SEPARATED_LISTS;
+	for (int i = 0; i < [apostropheSeparated count]; i++)
+		[[temp att] setValue:[[newAtt valueForKey:[apostropheSeparated objectAtIndex:i]] componentsSeparatedByString:@"'"] forKey:[apostropheSeparated objectAtIndex:i]];
+	
+	return temp;
 }
 
-- (void) setProperties: (NSDictionary *)newProperties
-{
-    if (properties != newProperties)
-    {
-        [properties autorelease];
-        properties = [[NSMutableDictionary alloc] initWithDictionary: newProperties];
-    }
++ (ADBEpisode*)episodeWithQuickliteRow:(QuickLiteRow*)row {
+	ADBEpisode* temp = [[ADBEpisode alloc] init];
+	
+	for (int i = 0; i < [[[temp att] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp att] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"att.%@", [[[temp att] allKeys] objectAtIndex:i]]];
+	
+	return temp;
 }
 
-- (NSMutableArray*)parents
-{
-    return parents;
+- (void)insertIntoDatabase:(QuickLiteDatabase*)database {
+	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
+				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
 }
 
-- (void)setParents:(NSArray*)newParents
-{
-    if (parents != newParents)
-    {
-        [parents autorelease];
-        parents = [[NSMutableArray alloc] initWithArray:newParents];
-    }
+- (ADBMylistEntry*)parent {
+	return parent;
 }
 
-- (NSMutableArray*)children
-{
-    return children;
+- (void)setParent:(ADBMylistEntry*)newParent {
+	if (parent != newParent)
+	{
+		[parent release];
+		parent = [newParent retain];
+	}
 }
 
-- (void)setChildren:(NSArray*)newChildren
-{
-    if (children != newChildren)
-    {
-        [children autorelease];
-        children = [[NSMutableArray alloc] initWithArray:newChildren];
-    }
-}
 @end
