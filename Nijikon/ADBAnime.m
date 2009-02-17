@@ -7,7 +7,7 @@
 //
 
 #import "ADBAnime.h"
-
+#define TABLE @"anime"
 
 @implementation ADBAnime
 - (id)init
@@ -35,14 +35,27 @@
 {
 	ADBAnime* temp = [[ADBAnime alloc] init];
 	[temp setProperties:newProperties];
-	NSLog(@"Count: %d", [[[newProperties valueForKey:@"categList"] componentsSeparatedByString:@","] count]);
-	NSArray* commaSeparated = [NSArray arrayWithObjects:@"categList", @"categWheightList", @"categIDList", nil];
+	NSArray* commaSeparated = [NSArray arrayWithObjects:@"categList", @"categWeightList", @"categIDList", nil];
 	for (int i = 0; i < [commaSeparated count]; i++)
 		[[temp properties] setValue:[[newProperties valueForKey:[commaSeparated objectAtIndex:i]] componentsSeparatedByString:@","] forKey:[commaSeparated objectAtIndex:i]];
-	NSArray* apostropheSeparated = [NSArray arrayWithObjects:@"others", @"shortNames", @"synonyms", @"prodNameList", @"prodIDList", nil];
+	NSArray* apostropheSeparated = [NSArray arrayWithObjects:@"relList", @"relType", @"others", @"shortNames", @"synonyms", @"prodNameList", @"prodIDList", nil];
 	for (int i = 0; i < [apostropheSeparated count]; i++)
 		[[temp properties] setValue:[[newProperties valueForKey:[apostropheSeparated objectAtIndex:i]] componentsSeparatedByString:@"'"] forKey:[apostropheSeparated objectAtIndex:i]];
 	return temp;
+}
+
++ (ADBAnime*)animeWithQuickLiteRow:(QuickLiteRow*)row
+{
+	ADBAnime* temp = [[ADBAnime alloc] init];
+	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
+	return temp;
+}
+
+- (void)insertIntoDatabase:(QuickLiteDatabase*)database
+{
+	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[properties allValues]]
+			   forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[properties allKeys]] inTable:TABLE];
 }
 
 - (NSString*)description

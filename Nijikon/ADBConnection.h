@@ -15,31 +15,31 @@
 #import "NSFileHandle+Extensions.h"
 #import "EDUDPSocket.h"
 
+
 @interface ADBConnection : NSObject {
-	EDUDPSocket* socket;
+	EDUDPSocket* udpSocket;
 	NSDate* lastAccess;
 	NSMutableArray* connectionLog;
 	
 	NSNumber* status;
 	NSString* sessionKey;
-	NSString* username;
-	NSString* password;
 }
+
++ (ADBConnection*)connectionWithLocalPort:(int)localPort;
+
 - (void)send:(NSString*)aString usingEncoding:(NSStringEncoding)encoding;
 - (NSString*)receiveUsingEncoding:(NSStringEncoding)encoding;
 - (NSString*)sendAndReceiveUsingDefaultEncoding:(NSString*)aString appendSessionKey:(BOOL)appendSessionKey;
 - (NSArray*)sendAndReceiveUsingDefaultEncodingAndPrepareResponse:(NSString*)aString appendSessionKey:(BOOL)appendSessionKey;
-- (void)clearSession;
 
+- (EDUDPSocket*)udpSocket;
+- (void)setUdpSocket:(EDUDPSocket*)newUdpSocket;
 - (NSNumber*)status;
 - (void)setStatus:(NSNumber*)newStatus;
 - (NSString*)sessionKey;
 - (void)setSessionKey:(NSString*)newSessionKey;
-- (NSString*)username;
-- (void)setUsername:(NSString*)newUsername;
-- (NSString*)password;
-- (void)setPassword:(NSString*)newPassword;
-- (void)setSession:(NSString*)newSessionKey withUsername:(NSString*)newUsername andPassword:(NSString*)newPassword;
+- (void)setSession:(NSString*)newSessionKey;
+- (void)clearSession;
 
 - (NSString*)tailLog;
 - (NSArray*)log;

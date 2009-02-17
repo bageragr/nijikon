@@ -19,7 +19,8 @@
 @interface ADBFacade : NSObject {
 	ADBConnection* anidb;
 }
-- (ADBConnection*)connection;
+
++ (ADBFacade*)facadeWithLocalPort:(int)localPort;
 
 - (BOOL)login:(NSString*)username withPassword:(NSString*)password;
 - (BOOL)logout;
@@ -51,5 +52,8 @@
 - (ADBFile*)findFileByAnimeName:(NSString*)animeName groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber;
 - (ADBFile*)findFileByAnimeID:(NSString*)animeID groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber;
 - (ADBFile*)findFileByAnimeID:(NSString*)animeID groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber;
+
+- (ADBConnection*)connection;
+- (void)setConnection:(ADBConnection*)newConnection;
 
 @end

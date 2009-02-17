@@ -7,7 +7,7 @@
 //
 
 #import "ADBGroup.h"
-
+#define TABLE @"groups"
 
 @implementation ADBGroup
 - (id) init
@@ -32,6 +32,14 @@
 {
 	ADBGroup* temp = [[ADBGroup alloc] init];
 	[temp setProperties:newProperties];
+	return temp;
+}
+
++ (ADBGroup*)groupWithQuickLiteRow:(QuickLiteRow*)row
+{
+	ADBGroup* temp = [[ADBGroup alloc] init];
+	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
 	return temp;
 }
 

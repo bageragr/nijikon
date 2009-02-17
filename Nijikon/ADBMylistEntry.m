@@ -7,7 +7,7 @@
 //
 
 #import "ADBMylistEntry.h"
-
+#define TABLE @"mylist"
 
 @implementation ADBMylistEntry
 - (id)init
@@ -35,6 +35,14 @@
 {
 	ADBMylistEntry* temp = [[ADBMylistEntry alloc] init];
 	[temp setProperties:newProperties];
+	return temp;
+}
+
++ (ADBMylistEntry*)mylistEntryWithQuickLiteRow:(QuickLiteRow*)row
+{
+	ADBMylistEntry* temp = [[ADBMylistEntry alloc] init];
+	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
 	return temp;
 }
 

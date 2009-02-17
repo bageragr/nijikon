@@ -8,4 +8,4 @@
 
 #define KNNodeKeyArray [NSArray arrayWithObjects:@"ID", @"number", @"name", @"epnumber", @"inMylistValue", @"inMylistMax", nil]
 
-#define KNPreferencesKeyArray [NSArray arrayWithObjects:@"username", @"password", nil]
+#define KNPreferencesKeyArray [NSArray arrayWithObjects:@"username", @"password", @"localport", nil]

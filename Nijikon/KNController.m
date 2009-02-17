@@ -16,27 +16,18 @@
 	{
 		path = [@"~/Library/Application Support/Nijikon" stringByExpandingTildeInPath];
 		preferences = [KNPreferences preferenceWithPath:[path stringByAppendingString:@"/nijikon.prefs"]];
-		db = nil;
+		[username setStringValue:[preferences valueForKeyPath:@"properties.username"]];
+		[password setStringValue:[preferences valueForKeyPath:@"properties.password"]];
+		db = [QuickLiteDatabase databaseWithFile:[path stringByAppendingString:@"/nijikon.db"]];
+		[db open];
 		anidbFacade = [[[ADBFacade alloc] init] retain];
-		//[anidbFacade login:@"pipelynx" withPassword:@"53-Ln44~"];
 		[self setMylist:mylist];
 		[self setGroups:groups];
 		[self setAnime:anime];
 		[self setAnimeFound:animeFound];
-		modal = NO;
 		
-		/*NSFileManager* fileManager = [NSFileManager defaultManager];
-		
-		if (![fileManager fileExistsAtPath:path])
-			[fileManager createDirectoryAtPath:path attributes:nil];
-		BOOL createDB = NO;
-		if (![fileManager fileExistsAtPath:[path stringByAppendingString:@"/database.nijikon"]])
-			createDB = YES;
-		db = [QuickLiteDatabase databaseWithFile:[path stringByAppendingString:@"/database.nijikon"]];
-		[db open];//:YES cacheMethod:DoNotCacheData exposeSQLOnNotify:NO debugMode:YES];
-		if (createDB)
-			[self createDatabase:YES withDummyData:YES];
-		[self refreshDatabase:NO detailed:NO];*/
+		[self createDatabaseVerbose:YES	withDummyData:YES];
+		[self refreshDatabaseVerbose:NO detailed:YES];
 	}
 	return self;
 }
@@ -64,7 +55,9 @@
 
 - (IBAction)login:(id)sender
 {
-	[anidbFacade login:@"pipelynx" withPassword:@"53-Ln44~"];
+	if(![anidbFacade login:[preferences valueForKeyPath:@"properties.username"]
+			  withPassword:[preferences valueForKeyPath:@"properties.password"]])
+		NSRunAlertPanel(@"Login failed", @"Username or password is wrong\nChange it in the settings", @"OK", nil, nil);
 	[connectionPanel viewsNeedDisplay];
 }
 
@@ -74,9 +67,11 @@
 	[connectionPanel viewsNeedDisplay];
 }
 
-- (IBAction)getEpisode:(id)sender
+- (IBAction)saveProperties:(id)sender
 {
-	NSLog(@"%@", sender);
+	[preferences setProperties:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[username stringValue], [password stringValue], nil]
+														   forKeys:[NSArray arrayWithObjects:@"username", @"password", nil]]];
+	[preferences persistPreferences];
 }
 
 -(BOOL)control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector {
@@ -114,6 +109,11 @@
 - (ADBConnection*)connection
 {
 	return [anidbFacade connection];
+}
+
+- (KNPreferences*)preferences
+{
+	return preferences;
 }
 
 - (NSMutableArray*)mylist
@@ -176,9 +176,15 @@
 	}
 }
 
-- (BOOL)createDatabase:(BOOL)verbose withDummyData:(BOOL)createDummyData
+- (BOOL)createDatabaseVerbose:(BOOL)verbose withDummyData:(BOOL)createDummyData
 {
 	NSArray* tables = [NSArray arrayWithObjects:@"mylist", @"groups", @"anime", @"episodes", @"files", nil];
+	
+	for (int i = 0; i < [tables count]; i++)
+	{
+		[db dropTable:[tables objectAtIndex:i]];
+		if (verbose) NSLog(@"Table \"%@\" dropped", [tables objectAtIndex:i]);
+	}
 	
 	NSArray* columns = [NSArray arrayWithObjects:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:ADBMylistEntryKeyArray],
 						[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:ADBGroupKeyArray],
@@ -193,21 +199,22 @@
 						  [[NSArray arrayWithObject:QLRecordUIDDatatype] arrayByAddingObjectsFromArray:ADBFileDatatypeArray]];
 	if (verbose)
 		for (int i = 0; i < [tables count]; i++)
-			NSLog(@"%@: %d columns and %d datatypes", [tables objectAtIndex:i], [[columns objectAtIndex:i] count], [[datatypes objectAtIndex:i] count]);
+			NSLog(@"%@: (%d:%d) (columns:datatypes)", [tables objectAtIndex:i], [[columns objectAtIndex:i] count], [[datatypes objectAtIndex:i] count]);
 	
 	[db beginTransaction];
 	
 	for (int i = 0; i < [tables count]; i++)
 	{
 		[db createTable:[tables objectAtIndex:i] withColumns:[columns objectAtIndex:i] andDatatypes:[datatypes objectAtIndex:i]];
-		 if (verbose) NSLog(@"Table \"%@\" created", [tables objectAtIndex:i]);
+		if (verbose) NSLog(@"Table \"%@\" created", [tables objectAtIndex:i]);
+		if (verbose) NSLog(@"Testing table \"%@\": %@", [tables objectAtIndex:i], [db performQuery:[NSString stringWithFormat:@"select * from %@", [tables objectAtIndex:i]] cacheMethod:DoNotCacheData]);
 	}
 	
-	if(createDummyData)
+	if(createDummyData && [anidbFacade login:[preferences valueForKeyPath:@"properties.username"]
+								withPassword:[preferences valueForKeyPath:@"properties.password"]])
 	{
-		/*//mylist dummy data
-		int i = 0;
-		if (verbose) NSLog(@"Inserting dummy data for [tables objectAtIndex:i] \"%@\"...", [tables objectAtIndex:i]);
+		//mylist dummy data
+		/*if (verbose) NSLog(@"Inserting dummy data for [tables objectAtIndex:i] \"%@\"...", [tables objectAtIndex:i]);
 		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"1", @"443033", @"88811", @"5557", @"4489", @"date", @"state", @"viewdate", @"storage", @"source", @"other", @"filestate", nil]
 				  forColumns:[columns valueForKey:[tables objectAtIndex:i]] inTable:[tables objectAtIndex:i]])
 			if (verbose) NSLog(@"%@ inserted", [[tables objectAtIndex:i] capitalizedString]);
@@ -231,9 +238,12 @@
 		if (verbose) NSLog(@"Checking dummy data for [tables objectAtIndex:i] \"%@\"...", [tables objectAtIndex:i]);
 		if (verbose) NSLog(@"%@",[db performQuery:[NSString stringWithFormat:@"select * from %@", [tables objectAtIndex:i]] cacheMethod:DoNotCacheData]);
 		
-		//anime dummy data
-		i = 2;
-		if (verbose) NSLog(@"Inserting dummy data for [tables objectAtIndex:i] \"%@\"...", [tables objectAtIndex:i]);
+		//anime dummy data*/
+		NSArray* tempAnime = [NSArray arrayWithObjects:[anidbFacade findAnimeByID:@"61"], [anidbFacade findAnimeByID:@"5557"], [anidbFacade findAnimeByID:@"4935"], [anidbFacade findAnimeByID:@"4"], nil];
+		for (int j = 0; j < [tempAnime count]; j++)
+			if([tempAnime objectAtIndex:j])
+				[[tempAnime objectAtIndex:j] insertIntoDatabase:db];
+		/*if (verbose) NSLog(@"Inserting dummy data for [tables objectAtIndex:i] \"%@\"...", [tables objectAtIndex:i]);
 		if(![db insertValues:[NSArray arrayWithObjects:[NSNull null],@"106",@"26",@"26",@"11",@"854",@"5353",@"711",@"473",@"801",@"19",@"2002-2002",@"TV Series",@"Azumanga Daiou",@"あずまんが大王",@"Azumanga Daioh",@"Azu Manga Daioh,아즈망가 대왕,AZ Manga King",@"Адзуманга,AzuDai,Azumanga,azu,AD,Азуманґа",@"阿滋漫画大王,Адзуманга Дайо",@"Manga,High School,Asia,Earth,Present,Slapstick,Comedy,School Life,Seinen,Japan,Daily Life,Coming of Age,Fantasy,Contemporary Fantasy,Stereotypes,Sports,Plot Continuity,Romance",@"description", nil]
 				  forColumns:[columns valueForKey:[tables objectAtIndex:i]] inTable:[tables objectAtIndex:i]])
 			if (verbose) NSLog(@"%@ inserted", [[tables objectAtIndex:i] capitalizedString]);
@@ -338,20 +348,20 @@
 		if (verbose) NSLog(@"Dummy data for [tables objectAtIndex:i] \"%@\" inserted", [tables objectAtIndex:i]);
 		if (verbose) NSLog(@"Checking dummy data for [tables objectAtIndex:i] \"%@\"...", [tables objectAtIndex:i]);
 		if (verbose) NSLog(@"%@",[db performQuery:[NSString stringWithFormat:@"select * from %@", [tables objectAtIndex:i]] cacheMethod:DoNotCacheData]);
-	*/}
+		 */[anidbFacade logout];
+	}
 	
 	[db commitTransaction];
 	return YES;
-
 }
 
-- (void)refreshDatabase:(BOOL)verbose detailed:(BOOL)detailed
+- (void)refreshDatabaseVerbose:(BOOL)verbose detailed:(BOOL)detailed
 {
 	[self setMylist:[NSArray array]];
 	[self setAnime:[NSArray array]];
 	[self setGroups:[NSArray array]];
 	
-	QuickLiteCursor* mylistCursor = [db performQuery:@"select * from mylist"];
+	/*QuickLiteCursor* mylistCursor = [db performQuery:@"select * from mylist"];
 	QuickLiteCursor* groupCursor = [db performQuery:@"select * from groups"];
 	QuickLiteCursor* animeCursor = [db performQuery:@"select * from anime"];
 	QuickLiteCursor* episodeCursor;
@@ -369,6 +379,7 @@
 	NSString* animeID;
 	NSString* episodeID;
 	
+	if (verbose || detailed) NSLog(@"%@", mylistCursor);
 	if (verbose || detailed) NSLog(@"%@", animeCursor);
 	if (verbose || detailed) NSLog(@"%@", groupCursor);
 	
@@ -452,6 +463,6 @@
 		[anime addObject:tempAnime];
 		if (detailed) NSLog(@"\"%@\" added", tempAnime);
 	}
-	if (verbose || detailed) NSLog(@"Count of \"anime\" array: %d", [anime count]);
+	if (verbose || detailed) NSLog(@"Count of \"anime\" array: %d", [anime count]);*/
 }
 @end

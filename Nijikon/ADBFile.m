@@ -7,7 +7,7 @@
 //
 
 #import "ADBFile.h"
-
+#define TABLE @"files"
 
 @implementation ADBFile
 - (id) init
@@ -29,10 +29,20 @@
     [super dealloc];
 }
 
-+ (ADBFile*)fileWithProperties:(NSDictionary*)newProperties
++ (ADBFile*)fileWithProperties:(NSDictionary*)newProperties group:(ADBGroup*)newGroup andParents:(NSArray*)newParents
 {
 	ADBFile* temp = [[ADBFile alloc] init];
 	[temp setProperties:newProperties];
+	[temp setGroup:newGroup];
+	[temp setParents:newParents];
+	return temp;
+}
+
++ (ADBFile*)fileWithQuickLiteRow:(QuickLiteRow*)row
+{
+	ADBFile* temp = [[ADBFile alloc] init];
+	for (int i = 0; i < [[[temp properties] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp properties] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"properties.%@", [[[temp properties] allKeys] objectAtIndex:i]]];
 	return temp;
 }
 
@@ -63,20 +73,17 @@
     return properties;
 }
 
-- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys
+- (NSMutableArray*)parents
 {
-	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
+    return parents;
 }
 
-- (void) setProperties: (NSDictionary *)newProperties
+- (void)setParents:(NSArray*)newParents
 {
-    if (properties != newProperties)
+    if (parents != newParents)
     {
-        [properties autorelease];
-        properties = [[NSMutableDictionary alloc] initWithDictionary: newProperties];
-		
-		[nodeProperties setObject:[properties objectForKey:@"fileID"] forKey:@"ID"];
-		[nodeProperties setObject:[NSString stringWithFormat:@"File %@", [properties objectForKey:@"fileID"]] forKey:@"name"];
+        [parents autorelease];
+        parents = [[NSMutableArray alloc] initWithArray:newParents];
     }
 }
 
@@ -92,5 +99,22 @@
 		[group autorelease];
 		group = [newGroup retain];
 	}
+}
+
+- (void)setProperties:(NSArray*)values forKeys:(NSArray*)keys
+{
+	[self setProperties:[NSDictionary dictionaryWithObjects:values forKeys:keys]];
+}
+
+- (void) setProperties: (NSDictionary *)newProperties
+{
+    if (properties != newProperties)
+    {
+        [properties autorelease];
+        properties = [[NSMutableDictionary alloc] initWithDictionary: newProperties];
+		
+		[nodeProperties setObject:[properties objectForKey:@"fileID"] forKey:@"ID"];
+		[nodeProperties setObject:[NSString stringWithFormat:@"File %@", [properties objectForKey:@"fileID"]] forKey:@"name"];
+    }
 }
 @end

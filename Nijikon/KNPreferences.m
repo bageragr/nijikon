@@ -15,7 +15,7 @@
 	if ([super init]) {
 		path = nil;
 		document = nil;
-		[self setProperties:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"", @"", nil]
+		[self setProperties:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"", @"", @"19442", nil]
 														forKeys:KNPreferencesKeyArray]];
 	}
 	return self;
@@ -34,10 +34,7 @@
 	if ([[NSFileManager defaultManager] fileExistsAtPath:absolutePath])
 		[temp readPreferences];
 	else
-	{
-		[temp populateDocument];
 		[temp persistPreferences];
-	}
 	return temp;
 }
 
@@ -63,11 +60,9 @@
 
 - (void)persistPreferences
 {
-	NSData* xmlData = [document XMLDataWithOptions:NSXMLNodePrettyPrint];
-	if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-		[[NSFileManager defaultManager] createFileAtPath:path contents:xmlData attributes:nil];
-	else
-		[xmlData writeToFile:path atomically:YES];
+	[self populateDocument];
+	[[NSFileManager defaultManager] removeFileAtPath:path handler:nil];
+	[[NSFileManager defaultManager] createFileAtPath:path contents:[document XMLDataWithOptions:NSXMLNodePrettyPrint] attributes:nil];
 }
 
 - (NSString*)path
