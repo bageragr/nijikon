@@ -14,6 +14,7 @@
 		4B4845CF0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */; };
 		4B4845D30F3EC9DA00DD56C5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B4845D20F3EC9DA00DD56C5 /* Localizable.strings */; };
 		4B48BE1C0F4B01C8007B8F51 /* ADBObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B48BE1B0F4B01C8007B8F51 /* ADBObject.m */; };
+		4B48C0810F4B50E2007B8F51 /* ADBCachedFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B48C0800F4B50E2007B8F51 /* ADBCachedFacade.m */; };
 		4B5B70810F48949000B070E5 /* KNED2k.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B70800F48949000B070E5 /* KNED2k.m */; };
 		4B5B73060F49919500B070E5 /* KNPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B73050F49919500B070E5 /* KNPreferences.m */; };
 		4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
@@ -59,6 +60,8 @@
 		4B4845D00F3EC9B900DD56C5 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4B48BE1A0F4B01C8007B8F51 /* ADBObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBObject.h; sourceTree = "<group>"; };
 		4B48BE1B0F4B01C8007B8F51 /* ADBObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBObject.m; sourceTree = "<group>"; };
+		4B48C07F0F4B50E2007B8F51 /* ADBCachedFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBCachedFacade.h; sourceTree = "<group>"; };
+		4B48C0800F4B50E2007B8F51 /* ADBCachedFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBCachedFacade.m; sourceTree = "<group>"; };
 		4B5B707F0F48949000B070E5 /* KNED2k.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNED2k.h; sourceTree = "<group>"; };
 		4B5B70800F48949000B070E5 /* KNED2k.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNED2k.m; sourceTree = "<group>"; };
 		4B5B73040F49919500B070E5 /* KNPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNPreferences.h; sourceTree = "<group>"; };
@@ -238,6 +241,8 @@
 				4B808EDE0F3BF88300001AF0 /* ADBConnection.m */,
 				4B23AA030F45CA4D007E5ECA /* ADBFacade.h */,
 				4B23AA040F45CA4D007E5ECA /* ADBFacade.m */,
+				4B48C07F0F4B50E2007B8F51 /* ADBCachedFacade.h */,
+				4B48C0800F4B50E2007B8F51 /* ADBCachedFacade.m */,
 				4B290E530F4821D7001F51E6 /* ADBMylistExport.h */,
 				4B290E540F4821D7001F51E6 /* ADBMylistExport.m */,
 			);
@@ -373,6 +378,7 @@
 				4B5B70810F48949000B070E5 /* KNED2k.m in Sources */,
 				4B5B73060F49919500B070E5 /* KNPreferences.m in Sources */,
 				4B48BE1C0F4B01C8007B8F51 /* ADBObject.m in Sources */,
+				4B48C0810F4B50E2007B8F51 /* ADBCachedFacade.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

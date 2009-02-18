@@ -6,6 +6,6 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#define KNNodeKeyArray [NSArray arrayWithObjects:@"ID", @"number", @"name", @"epnumber", @"inMylistValue", @"inMylistMax", nil]
+#define KNNodeKeyArray [NSArray arrayWithObjects:@"type", @"name", @"watchedValue", @"watchedMax", nil]
 
 #define KNPreferencesKeyArray [NSArray arrayWithObjects:@"username", @"password", @"localport", nil]

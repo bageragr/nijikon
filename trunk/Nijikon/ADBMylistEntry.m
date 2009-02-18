@@ -6,8 +6,6 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#define COMMA_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
-#define APOSTROPHE_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
 #define TABLE @"mylist"
 
 #import "ADBMylistEntry.h"
@@ -34,15 +32,6 @@
 + (ADBMylistEntry*)mylistEntryWithAttributes:(NSDictionary*)newAtt {
 	ADBMylistEntry* temp = [[ADBMylistEntry alloc] init];
 	[temp setAtt:newAtt];
-	
-	NSArray* commaSeparated = COMMA_SEPARATED_LISTS;
-	for (int i = 0; i < [commaSeparated count]; i++)
-		[[temp att] setValue:[[newAtt valueForKey:[commaSeparated objectAtIndex:i]] componentsSeparatedByString:@","] forKey:[commaSeparated objectAtIndex:i]];
-	
-	NSArray* apostropheSeparated = APOSTROPHE_SEPARATED_LISTS;
-	for (int i = 0; i < [apostropheSeparated count]; i++)
-		[[temp att] setValue:[[newAtt valueForKey:[apostropheSeparated objectAtIndex:i]] componentsSeparatedByString:@"'"] forKey:[apostropheSeparated objectAtIndex:i]];
-	
 	return temp;
 }
 
@@ -56,8 +45,16 @@
 }
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database {
-	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
-				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
+	[database insertValues:[att allValues]
+				forColumns:[att allKeys] inTable:TABLE];
+	if ([[database performQuery:[NSString stringWithFormat:@"select * from groups where groupID=%@", [group valueForKeyPath:@"att.groupID"]]] rowCount] == 0)
+		[group insertIntoDatabase:database];
+	if ([[database performQuery:[NSString stringWithFormat:@"select * from anime where animeID=%@", [anime valueForKeyPath:@"att.animeID"]]] rowCount] == 0)
+		[anime insertIntoDatabase:database];
+	if ([[database performQuery:[NSString stringWithFormat:@"select * from episodes where episodeID=%@", [episode valueForKeyPath:@"att.episodeID"]]] rowCount] == 0)
+		[episode insertIntoDatabase:database];
+	if ([[database performQuery:[NSString stringWithFormat:@"select * from files where fileID=%@", [file valueForKeyPath:@"att.fileID"]]] rowCount] == 0)
+		[file insertIntoDatabase:database];
 }
 
 - (ADBAnime*)anime {
@@ -69,6 +66,7 @@
 	{
 		[anime release];
 		anime = [newAnime retain];
+		[anime setParent:self];
 	}
 }
 
@@ -81,6 +79,7 @@
 	{
 		[episode release];
 		episode = [newEpisode retain];
+		[episode setParent:self];
 	}
 }
 
@@ -93,6 +92,7 @@
 	{
 		[group release];
 		group = [newGroup retain];
+		[group setParent:self];
 	}
 }
 
@@ -105,6 +105,7 @@
 	{
 		[file release];
 		file = [newFile retain];
+		[file setParent:self];
 	}
 }
 

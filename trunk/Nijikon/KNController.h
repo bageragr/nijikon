@@ -13,9 +13,10 @@
 #import <QuickLite/QuickLiteRow.h>
 
 #import "KNED2k.h"
+#import "KNNode.h"
 #import "KNPreferences.h"
 #import "ADBMylistExport.h"
-#import "ADBFacade.h"
+#import "ADBCachedFacade.h"
 
 
 @interface KNController : NSObject {
@@ -23,16 +24,17 @@
 	IBOutlet NSWindow* configurationDialog;
 	IBOutlet NSPanel* connectionPanel;
 	
-	BOOL modal;
 	IBOutlet NSTextField* username;
 	IBOutlet NSSecureTextField* password;
 	
 	NSString* path;
 	KNPreferences* preferences;
 	QuickLiteDatabase* db;
-	ADBFacade* anidbFacade;
-	NSMutableArray* mylist;
+	ADBCachedFacade* anidbFacade;
 	
+	NSMutableArray* byMylist;
+	
+	NSMutableArray* mylist;
 	NSMutableArray* animeFound;
 }
 - (IBAction)login:(id)sender;
@@ -42,12 +44,14 @@
 - (ADBConnection*)connection;
 - (KNPreferences*)preferences;
 
+- (NSArray*)byMylist;
+
+- (void)fillMylist;
 - (NSMutableArray*)mylist;
 - (void)setMylist:(NSArray*)newMylist;
 
 - (NSMutableArray*)animeFound;
 - (void)setAnimeFound:(NSArray*)newAnimeFound;
 
-- (BOOL)createDatabaseVerbose:(BOOL)verbose withDummyData:(BOOL)createDummyData;
-- (void)refreshDatabaseVerbose:(BOOL)verbose detailed:(BOOL)detailed;
+- (BOOL)createDatabaseVerbose:(BOOL)verbose;
 @end

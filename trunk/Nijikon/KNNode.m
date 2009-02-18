@@ -15,61 +15,55 @@
     if(self = [super init])
     {
 		isLeaf = NO;
-		
-        NSArray * keys      = KNNodeKeyArray;
-        NSArray * values    = [NSArray arrayWithObjects: @"ID", [NSNumber numberWithInt:0], @"name", @"epnumber", [NSNumber numberWithInt:0], [NSNumber numberWithInt:1], nil];
-        [self setNodeProperties:[NSDictionary dictionaryWithObjects: values forKeys: keys]];
+        [self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"type", @"name", [NSNumber numberWithInt:0], [NSNumber numberWithInt:1], nil]
+												 forKeys:KNNodeKeyArray]];
+		[self setChildren:[NSArray array]];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [nodeProperties release];
+- (void)dealloc {
+    [att release];
     
     [super dealloc];
 }
 
-- (NSString*)description
-{
-	return [self valueForKeyPath:@"nodeProperties.name"];
++ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt andIsLeaf:(BOOL)newIsLeaf {
+	KNNode* temp = [[KNNode alloc] init];
+	[temp setAtt:newAtt];
+	[temp setIsLeaf:newIsLeaf];
+	return temp;
 }
 
-- (BOOL)isLeaf
-{
+- (BOOL)isLeaf {
 	return isLeaf;
 }
 
-- (void)setIsLeaf:(BOOL)newIsLeaf
-{
+- (void)setIsLeaf:(BOOL)newIsLeaf {
 	isLeaf = newIsLeaf;
 }
 
-- (NSString*)nodeName
-{
-	return nodeName;
+- (NSMutableDictionary*)att {
+    return att;
 }
 
-- (void)setNodeName:(NSString*)newNodeName
-{
-	if (nodeName != newNodeName)
-	{
-		[nodeName release];
-		nodeName = [NSString stringWithString:newNodeName];
-	}
-}
-
-- (NSMutableDictionary*)nodeProperties
-{
-    return nodeProperties;
-}
-
-- (void)setNodeProperties:(NSDictionary*)newNodeProperties
-{
-    if (nodeProperties != newNodeProperties)
+- (void)setAtt:(NSDictionary*)newAtt {
+    if (att != newAtt)
     {
-        [nodeProperties release];
-        nodeProperties = [[NSMutableDictionary alloc] initWithDictionary: newNodeProperties];
+        [att release];
+        att = [[NSMutableDictionary alloc] initWithDictionary: newAtt];
+    }
+}
+
+- (NSMutableArray*)children {
+	return children;
+}
+
+- (void)setChildren:(NSArray*)newChildren {
+	if (children != newChildren)
+    {
+        [children release];
+        children = [[NSMutableArray alloc] initWithArray:newChildren];
     }
 }
 @end

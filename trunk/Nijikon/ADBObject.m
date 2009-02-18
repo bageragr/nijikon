@@ -30,7 +30,7 @@
 	if (att != newAtt)
 	{
 		[att release];
-		att = [newAtt retain];
+		att = [[NSMutableDictionary dictionaryWithDictionary:newAtt] retain];
 	}
 }
 @end
