@@ -32,15 +32,6 @@
 	ADBGroup* temp = [[ADBGroup alloc] init];
 	[temp setAtt:newAtt];
 	[temp setParent:newParent];
-	
-	NSArray* commaSeparated = COMMA_SEPARATED_LISTS;
-	for (int i = 0; i < [commaSeparated count]; i++)
-		[[temp att] setValue:[[newAtt valueForKey:[commaSeparated objectAtIndex:i]] componentsSeparatedByString:@","] forKey:[commaSeparated objectAtIndex:i]];
-	
-	NSArray* apostropheSeparated = APOSTROPHE_SEPARATED_LISTS;
-	for (int i = 0; i < [apostropheSeparated count]; i++)
-		[[temp att] setValue:[[newAtt valueForKey:[apostropheSeparated objectAtIndex:i]] componentsSeparatedByString:@"'"] forKey:[apostropheSeparated objectAtIndex:i]];
-	
 	return temp;
 }
 
@@ -54,8 +45,8 @@
 }
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database {
-	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
-				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
+	[database insertValues:[att allValues]
+				forColumns:[att allKeys] inTable:TABLE];
 }
 
 - (ADBMylistEntry*)parent {
