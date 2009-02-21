@@ -12,12 +12,17 @@
 
 
 @interface KNNode : NSObject {
+	id reprObject;
+	
 	BOOL isLeaf;
 	NSMutableDictionary* att;
 	NSMutableArray* children;
 }
 
-+ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt andIsLeaf:(BOOL)newIsLeaf;
++ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt representedObject:(id)object andIsLeaf:(BOOL)newIsLeaf;
+
+- (id)representedObject;
+- (void)setRepresentedObject:(id)object;
 
 - (BOOL)isLeaf;
 - (void)setIsLeaf:(BOOL)newIsLeaf;

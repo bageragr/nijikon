@@ -45,8 +45,8 @@
 }
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database {
-	[database insertValues:[att allValues]
-				forColumns:[att allKeys] inTable:TABLE];
+	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
+				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
 }
 
 - (ADBMylistEntry*)parent {

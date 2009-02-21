@@ -84,7 +84,8 @@
 
 - (NSArray*)sendAndReceiveUsingDefaultEncodingAndPrepareResponse:(NSString*)aString appendSessionKey:(BOOL)appendSessionKey
 {
-	NSArray* lines = [[self sendAndReceiveUsingDefaultEncoding:aString appendSessionKey:appendSessionKey] componentsSeparatedByString:@"\n"];
+	NSString* response = [[self sendAndReceiveUsingDefaultEncoding:aString appendSessionKey:appendSessionKey] stringByReplacingOccurrencesOfString:@"'" withString:@","];
+	NSArray* lines = [response componentsSeparatedByString:@"\n"];
 	NSArray* temp = [NSMutableArray arrayWithObjects:[[[lines objectAtIndex:0] componentsSeparatedByString:@" "] objectAtIndex:0], [[lines objectAtIndex:0] substringFromIndex:4], nil];
 	if ([lines count] > 1)
 		temp = [temp arrayByAddingObjectsFromArray:[[lines objectAtIndex:1] componentsSeparatedByString:@"|"]];
@@ -119,7 +120,7 @@
 		}
 		else {
 			[udpSocket connectToHost:host port:9000];
-			[udpSocket setReceiveTimeout:5];
+			//[udpSocket setReceiveTimeout:5];
 		}
 		
 		lastAccess = [[NSDate distantPast] retain];

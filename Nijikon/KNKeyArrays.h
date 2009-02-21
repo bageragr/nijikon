@@ -8,4 +8,4 @@
 
 #define KNNodeKeyArray [NSArray arrayWithObjects:@"type", @"name", @"watchedValue", @"watchedMax", nil]
 
-#define KNPreferencesKeyArray [NSArray arrayWithObjects:@"username", @"password", @"localport", nil]
+#define KNPreferencesKeyArray [NSArray arrayWithObjects:@"username", @"password", @"localport", @"animeName", @"episodeName", nil]

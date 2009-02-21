@@ -15,8 +15,6 @@
 	{
 		path = [@"~/Library/Application Support/Nijikon" stringByExpandingTildeInPath];
 		preferences = [KNPreferences preferenceWithPath:[path stringByAppendingString:@"/nijikon.prefs"]];
-		[username setStringValue:[preferences valueForKeyPath:@"properties.username"]];
-		[password setStringValue:[preferences valueForKeyPath:@"properties.password"]];
 		db = [[QuickLiteDatabase databaseWithFile:[path stringByAppendingString:@"/nijikon.db"]] retain];
 		[db open];//:NO cacheMethod:DoNotCacheData exposeSQLOnNotify:NO debugMode:YES];
 		anidbFacade = [[[ADBCachedFacade alloc] init] retain];
@@ -25,8 +23,9 @@
 			[[anidbFacade findAnimeByID:@"61"] insertIntoDatabase:db];
 			[anidbFacade logout];
 		}*/
-		[self createDatabaseVerbose:YES];
-		//[self fillMylist];
+		
+		//[self createDatabaseVerbose:NO];
+		[self fillMylistVerbose:NO];
 	}
 	return self;
 }
@@ -36,8 +35,9 @@
 }
 
 - (BOOL)applicationShouldTerminate:(NSApplication*)app {
+	if ([db isDatabaseOpen])
+		[db closeSavingChanges:YES];
 	[anidbFacade logout];
-	[db closeSavingChanges:YES];
 	return YES;
 }
 
@@ -45,25 +45,24 @@
 	[db release];
 	[anidbFacade release];
 	[mylist release];
+	[byMylist release];
+	[byAnime release];
 	[super dealloc];
 }
 
 - (IBAction)login:(id)sender {
-	if(![anidbFacade login:[preferences valueForKeyPath:@"properties.username"]
-			  withPassword:[preferences valueForKeyPath:@"properties.password"]])
+	if(![anidbFacade login:[preferences valueForKeyPath:@"att.username"]
+			  withPassword:[preferences valueForKeyPath:@"att.password"]])
 		NSRunAlertPanel(@"Login failed", @"Username or password is wrong\nChange it in the settings", @"OK", nil, nil);
-	[connectionPanel viewsNeedDisplay];
 }
 
 - (IBAction)logout:(id)sender {
 	[anidbFacade logout];
-	[connectionPanel viewsNeedDisplay];
 }
 
 - (IBAction)saveProperties:(id)sender {
-	[preferences setProperties:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[username stringValue], [password stringValue], nil]
-														   forKeys:[NSArray arrayWithObjects:@"username", @"password", nil]]];
 	[preferences persistPreferences];
+	[mainWindow viewsNeedDisplay];
 }
 
 -(BOOL)control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector {
@@ -85,33 +84,89 @@
 }
 
 - (NSArray*)byMylist {
-	if ((byMylist == nil) || ([byMylist count] != [mylist count])) {
-		NSMutableArray* groups = [NSMutableArray array];
-		NSMutableArray* anime = [NSMutableArray array];
-		NSMutableArray* episodes = [NSMutableArray array];
-		NSMutableArray* files = [NSMutableArray array];
-		byMylist = [NSMutableArray array];
-		KNNode* mylistEntryNode = nil;
-		
-		for (int i = 0; i < [mylist count]; i++) {
-			if (![groups containsObject:[[mylist objectAtIndex:i] group]])
-				[groups addObject:[[mylist objectAtIndex:i] group]];
-			if (![anime containsObject:[[mylist objectAtIndex:i] anime]])
-				[anime addObject:[[mylist objectAtIndex:i] anime]];
-			if (![episodes containsObject:[[mylist objectAtIndex:i] episode]])
-				[episodes addObject:[[mylist objectAtIndex:i] episode]];
-			if (![files containsObject:[[mylist objectAtIndex:i] file]])
-				[files addObject:[[mylist objectAtIndex:i] file]];
-			
-			mylistEntryNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Mylist entry", @"Type for ADBMylistEntry nodes"), 
-																							  @"",
-																							  [NSNumber numberWithInt:(int)([[[mylist objectAtIndex:i] valueForKeyPath:@"file.att.watched"] intValue] > 0)],
-																							  [NSNumber numberWithInt:1], nil]
-																					 forKeys:KNNodeKeyArray] andIsLeaf:NO];
-			[byMylist addObject:mylistEntryNode];
-		}
+	NSLog (@"byMylist refreshed");
+	byMylist = [NSMutableArray array];
+	int watched = 0;
+	int maxWatched = 0;
+	ADBMylistEntry* mylistEntry = nil;
+	KNNode* mylistEntryNode = nil;
+	KNNode* groupNode = nil;
+	KNNode* animeNode = nil;
+	KNNode* episodeNode = nil;
+	KNNode* fileNode = nil;
+	
+	for (int i = 0; i < [mylist count]; i++) {
+		mylistEntry = [mylist objectAtIndex:i];	
+		watched = 0;
+		maxWatched = 0;
+		for (int j = 0; j < [mylist count]; j++)
+			if ([(NSString*)[[mylist objectAtIndex:j] valueForKeyPath:@"att.groupID"] isEqualToString:[mylistEntry valueForKeyPath:@"att.groupID"]]) {
+				watched += (int)([[[mylist objectAtIndex:j] valueForKeyPath:@"att.viewdate"] intValue] > 0);
+				maxWatched++;
+			}
+		groupNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Group", @"Type for ADBGroup nodes"), 
+																					[mylistEntry valueForKeyPath:@"group.att.name"],
+																					[NSNumber numberWithInt:watched],
+																					[NSNumber numberWithInt:maxWatched], nil]
+																		   forKeys:KNNodeKeyArray] representedObject:[mylistEntry group] andIsLeaf:YES];
+		watched = 0;
+		maxWatched = 0;
+		for (int j = 0; j < [mylist count]; j++)
+			if ([(NSString*)[[mylist objectAtIndex:j] valueForKeyPath:@"att.animeID"] isEqualToString:[mylistEntry valueForKeyPath:@"att.animeID"]]) {
+				watched += (int)([[[mylist objectAtIndex:j] valueForKeyPath:@"att.viewdate"] intValue] > 0);
+				maxWatched++;
+			}
+		animeNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Anime", @"Type for ADBAnime nodes"), 
+																					[mylistEntry valueForKeyPath:[NSString stringWithFormat:@"anime.att.%@", [preferences valueForKeyPath:@"att.animeName"]]],
+																					[NSNumber numberWithInt:watched],
+																					[NSNumber numberWithInt:maxWatched], nil]
+																		   forKeys:KNNodeKeyArray] representedObject:[mylistEntry anime] andIsLeaf:YES];
+		watched = 0;
+		maxWatched = 0;
+		for (int j = 0; j < [mylist count]; j++)
+			if ([(NSString*)[[mylist objectAtIndex:j] valueForKeyPath:@"att.episodeID"] isEqualToString:[mylistEntry valueForKeyPath:@"att.episodeID"]]) {
+				watched += (int)([[[mylist objectAtIndex:j] valueForKeyPath:@"att.viewdate"] intValue] > 0);
+				maxWatched++;
+			}
+		episodeNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Episode", @"Type for ADBEpisode nodes"), 
+																					  [mylistEntry valueForKeyPath:[NSString stringWithFormat:@"episode.att.%@", [preferences valueForKeyPath:@"att.episodeName"]]],
+																					  [NSNumber numberWithInt:watched],
+																					  [NSNumber numberWithInt:maxWatched], nil]
+																			 forKeys:KNNodeKeyArray] representedObject:[mylistEntry episode] andIsLeaf:YES];
+		watched = (int)([[mylistEntry valueForKeyPath:@"att.viewdate"] intValue] > 0);
+		maxWatched = 1;
+		fileNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"File", @"Type for ADBFile nodes"), 
+																				   [NSString stringWithFormat:@"f%@", [mylistEntry valueForKeyPath:@"file.att.fileID"]],
+																				   [NSNumber numberWithInt:watched],
+																				   [NSNumber numberWithInt:maxWatched], nil]
+																		  forKeys:KNNodeKeyArray] representedObject:[mylistEntry file] andIsLeaf:YES];
+		mylistEntryNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Mylist entry", @"Type for ADBMylistEntry nodes"), 
+																						  [NSString stringWithFormat:NSLocalizedString(@"%@ - %@ (by %@)", @"Name for ADBMylistEntry nodes (<Anime> - <Epnumber> (by <Group>))"),
+																						   [mylistEntry valueForKeyPath:[NSString stringWithFormat:@"anime.att.%@", [preferences valueForKeyPath:@"att.animeName"]]],
+																						   [mylistEntry valueForKeyPath:@"episode.att.epnumber"],
+																						   [mylistEntry valueForKeyPath:@"group.att.name"]],
+																						  [NSNumber numberWithInt:watched],
+																						  [NSNumber numberWithInt:maxWatched], nil]
+																				 forKeys:KNNodeKeyArray] representedObject:mylistEntry andIsLeaf:NO];
+		[mylistEntryNode setChildren:[NSArray arrayWithObjects:groupNode, animeNode, episodeNode, fileNode, nil]];
+		[byMylist addObject:mylistEntryNode];
 	}
 	return byMylist;
+}
+
+- (NSArray*)byAnime {
+	NSLog (@"byAnime refreshed");
+	byAnime = [NSMutableArray array];
+	int watched = 0;
+	int maxWatched = 0;
+	ADBMylistEntry* mylistEntry = nil;
+	KNNode* mylistEntryNode = nil;
+	KNNode* groupNode = nil;
+	KNNode* animeNode = nil;
+	KNNode* episodeNode = nil;
+	KNNode* fileNode = nil;
+	
+	return byAnime;
 }
 
 - (NSMutableArray*)mylist {
@@ -150,7 +205,7 @@
 		if (verbose) NSLog(@"Table \"%@\" dropped", [tables objectAtIndex:i]);
 	}
 	
-	NSArray* columns   = [NSArray arrayWithObjects:ADBMylistEntryKeyArray, ADBGroupKeyArray, ADBAnimeKeyArray, ADBEpisodeKeyArray, ADBFileKeyArray, nil];
+	NSArray* columns   = [NSArray arrayWithObjects:ADBMylistEntryColumnArray, ADBGroupColumnArray, ADBAnimeColumnArray, ADBEpisodeColumnArray, ADBFileColumnArray, nil];
 	NSArray* datatypes = [NSArray arrayWithObjects:ADBMylistEntryDatatypeArray, ADBGroupDatatypeArray, ADBAnimeDatatypeArray, ADBEpisodeDatatypeArray, ADBFileDatatypeArray, nil];
 	
 	if (verbose)
@@ -163,8 +218,12 @@
 		if (verbose) NSLog(@"Testing table \"%@\": %@", [tables objectAtIndex:i], [db performQuery:[NSString stringWithFormat:@"select * from %@", [tables objectAtIndex:i]] cacheMethod:DoNotCacheData]);
 	}
 	
+	[db insertValues:[NSArray arrayWithObjects:[NSNull null], @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", nil]
+		  forColumns:ADBAnimeColumnArray inTable:@"anime"];
+	if (verbose) NSLog(@"Testing table \"%@\": %@", @"anime", [db performQuery:[NSString stringWithFormat:@"select * from %@", @"anime"] cacheMethod:DoNotCacheData]);
+	
 	//dummy data
-	if ([anidbFacade login:[preferences valueForKeyPath:@"properties.username"] withPassword:[preferences valueForKeyPath:@"properties.password"]]) {
+	if ([anidbFacade login:[preferences valueForKeyPath:@"att.username"] withPassword:[preferences valueForKeyPath:@"att.password"]]) {
 		NSArray* mylistIDs = [NSArray arrayWithObjects:@"60787305", @"60787306", @"60787307", @"60787308", @"60787309", @"60786550", nil];
 		
 		ADBMylistEntry* temp = nil;
@@ -182,14 +241,15 @@
 			if (verbose) NSLog(@"	File: %@", [temp valueForKeyPath:@"file.att.filename"]);
 			[temp insertIntoDatabase:db];
 		}
-		[anidbFacade logout];
 	}
 	
 	[db commitTransaction];
+	[db closeSavingChanges:YES];
+	[anidbFacade logout];
 	return YES;
 }
 
-- (void)fillMylist {
+- (void)fillMylistVerbose:(BOOL)verbose {
 	[self setMylist:[NSMutableArray array]];
 	
 	//See ADBCachedFacade -init
@@ -215,15 +275,15 @@
 	cursor = [db performQuery:@"select * from mylist" cacheMethod:DoNotCacheData];
 	for (int i = 0; i < [cursor rowCount]; i++) {
 		temp = [ADBMylistEntry mylistEntryWithQuickliteRow:[cursor rowAtIndex:i]];
-		NSLog(@"MylistEntry: lid=%@", [temp valueForKeyPath:@"att.mylistID"]);
+		if (verbose) NSLog(@"MylistEntry: lid=%@", [temp valueForKeyPath:@"att.mylistID"]);
 		[temp setGroup:[cache valueForKey:[NSString stringWithFormat:@"groups(%@)", [temp valueForKeyPath:@"att.groupID"]]]];
-		NSLog(@"	Group: %@", [temp valueForKeyPath:@"group.att.name"]);
+		if (verbose) NSLog(@"	Group: %@", [temp valueForKeyPath:@"group.att.name"]);
 		[temp setAnime:[cache valueForKey:[NSString stringWithFormat:@"anime(%@)", [temp valueForKeyPath:@"att.animeID"]]]];
-		NSLog(@"	Anime: %@", [temp valueForKeyPath:@"anime.att.romaji"]);
+		if (verbose) NSLog(@"	Anime: %@", [temp valueForKeyPath:@"anime.att.romaji"]);
 		[temp setEpisode:[cache valueForKey:[NSString stringWithFormat:@"episodes(%@)", [temp valueForKeyPath:@"att.episodeID"]]]];
-		NSLog(@"	Episode: %@", [temp valueForKeyPath:@"episode.att.romaji"]);
+		if (verbose) NSLog(@"	Episode: %@", [temp valueForKeyPath:@"episode.att.romaji"]);
 		[temp setFile:[cache valueForKey:[NSString stringWithFormat:@"files(%@)", [temp valueForKeyPath:@"att.fileID"]]]];
-		NSLog(@"	File: %@", [temp valueForKeyPath:@"file.att.filename"]);
+		if (verbose) NSLog(@"	File: %@", [temp valueForKeyPath:@"file.att.filename"]);
 		[mylist addObject:temp];
 	}
 }

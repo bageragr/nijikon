@@ -21,11 +21,6 @@
 
 @interface KNController : NSObject {
 	IBOutlet NSWindow* mainWindow;
-	IBOutlet NSWindow* configurationDialog;
-	IBOutlet NSPanel* connectionPanel;
-	
-	IBOutlet NSTextField* username;
-	IBOutlet NSSecureTextField* password;
 	
 	NSString* path;
 	KNPreferences* preferences;
@@ -33,6 +28,7 @@
 	ADBCachedFacade* anidbFacade;
 	
 	NSMutableArray* byMylist;
+	NSMutableArray* byAnime;
 	
 	NSMutableArray* mylist;
 	NSMutableArray* animeFound;
@@ -45,8 +41,8 @@
 - (KNPreferences*)preferences;
 
 - (NSArray*)byMylist;
+- (NSArray*)byAnime;
 
-- (void)fillMylist;
 - (NSMutableArray*)mylist;
 - (void)setMylist:(NSArray*)newMylist;
 
@@ -54,4 +50,5 @@
 - (void)setAnimeFound:(NSArray*)newAnimeFound;
 
 - (BOOL)createDatabaseVerbose:(BOOL)verbose;
+- (void)fillMylistVerbose:(BOOL)verbose;
 @end

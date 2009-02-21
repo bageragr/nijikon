@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		4B2020390F50579000229455 /* KNDisplayedNameTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2020380F50579000229455 /* KNDisplayedNameTransformer.m */; };
 		4B23AA050F45CA4D007E5ECA /* ADBFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AA040F45CA4D007E5ECA /* ADBFacade.m */; };
 		4B290E340F482120001F51E6 /* NSXMLNode+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B290E330F482120001F51E6 /* NSXMLNode+Extensions.m */; };
 		4B290E550F4821D7001F51E6 /* ADBMylistExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B290E540F4821D7001F51E6 /* ADBMylistExport.m */; };
@@ -48,6 +49,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* Nijikon_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nijikon_Prefix.pch; sourceTree = "<group>"; };
+		4B2020370F50579000229455 /* KNDisplayedNameTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNDisplayedNameTransformer.h; sourceTree = "<group>"; };
+		4B2020380F50579000229455 /* KNDisplayedNameTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNDisplayedNameTransformer.m; sourceTree = "<group>"; };
 		4B23AA030F45CA4D007E5ECA /* ADBFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBFacade.h; sourceTree = "<group>"; };
 		4B23AA040F45CA4D007E5ECA /* ADBFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBFacade.m; sourceTree = "<group>"; };
 		4B23ACC60F461173007E5ECA /* ADBKeyArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBKeyArrays.h; sourceTree = "<group>"; };
@@ -219,6 +222,8 @@
 				4BE6C45E0F39FE3500123B94 /* KNPropertiesTransformer.m */,
 				4B4845CD0F3EC97F00DD56C5 /* KNStatusToStringTransformer.h */,
 				4B4845CE0F3EC97F00DD56C5 /* KNStatusToStringTransformer.m */,
+				4B2020370F50579000229455 /* KNDisplayedNameTransformer.h */,
+				4B2020380F50579000229455 /* KNDisplayedNameTransformer.m */,
 			);
 			name = "Transformer classes";
 			sourceTree = "<group>";
@@ -379,6 +384,7 @@
 				4B5B73060F49919500B070E5 /* KNPreferences.m in Sources */,
 				4B48BE1C0F4B01C8007B8F51 /* ADBObject.m in Sources */,
 				4B48C0810F4B50E2007B8F51 /* ADBCachedFacade.m in Sources */,
+				4B2020390F50579000229455 /* KNDisplayedNameTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

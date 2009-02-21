@@ -15,7 +15,7 @@
 	if ([super init]) {
 		path = nil;
 		document = nil;
-		[self setProperties:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"", @"", @"19442", nil]
+		[self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"", @"", @"19442", @"romaji", @"romaji", nil]
 														forKeys:KNPreferencesKeyArray]];
 	}
 	return self;
@@ -23,8 +23,15 @@
 
 - (void)dealloc
 {
-	[properties release];
+	[att release];
 	[super dealloc];
+}
+
+- (NSString*)description {
+	NSMutableString* description = [NSMutableString stringWithFormat:@"%@ {\n", [super description]];
+	for (int i = 0; i < [att count]; i++)
+		[description appendFormat:@"[%@]: %@\n", [[att allKeys] objectAtIndex:i], [[att allValues] objectAtIndex:i]];
+	return [description stringByAppendingFormat:@"}"];
 }
 
 + (KNPreferences*)preferenceWithPath:(NSString*)absolutePath
@@ -42,7 +49,7 @@
 {
 	NSXMLElement* root = (NSXMLElement*)[NSXMLNode elementWithName:@"preferences"];
 	for (int i = 0; i < [KNPreferencesKeyArray count]; i++)
-		[root addChild:[NSXMLNode elementWithName:[KNPreferencesKeyArray objectAtIndex:i] stringValue:[properties valueForKey:[KNPreferencesKeyArray objectAtIndex:i]]]];
+		[root addChild:[NSXMLNode elementWithName:[KNPreferencesKeyArray objectAtIndex:i] stringValue:[att valueForKey:[KNPreferencesKeyArray objectAtIndex:i]]]];
 	document = [[NSXMLDocument alloc] initWithRootElement:root];
 	[document setVersion:@"1.0"];
 	[document setCharacterEncoding:@"UTF-8"];
@@ -55,7 +62,7 @@
 	NSXMLElement* root = [document rootElement];
 	for (int i = 0; i < [[root children] count]; i++)
 		[newProperties setObject:[[[root children] objectAtIndex:i] stringValue] forKey:[[[root children] objectAtIndex:i] name]];
-	[self setProperties:newProperties];
+	[self setAtt:newProperties];
 }
 
 - (void)persistPreferences
@@ -79,17 +86,17 @@
 	}
 }
 
-- (NSMutableDictionary*)properties
+- (NSMutableDictionary*)att
 {
-    return properties;
+    return att;
 }
 
-- (void)setProperties:(NSDictionary*)newProperties
+- (void)setAtt:(NSDictionary*)newAtt
 {
-    if (properties != newProperties)
+    if (att != newAtt)
     {
-        [properties autorelease];
-        properties = [[NSMutableDictionary alloc] initWithDictionary: newProperties];
+        [att autorelease];
+        att = [[NSMutableDictionary alloc] initWithDictionary: newAtt];
     }
 }
 @end

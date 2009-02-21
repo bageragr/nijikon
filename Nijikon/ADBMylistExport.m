@@ -16,7 +16,7 @@
 	{
 		document = nil;
 		mylist = [NSArray array];
-		properties = [[NSDictionary dictionaryWithObjects:ADBMylistExportKeyArray
+		att = [[NSDictionary dictionaryWithObjects:ADBMylistExportKeyArray
 												  forKeys:ADBMylistExportKeyArray] retain];
 	}
 	return self;
@@ -26,7 +26,7 @@
 {
 	[document release];
 	[mylist release];
-	[properties release];
+	[att release];
 	[super dealloc];
 }
 
@@ -47,7 +47,7 @@
 												  error:&error] retain];
 		if (error == nil)
 		{
-			[self setProperties:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[[document rootElement] attributeForName:@"uid"] stringValue], [[[document rootElement] attributeForName:@"username"] stringValue], [[[document rootElement] attributeForName:@"date"] stringValue], [[[document rootElement] attributeForName:@"size"] stringValue], nil]
+			[self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[[document rootElement] attributeForName:@"uid"] stringValue], [[[document rootElement] attributeForName:@"username"] stringValue], [[[document rootElement] attributeForName:@"date"] stringValue], [[[document rootElement] attributeForName:@"size"] stringValue], nil]
 															forKeys:ADBMylistExportKeyArray]];
 			return YES;
 		}
@@ -56,17 +56,17 @@
 		
 }
 
-- (NSMutableDictionary*)properties
+- (NSMutableDictionary*)att
 {
-    return properties;
+    return att;
 }
 
-- (void)setProperties:(NSDictionary*)newProperties
+- (void)setAtt:(NSDictionary*)newAtt
 {
-    if (properties != newProperties)
+    if (att != newAtt)
     {
-        [properties autorelease];
-        properties = [[NSMutableDictionary alloc] initWithDictionary: newProperties];
+        [att autorelease];
+        att = [[NSMutableDictionary alloc] initWithDictionary: newAtt];
     }
 }
 @end
