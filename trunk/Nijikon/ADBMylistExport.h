@@ -14,14 +14,14 @@
 @interface ADBMylistExport : NSObject {
 	NSXMLDocument* document;
 	NSArray* mylist;
-	NSMutableDictionary* properties;
+	NSMutableDictionary* att;
 }
 
 + (ADBMylistExport*)mylistExportWithPath:(NSString*)path;
 
 - (BOOL)readXMLFromPath:(NSString*)absolutePath;
 
-- (NSMutableDictionary*)properties;
-- (void)setProperties:(NSDictionary*)newProperties;
+- (NSMutableDictionary*)att;
+- (void)setAtt:(NSDictionary*)newAtt;
 
 @end

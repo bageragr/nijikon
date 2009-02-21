@@ -14,6 +14,7 @@
 {
     if(self = [super init])
     {
+		[self setRepresentedObject:nil];
 		isLeaf = NO;
         [self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"type", @"name", [NSNumber numberWithInt:0], [NSNumber numberWithInt:1], nil]
 												 forKeys:KNNodeKeyArray]];
@@ -23,16 +24,30 @@
 }
 
 - (void)dealloc {
+	[reprObject release];
     [att release];
+	[children release];
     
     [super dealloc];
 }
 
-+ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt andIsLeaf:(BOOL)newIsLeaf {
++ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt representedObject:(id)object andIsLeaf:(BOOL)newIsLeaf {
 	KNNode* temp = [[KNNode alloc] init];
+	[temp setRepresentedObject:object];
 	[temp setAtt:newAtt];
 	[temp setIsLeaf:newIsLeaf];
 	return temp;
+}
+
+- (id)representedObject {
+	return reprObject;
+}
+
+- (void)setRepresentedObject:(id)object {
+	if (reprObject != object) {
+        [reprObject release];
+        reprObject = [object retain];
+    }
 }
 
 - (BOOL)isLeaf {

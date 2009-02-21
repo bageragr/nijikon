@@ -15,7 +15,7 @@
 	NSString* path;
 	NSXMLDocument* document;
 	
-	NSMutableDictionary* properties;
+	NSMutableDictionary* att;
 }
 
 + (KNPreferences*)preferenceWithPath:(NSString*)absolutePath;
@@ -26,7 +26,7 @@
 
 - (NSString*)path;
 - (void)setPath:(NSString*)newPath;
-- (NSMutableDictionary*)properties;
-- (void)setProperties:(NSDictionary*)newProperties;
+- (NSMutableDictionary*)att;
+- (void)setAtt:(NSDictionary*)newAtt;
 
 @end
