@@ -11,7 +11,7 @@
 
 @implementation NSXMLNode(KNExtensions)
 
-- (NSXMLNode *)childNamed:(NSString *)name
+- (NSXMLNode *)childForName:(NSString *)name
 {
 	NSEnumerator *e = [[self children] objectEnumerator];
 	

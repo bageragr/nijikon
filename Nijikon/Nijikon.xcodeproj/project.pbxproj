@@ -18,6 +18,7 @@
 		4B48C0810F4B50E2007B8F51 /* ADBCachedFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B48C0800F4B50E2007B8F51 /* ADBCachedFacade.m */; };
 		4B5B70810F48949000B070E5 /* KNED2k.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B70800F48949000B070E5 /* KNED2k.m */; };
 		4B5B73060F49919500B070E5 /* KNPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B73050F49919500B070E5 /* KNPreferences.m */; };
+		4B60ECA30F541B7100AB64F8 /* KNMacController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B60ECA20F541B7100AB64F8 /* KNMacController.m */; };
 		4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
 		4B81E04B0F45771A0030D3AC /* ADBMylistEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B81E04A0F45771A0030D3AC /* ADBMylistEntry.m */; };
 		4BA7007A0F3AC8A8000E6A65 /* QuickLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BA700790F3AC8A8000E6A65 /* QuickLite.framework */; };
@@ -70,6 +71,11 @@
 		4B5B73040F49919500B070E5 /* KNPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNPreferences.h; sourceTree = "<group>"; };
 		4B5B73050F49919500B070E5 /* KNPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNPreferences.m; sourceTree = "<group>"; };
 		4B5B73120F49931000B070E5 /* KNKeyArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNKeyArrays.h; sourceTree = "<group>"; };
+		4B60EC7F0F54172400AB64F8 /* Nijikon iPhone-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Nijikon iPhone-Info.plist"; sourceTree = "<group>"; };
+		4B60EC8F0F54189600AB64F8 /* KNiPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNiPhoneController.h; sourceTree = "<group>"; };
+		4B60EC900F54189600AB64F8 /* KNiPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNiPhoneController.m; sourceTree = "<group>"; };
+		4B60ECA10F541B7100AB64F8 /* KNMacController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNMacController.h; sourceTree = "<group>"; };
+		4B60ECA20F541B7100AB64F8 /* KNMacController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNMacController.m; sourceTree = "<group>"; };
 		4B808EDD0F3BF88300001AF0 /* ADBConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBConnection.h; sourceTree = "<group>"; };
 		4B808EDE0F3BF88300001AF0 /* ADBConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADBConnection.m; sourceTree = "<group>"; };
 		4B81E0490F45771A0030D3AC /* ADBMylistEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBMylistEntry.h; sourceTree = "<group>"; };
@@ -127,10 +133,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				4B5B70770F4893D200B070E5 /* Hashing classes */,
-				4BAB8F1E0F3C4BB90073CAB4 /* Networking classes */,
-				4B4845510F3E185200DD56C5 /* Transformer classes */,
-				4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */,
 				4B5B73120F49931000B070E5 /* KNKeyArrays.h */,
 				4BE6C44B0F39FBD000123B94 /* KNController.h */,
 				4BE6C44C0F39FBD000123B94 /* KNController.m */,
@@ -140,6 +142,12 @@
 				4B5B73050F49919500B070E5 /* KNPreferences.m */,
 				4B290E320F482120001F51E6 /* NSXMLNode+Extensions.h */,
 				4B290E330F482120001F51E6 /* NSXMLNode+Extensions.m */,
+				4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */,
+				4BAB8F1E0F3C4BB90073CAB4 /* Networking classes */,
+				4B5B70770F4893D200B070E5 /* Hashing classes */,
+				4B4845510F3E185200DD56C5 /* Transformer classes */,
+				4B60EC8D0F54185100AB64F8 /* Mac specific classes */,
+				4B60EC8E0F54186200AB64F8 /* iPhone specific classes */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -198,6 +206,7 @@
 			children = (
 				4B4845D20F3EC9DA00DD56C5 /* Localizable.strings */,
 				8D1107310486CEB800E47090 /* Info.plist */,
+				4B60EC7F0F54172400AB64F8 /* Nijikon iPhone-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 			);
@@ -261,6 +270,24 @@
 				4B5B70800F48949000B070E5 /* KNED2k.m */,
 			);
 			name = "Hashing classes";
+			sourceTree = "<group>";
+		};
+		4B60EC8D0F54185100AB64F8 /* Mac specific classes */ = {
+			isa = PBXGroup;
+			children = (
+				4B60ECA10F541B7100AB64F8 /* KNMacController.h */,
+				4B60ECA20F541B7100AB64F8 /* KNMacController.m */,
+			);
+			name = "Mac specific classes";
+			sourceTree = "<group>";
+		};
+		4B60EC8E0F54186200AB64F8 /* iPhone specific classes */ = {
+			isa = PBXGroup;
+			children = (
+				4B60EC8F0F54189600AB64F8 /* KNiPhoneController.h */,
+				4B60EC900F54189600AB64F8 /* KNiPhoneController.m */,
+			);
+			name = "iPhone specific classes";
 			sourceTree = "<group>";
 		};
 		4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */ = {
@@ -385,6 +412,7 @@
 				4B48BE1C0F4B01C8007B8F51 /* ADBObject.m in Sources */,
 				4B48C0810F4B50E2007B8F51 /* ADBCachedFacade.m in Sources */,
 				4B2020390F50579000229455 /* KNDisplayedNameTransformer.m in Sources */,
+				4B60ECA30F541B7100AB64F8 /* KNMacController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

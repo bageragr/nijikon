@@ -17,7 +17,7 @@
 		document = nil;
 		mylist = [NSArray array];
 		att = [[NSDictionary dictionaryWithObjects:ADBMylistExportKeyArray
-												  forKeys:ADBMylistExportKeyArray] retain];
+										   forKeys:ADBMylistExportKeyArray] retain];
 	}
 	return self;
 }
@@ -48,12 +48,21 @@
 		if (error == nil)
 		{
 			[self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[[document rootElement] attributeForName:@"uid"] stringValue], [[[document rootElement] attributeForName:@"username"] stringValue], [[[document rootElement] attributeForName:@"date"] stringValue], [[[document rootElement] attributeForName:@"size"] stringValue], nil]
-															forKeys:ADBMylistExportKeyArray]];
+													 forKeys:ADBMylistExportKeyArray]];
 			return YES;
 		}
 	}
-	return NO;
-		
+	return NO;		
+}
+
+- (NSArray*)mylistIDs {
+	NSMutableArray* mylistIDs = [NSMutableArray array];
+	NSXMLElement* root = [document rootElement];
+	for (int i = 0; i < [[root children] count]; i++)
+		for (int j = 0; j < [[[[[root children] objectAtIndex:i] childForName:@"files"] children] count]; j++)
+			if (![mylistIDs containsObject:[[[[[[[root children] objectAtIndex:i] childForName:@"files"] children] objectAtIndex:j] attributeForName:@"lid"] stringValue]])
+				[mylistIDs addObject:[[[[[[[root children] objectAtIndex:i] childForName:@"files"] children] objectAtIndex:j] attributeForName:@"lid"] stringValue]];
+	return mylistIDs;
 }
 
 - (NSMutableDictionary*)att

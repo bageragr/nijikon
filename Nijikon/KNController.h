@@ -21,6 +21,9 @@
 
 @interface KNController : NSObject {
 	IBOutlet NSWindow* mainWindow;
+	IBOutlet NSOutlineView* mylistOutline;
+	IBOutlet NSOutlineView* byAnimeOutline;
+	IBOutlet NSOutlineView* byGroupOutline;
 	
 	NSString* path;
 	KNPreferences* preferences;
@@ -31,13 +34,13 @@
 	NSMutableArray* byAnime;
 	
 	NSMutableArray* mylist;
-	NSMutableArray* animeFound;
+	ADBAnime* animeFound;
 }
 - (IBAction)login:(id)sender;
 - (IBAction)logout:(id)sender;
 - (IBAction)saveProperties:(id)sender;
 
-- (ADBConnection*)connection;
+- (ADBFacade*)facade;
 - (KNPreferences*)preferences;
 
 - (NSArray*)byMylist;
@@ -46,9 +49,13 @@
 - (NSMutableArray*)mylist;
 - (void)setMylist:(NSArray*)newMylist;
 
-- (NSMutableArray*)animeFound;
-- (void)setAnimeFound:(NSArray*)newAnimeFound;
+- (ADBAnime*)animeFound;
+- (void)setAnimeFound:(ADBAnime*)newAnimeFound;
+
+- (NSArray*)getWatched:(ADBObject*)adbObject;
+- (NSArray*)getHave:(ADBObject*)adbObject;
 
 - (BOOL)createDatabaseVerbose:(BOOL)verbose;
+- (void)fillDatabaseWithMylistExport:(ADBMylistExport*)mylistExport;
 - (void)fillMylistVerbose:(BOOL)verbose;
 @end

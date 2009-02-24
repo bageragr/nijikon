@@ -26,10 +26,10 @@
 	[super dealloc];
 }
 
-+ (ADBCachedFacade*)cachedFacadeWithLocalPort:(int)localPort
++ (ADBCachedFacade*)cachedFacadeWithHost:(NSHost*)host remotePort:(int)remotePort andLocalPort:(int)localPort
 {
 	ADBCachedFacade* temp = [[ADBCachedFacade alloc] init];
-	[temp setConnection:[ADBConnection connectionWithLocalPort:localPort]];
+	[temp setConnection:[ADBConnection connectionWithHost:host remotePort:remotePort andLocalPort:localPort]];
 	return temp;
 }
 

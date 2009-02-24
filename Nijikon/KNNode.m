@@ -16,7 +16,7 @@
     {
 		[self setRepresentedObject:nil];
 		isLeaf = NO;
-        [self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"type", @"name", [NSNumber numberWithInt:0], [NSNumber numberWithInt:1], nil]
+        [self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"type", @"name", [NSNumber numberWithInt:0], [NSNumber numberWithInt:1], [NSNumber numberWithInt:0], [NSNumber numberWithInt:1], nil]
 												 forKeys:KNNodeKeyArray]];
 		[self setChildren:[NSArray array]];
     }
@@ -31,22 +31,22 @@
     [super dealloc];
 }
 
-+ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt representedObject:(id)object andIsLeaf:(BOOL)newIsLeaf {
++ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt representedObject:(ADBObject*)adbObject andIsLeaf:(BOOL)newIsLeaf {
 	KNNode* temp = [[KNNode alloc] init];
-	[temp setRepresentedObject:object];
+	[temp setRepresentedObject:adbObject];
 	[temp setAtt:newAtt];
 	[temp setIsLeaf:newIsLeaf];
 	return temp;
 }
 
-- (id)representedObject {
+- (ADBObject*)representedObject {
 	return reprObject;
 }
 
-- (void)setRepresentedObject:(id)object {
-	if (reprObject != object) {
+- (void)setRepresentedObject:(ADBObject*)adbObject {
+	if (reprObject != adbObject) {
         [reprObject release];
-        reprObject = [object retain];
+        reprObject = [adbObject retain];
     }
 }
 

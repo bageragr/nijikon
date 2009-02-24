@@ -28,6 +28,13 @@
 	[super dealloc];
 }
 
+- (NSString*)description {
+	NSMutableString* description = [NSMutableString stringWithFormat:@"%@ {\n", [super description]];
+	for (int i = 0; i < [att count]; i++)
+		[description appendFormat:@"[%@]: %@\n", [[att allKeys] objectAtIndex:i], [[att allValues] objectAtIndex:i]];
+	return [description stringByAppendingFormat:@"}"];
+}
+
 + (ADBGroup*)groupWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent {
 	ADBGroup* temp = [[ADBGroup alloc] init];
 	[temp setAtt:newAtt];

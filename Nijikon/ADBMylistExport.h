@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "ADBKeyArrays.h"
+#import "NSXMLNode+Extensions.h"
 
 
 @interface ADBMylistExport : NSObject {
@@ -20,6 +21,8 @@
 + (ADBMylistExport*)mylistExportWithPath:(NSString*)path;
 
 - (BOOL)readXMLFromPath:(NSString*)absolutePath;
+
+- (NSArray*)mylistIDs;
 
 - (NSMutableDictionary*)att;
 - (void)setAtt:(NSDictionary*)newAtt;

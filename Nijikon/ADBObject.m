@@ -31,6 +31,8 @@
 	{
 		[att release];
 		att = [[NSMutableDictionary dictionaryWithDictionary:newAtt] retain];
+		if ([att valueForKeyPath:@"pic"] != nil)
+			[att setValue:[NSString stringWithFormat:@"http://img5.anidb.net/pics/anime/%@", [att valueForKeyPath:@"pic"]] forKey:@"pic"];
 	}
 }
 @end
