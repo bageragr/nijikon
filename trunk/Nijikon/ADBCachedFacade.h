@@ -15,6 +15,8 @@
 	NSMutableDictionary* cache;
 }
 
++ (ADBCachedFacade*)cachedFacadeWithHost:(NSHost*)host remotePort:(int)remotePort andLocalPort:(int)localPort;
+
 - (void)clearCache;
 
 @end

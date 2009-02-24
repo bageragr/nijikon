@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "KNKeyArrays.h"
+#import "ADBObject.h"
 
 
 @interface KNNode : NSObject {
@@ -19,10 +20,10 @@
 	NSMutableArray* children;
 }
 
-+ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt representedObject:(id)object andIsLeaf:(BOOL)newIsLeaf;
++ (KNNode*)nodeWithAttributes:(NSDictionary*)newAtt representedObject:(ADBObject*)adbObject andIsLeaf:(BOOL)newIsLeaf;
 
-- (id)representedObject;
-- (void)setRepresentedObject:(id)object;
+- (ADBObject*)representedObject;
+- (void)setRepresentedObject:(ADBObject*)adbObject;
 
 - (BOOL)isLeaf;
 - (void)setIsLeaf:(BOOL)newIsLeaf;

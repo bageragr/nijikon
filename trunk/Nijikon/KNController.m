@@ -13,25 +13,20 @@
 - (id)init {
 	if(self = [super init])
 	{
-		path = [@"~/Library/Application Support/Nijikon" stringByExpandingTildeInPath];
-		preferences = [KNPreferences preferenceWithPath:[path stringByAppendingString:@"/nijikon.prefs"]];
-		db = [[QuickLiteDatabase databaseWithFile:[path stringByAppendingString:@"/nijikon.db"]] retain];
+		preferences = [KNPreferences preferenceWithPath:[@"~/Library/Application Support/Nijikon/nijikon.prefs" stringByExpandingTildeInPath]];
+		db = [[QuickLiteDatabase databaseWithFile:[[[preferences valueForKeyPath:@"att.databasePath"] stringByExpandingTildeInPath] stringByAppendingPathComponent:[preferences valueForKeyPath:@"att.databaseFile"]]] retain];
 		[db open];//:NO cacheMethod:DoNotCacheData exposeSQLOnNotify:NO debugMode:YES];
-		anidbFacade = [[[ADBCachedFacade alloc] init] retain];
+		anidbFacade = [[ADBCachedFacade cachedFacadeWithHost:[NSHost hostWithName:[preferences valueForKeyPath:@"att.server"]] remotePort:[[preferences valueForKeyPath:@"att.remotePort"] intValue] andLocalPort:[[preferences valueForKeyPath:@"att.localPort"] intValue]] retain];
 		
-		/*if([anidbFacade login:[preferences valueForKeyPath:@"properties.username"] withPassword:[preferences valueForKeyPath:@"properties.password"]]) {
-			[[anidbFacade findAnimeByID:@"61"] insertIntoDatabase:db];
-			[anidbFacade logout];
-		}*/
-		
-		//[self createDatabaseVerbose:NO];
+		//[self fillDatabaseWithMylistExport:[ADBMylistExport mylistExportWithPath:[@"~/Downloads/mylist.xml" stringByExpandingTildeInPath]]];
 		[self fillMylistVerbose:NO];
 	}
 	return self;
 }
 
 - (void)awakeFromNib {
-	
+	[mylistOutline needsDisplay];
+	[byAnimeOutline needsDisplay];
 }
 
 - (BOOL)applicationShouldTerminate:(NSApplication*)app {
@@ -62,21 +57,22 @@
 
 - (IBAction)saveProperties:(id)sender {
 	[preferences persistPreferences];
-	[mainWindow viewsNeedDisplay];
+	[mylistOutline needsDisplay];
+	[byAnimeOutline needsDisplay];
 }
 
 -(BOOL)control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)commandSelector {
     BOOL result = NO;	
     if (commandSelector == @selector(insertNewline:)) {
-		//ADBAnime* tempAnime = [anidbFacade findAnimeByName:[control stringValue]];
-		
+		[self setAnimeFound:[anidbFacade findAnimeByName:[control stringValue]]];
+		[mainWindow viewsNeedDisplay];
 		result = YES;
     }
     return result;
 }
 
-- (ADBConnection*)connection {
-	return [anidbFacade connection];
+- (ADBFacade*)facade {
+	return anidbFacade;
 }
 
 - (KNPreferences*)preferences {
@@ -84,10 +80,9 @@
 }
 
 - (NSArray*)byMylist {
-	NSLog (@"byMylist refreshed");
 	byMylist = [NSMutableArray array];
-	int watched = 0;
-	int maxWatched = 0;
+	NSArray* watched = [NSArray array];
+	NSArray* have = [NSArray array];
 	ADBMylistEntry* mylistEntry = nil;
 	KNNode* mylistEntryNode = nil;
 	KNNode* groupNode = nil;
@@ -96,76 +91,157 @@
 	KNNode* fileNode = nil;
 	
 	for (int i = 0; i < [mylist count]; i++) {
-		mylistEntry = [mylist objectAtIndex:i];	
-		watched = 0;
-		maxWatched = 0;
-		for (int j = 0; j < [mylist count]; j++)
-			if ([(NSString*)[[mylist objectAtIndex:j] valueForKeyPath:@"att.groupID"] isEqualToString:[mylistEntry valueForKeyPath:@"att.groupID"]]) {
-				watched += (int)([[[mylist objectAtIndex:j] valueForKeyPath:@"att.viewdate"] intValue] > 0);
-				maxWatched++;
-			}
+		mylistEntry = [mylist objectAtIndex:i];
+		watched = [self getWatched:[mylistEntry group]];
+		have = [self getHave:[mylistEntry group]];
 		groupNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Group", @"Type for ADBGroup nodes"), 
 																					[mylistEntry valueForKeyPath:@"group.att.name"],
-																					[NSNumber numberWithInt:watched],
-																					[NSNumber numberWithInt:maxWatched], nil]
+																					[watched objectAtIndex:0],
+																					[watched objectAtIndex:1],
+																					[have objectAtIndex:0],
+																					[have objectAtIndex:1], nil]
 																		   forKeys:KNNodeKeyArray] representedObject:[mylistEntry group] andIsLeaf:YES];
-		watched = 0;
-		maxWatched = 0;
-		for (int j = 0; j < [mylist count]; j++)
-			if ([(NSString*)[[mylist objectAtIndex:j] valueForKeyPath:@"att.animeID"] isEqualToString:[mylistEntry valueForKeyPath:@"att.animeID"]]) {
-				watched += (int)([[[mylist objectAtIndex:j] valueForKeyPath:@"att.viewdate"] intValue] > 0);
-				maxWatched++;
-			}
+		watched = [self getWatched:[mylistEntry anime]];
+		have = [self getHave:[mylistEntry anime]];
 		animeNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Anime", @"Type for ADBAnime nodes"), 
 																					[mylistEntry valueForKeyPath:[NSString stringWithFormat:@"anime.att.%@", [preferences valueForKeyPath:@"att.animeName"]]],
-																					[NSNumber numberWithInt:watched],
-																					[NSNumber numberWithInt:maxWatched], nil]
+																					[watched objectAtIndex:0],
+																					[watched objectAtIndex:1],
+																					[have objectAtIndex:0],
+																					[have objectAtIndex:1], nil]
 																		   forKeys:KNNodeKeyArray] representedObject:[mylistEntry anime] andIsLeaf:YES];
-		watched = 0;
-		maxWatched = 0;
-		for (int j = 0; j < [mylist count]; j++)
-			if ([(NSString*)[[mylist objectAtIndex:j] valueForKeyPath:@"att.episodeID"] isEqualToString:[mylistEntry valueForKeyPath:@"att.episodeID"]]) {
-				watched += (int)([[[mylist objectAtIndex:j] valueForKeyPath:@"att.viewdate"] intValue] > 0);
-				maxWatched++;
-			}
+		watched = [self getWatched:[mylistEntry episode]];
+		have = [self getHave:[mylistEntry episode]];
 		episodeNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Episode", @"Type for ADBEpisode nodes"), 
 																					  [mylistEntry valueForKeyPath:[NSString stringWithFormat:@"episode.att.%@", [preferences valueForKeyPath:@"att.episodeName"]]],
-																					  [NSNumber numberWithInt:watched],
-																					  [NSNumber numberWithInt:maxWatched], nil]
+																					  [watched objectAtIndex:0],
+																					  [watched objectAtIndex:1],
+																					  [have objectAtIndex:0],
+																					  [have objectAtIndex:1], nil]
 																			 forKeys:KNNodeKeyArray] representedObject:[mylistEntry episode] andIsLeaf:YES];
-		watched = (int)([[mylistEntry valueForKeyPath:@"att.viewdate"] intValue] > 0);
-		maxWatched = 1;
+		watched = [self getWatched:mylistEntry];
+		have = [self getHave:mylistEntry];
 		fileNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"File", @"Type for ADBFile nodes"), 
 																				   [NSString stringWithFormat:@"f%@", [mylistEntry valueForKeyPath:@"file.att.fileID"]],
-																				   [NSNumber numberWithInt:watched],
-																				   [NSNumber numberWithInt:maxWatched], nil]
+																				   [watched objectAtIndex:0],
+																				   [watched objectAtIndex:1],
+																				   [have objectAtIndex:0],
+																				   [have objectAtIndex:1], nil]
 																		  forKeys:KNNodeKeyArray] representedObject:[mylistEntry file] andIsLeaf:YES];
 		mylistEntryNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Mylist entry", @"Type for ADBMylistEntry nodes"), 
 																						  [NSString stringWithFormat:NSLocalizedString(@"%@ - %@ (by %@)", @"Name for ADBMylistEntry nodes (<Anime> - <Epnumber> (by <Group>))"),
 																						   [mylistEntry valueForKeyPath:[NSString stringWithFormat:@"anime.att.%@", [preferences valueForKeyPath:@"att.animeName"]]],
 																						   [mylistEntry valueForKeyPath:@"episode.att.epnumber"],
 																						   [mylistEntry valueForKeyPath:@"group.att.name"]],
-																						  [NSNumber numberWithInt:watched],
-																						  [NSNumber numberWithInt:maxWatched], nil]
+																						  [watched objectAtIndex:0],
+																						  [watched objectAtIndex:1],
+																						  [have objectAtIndex:0],
+																						  [have objectAtIndex:1], nil]
 																				 forKeys:KNNodeKeyArray] representedObject:mylistEntry andIsLeaf:NO];
 		[mylistEntryNode setChildren:[NSArray arrayWithObjects:groupNode, animeNode, episodeNode, fileNode, nil]];
 		[byMylist addObject:mylistEntryNode];
 	}
+	
+	NSLog (@"byMylist refreshed");
 	return byMylist;
 }
 
 - (NSArray*)byAnime {
-	NSLog (@"byAnime refreshed");
 	byAnime = [NSMutableArray array];
-	int watched = 0;
-	int maxWatched = 0;
+	NSArray* watched = [NSArray array];
+	NSArray* have = [NSArray array];
 	ADBMylistEntry* mylistEntry = nil;
-	KNNode* mylistEntryNode = nil;
-	KNNode* groupNode = nil;
+	ADBAnime* anime = nil;
+	ADBGroup* group = nil;
+	ADBEpisode* episode = nil;
 	KNNode* animeNode = nil;
+	KNNode* groupNode = nil;
 	KNNode* episodeNode = nil;
 	KNNode* fileNode = nil;
 	
+	BOOL doContinue = NO;
+	for (int i = 0; i < [mylist count]; i++) {
+		mylistEntry = [mylist objectAtIndex:i];
+		doContinue = NO;
+		for (int j = 0; j < [byAnime count]; j++)
+			if ([[[byAnime objectAtIndex:j] representedObject] isEqualTo:[mylistEntry anime]])
+				doContinue = YES;
+		if (doContinue)
+			continue;
+		
+		anime = [mylistEntry anime];
+		watched = [self getWatched:anime];
+		have = [self getHave:anime];
+		animeNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Anime", @"Type for ADBAnime nodes"), 
+																					[anime valueForKeyPath:[NSString stringWithFormat:@"att.romaji"/*, [preferences valueForKeyPath:@"att.animeName"]*/]],
+																					[watched objectAtIndex:0],
+																					[watched objectAtIndex:1],
+																					[have objectAtIndex:0],
+																					[have objectAtIndex:1], nil]
+																		   forKeys:KNNodeKeyArray] representedObject:anime andIsLeaf:NO];
+		for (int j = 0; j < [mylist count]; j++) {
+			mylistEntry = [mylist objectAtIndex:j];
+			if ([[mylistEntry anime] isEqualTo:anime]) {
+				doContinue = NO;
+				for (int k = 0; k < [[animeNode children] count]; k++)
+					if ([[[[animeNode children] objectAtIndex:k] representedObject] isEqualTo:[mylistEntry group]])
+						doContinue = YES;
+				if (doContinue)
+					continue;
+				
+				group = [mylistEntry group];
+				watched = [self getWatched:group];
+				have = [self getHave:group];
+				groupNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Group", @"Type for ADBGroup nodes"), 
+																							[group valueForKeyPath:@"att.name"],
+																							[watched objectAtIndex:0],
+																							[watched objectAtIndex:1],
+																							[have objectAtIndex:0],
+																							[have objectAtIndex:1], nil]
+																				   forKeys:KNNodeKeyArray] representedObject:group andIsLeaf:NO];
+				for (int k = 0; k < [mylist count]; k++) {
+					mylistEntry = [mylist objectAtIndex:k];
+					if ([[mylistEntry group] isEqualTo:group]) {
+						doContinue = NO;
+						for (int l = 0; l < [[groupNode children] count]; l++)
+							if ([[[[groupNode children] objectAtIndex:l] representedObject] isEqualTo:[mylistEntry episode]])
+								doContinue = YES;
+						if (doContinue)
+							continue;
+						
+						episode = [mylistEntry episode];
+						watched = [self getWatched:episode];
+						have = [self getHave:episode];
+						episodeNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"Episode", @"Type for ADBEpisode nodes"), 
+																									  [NSString stringWithFormat:@"%@ - %@", [episode valueForKeyPath:@"att.epnumber"], [episode valueForKeyPath:[NSString stringWithFormat:@"att.%@", [preferences valueForKeyPath:@"att.episodeName"]]]],
+																									  [watched objectAtIndex:0],
+																									  [watched objectAtIndex:1],
+																									  [have objectAtIndex:0],
+																									  [have objectAtIndex:1], nil]
+																							 forKeys:KNNodeKeyArray] representedObject:episode andIsLeaf:NO];
+						for (int l = 0; l < [mylist count]; l++)
+							if ([[[mylist objectAtIndex:l] anime] isEqualTo:anime] && [[[mylist objectAtIndex:l] group] isEqualTo:group] && [[[mylist objectAtIndex:l] episode] isEqualTo:episode]) {
+								watched = [self getWatched:[mylist objectAtIndex:l]];
+								have = [self getHave:[mylist objectAtIndex:l]];
+								fileNode = [KNNode nodeWithAttributes:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:NSLocalizedString(@"File", @"Type for ADBFile nodes"), 
+																										   [NSString stringWithFormat:@"f%@", [[mylist objectAtIndex:l] valueForKeyPath:@"file.att.fileID"]],
+																										   [watched objectAtIndex:0],
+																										   [watched objectAtIndex:1],
+																										   [have objectAtIndex:0],
+																										   [have objectAtIndex:1], nil]
+																								  forKeys:KNNodeKeyArray] representedObject:[[mylist objectAtIndex:l] file] andIsLeaf:YES];
+								[[episodeNode children] addObject:fileNode];
+							}
+						[[groupNode children] addObject:episodeNode];
+					}
+				}
+				[[animeNode children] addObject:groupNode];
+			}
+		}
+		[byAnime addObject:animeNode];
+	}
+	
+	NSLog (@"byAnime refreshed");
 	return byAnime;
 }
 
@@ -182,17 +258,85 @@
 	}
 }
 
-- (NSMutableArray*)animeFound {
+- (ADBAnime*)animeFound {
 	return animeFound;
 }
 
-- (void)setAnimeFound:(NSArray*)newAnimeFound {
+- (void)setAnimeFound:(ADBAnime*)newAnimeFound {
 	if(animeFound != newAnimeFound)
 	{
 		[animeFound release];
-		animeFound = [[NSMutableArray alloc] initWithArray:newAnimeFound];
-		[animeFound retain];
+		animeFound = [newAnimeFound retain];
 	}
+}
+
+- (NSArray*)getWatched:(ADBObject*)adbObject {
+	int watched = 0;
+	int maxWatched = 0;
+	if ([adbObject isKindOfClass:[ADBMylistEntry class]]) {
+		watched = (int)([[adbObject valueForKeyPath:@"att.viewdate"] intValue] > 0);
+		maxWatched = 1;
+	}
+	if ([adbObject isKindOfClass:[ADBFile class]]) {
+		for (int i = 0; i < [mylist count]; i++)
+			if ([[[mylist objectAtIndex:i] file] isEqualTo:adbObject]) {
+				watched = [[[self getWatched:[mylist objectAtIndex:i]] objectAtIndex:0] intValue];
+				maxWatched = 1;
+			}
+	}
+	if ([adbObject isKindOfClass:[ADBEpisode class]]) {
+		for (int i = 0; i < [mylist count]; i++)
+			if ([[[mylist objectAtIndex:i] episode] isEqualTo:adbObject]) {
+				watched += [[[self getWatched:[mylist objectAtIndex:i]] objectAtIndex:0] intValue];
+				maxWatched++;
+			}
+	}
+	if ([adbObject isKindOfClass:[ADBAnime class]]) {
+		NSMutableArray* episodes = [NSMutableArray array];
+		for (int i = 0; i < [mylist count]; i++)
+			if ([[[mylist objectAtIndex:i] anime] isEqualTo:adbObject])
+				if (![episodes containsObject:[[mylist objectAtIndex:i] episode]]) {
+					[episodes addObject:[[mylist objectAtIndex:i] episode]];
+					watched += (int)([[[self getWatched:[[mylist objectAtIndex:i] episode]] objectAtIndex:0] intValue] > 0);
+					maxWatched++;
+				}
+	}
+	return [NSArray arrayWithObjects:[NSNumber numberWithInt:watched], [NSNumber numberWithInt:maxWatched], nil];
+}
+
+- (NSArray*)getHave:(ADBObject*)adbObject {
+	int have = 0;
+	int maxHave = 1;
+	if ([adbObject isKindOfClass:[ADBMylistEntry class]]) {
+		have = (int)([[adbObject valueForKeyPath:@"att.state"] intValue] == 0 || [[adbObject valueForKeyPath:@"att.state"] intValue] == 1 || [[adbObject valueForKeyPath:@"att.state"] intValue] == 2);
+	}
+	if ([adbObject isKindOfClass:[ADBFile class]]) {
+		for (int i = 0; i < [mylist count]; i++)
+			if ([[[mylist objectAtIndex:i] file] isEqualTo:adbObject]) {
+				have = [[[self getHave:[mylist objectAtIndex:i]] objectAtIndex:0] intValue];
+			}
+	}
+	if ([adbObject isKindOfClass:[ADBEpisode class]]) {
+		for (int i = 0; i < [mylist count]; i++)
+			if ([[[mylist objectAtIndex:i] episode] isEqualTo:adbObject]) {
+				have = 1;
+				break;
+			}
+	}
+	if ([adbObject isKindOfClass:[ADBAnime class]]) {
+		NSMutableArray* episodes = [NSMutableArray array];
+		for (int i = 0; i < [mylist count]; i++)
+			if ([[[mylist objectAtIndex:i] anime] isEqualTo:adbObject])
+				if (![episodes containsObject:[[mylist objectAtIndex:i] episode]] && [[[mylist objectAtIndex:i] episode] isNormal]) {
+					[episodes addObject:[[mylist objectAtIndex:i] episode]];
+					have++;
+				}
+		maxHave = [[adbObject valueForKeyPath:@"att.nEps"] intValue];
+		
+	}
+	if ([adbObject isKindOfClass:[ADBGroup class]])
+		maxHave = 0;
+	return [NSArray arrayWithObjects:[NSNumber numberWithInt:have], [NSNumber numberWithInt:maxHave], nil];
 }
 
 - (BOOL)createDatabaseVerbose:(BOOL)verbose {
@@ -218,41 +362,33 @@
 		if (verbose) NSLog(@"Testing table \"%@\": %@", [tables objectAtIndex:i], [db performQuery:[NSString stringWithFormat:@"select * from %@", [tables objectAtIndex:i]] cacheMethod:DoNotCacheData]);
 	}
 	
-	[db insertValues:[NSArray arrayWithObjects:[NSNull null], @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", @"", nil]
-		  forColumns:ADBAnimeColumnArray inTable:@"anime"];
-	if (verbose) NSLog(@"Testing table \"%@\": %@", @"anime", [db performQuery:[NSString stringWithFormat:@"select * from %@", @"anime"] cacheMethod:DoNotCacheData]);
-	
-	//dummy data
+	[db commitTransaction];
+	return YES;
+}
+
+- (void)fillDatabaseWithMylistExport:(ADBMylistExport*)mylistExport {
 	if ([anidbFacade login:[preferences valueForKeyPath:@"att.username"] withPassword:[preferences valueForKeyPath:@"att.password"]]) {
-		NSArray* mylistIDs = [NSArray arrayWithObjects:@"60787305", @"60787306", @"60787307", @"60787308", @"60787309", @"60786550", nil];
+		NSArray* mylistIDs = [mylistExport mylistIDs];
+		NSLog(@"%@", mylistIDs);
 		
 		ADBMylistEntry* temp = nil;
 		
 		for (int i = 0; i < [mylistIDs count]; i++) {
 			temp = [anidbFacade findMylistEntryByID:[mylistIDs objectAtIndex:i]];
-			if (verbose) NSLog(@"MylistEntry: lid=%@", [temp valueForKeyPath:@"att.mylistID"]);
+			NSLog(@"MylistEntry (l%@)", [temp valueForKeyPath:@"att.mylistID"]);
 			[temp setGroup:[anidbFacade findGroupByID:[temp valueForKeyPath:@"att.groupID"]]];
-			if (verbose) NSLog(@"	Group: %@", [temp valueForKeyPath:@"group.att.name"]);
 			[temp setAnime:[anidbFacade findAnimeByID:[temp valueForKeyPath:@"att.animeID"]]];
-			if (verbose) NSLog(@"	Anime: %@", [temp valueForKeyPath:@"anime.att.romaji"]);
 			[temp setEpisode:[anidbFacade findEpisodeByID:[temp valueForKeyPath:@"att.episodeID"]]];
-			if (verbose) NSLog(@"	Episode: %@", [temp valueForKeyPath:@"episode.att.romaji"]);
 			[temp setFile:[anidbFacade findFileByID:[temp valueForKeyPath:@"att.fileID"]]];
-			if (verbose) NSLog(@"	File: %@", [temp valueForKeyPath:@"file.att.filename"]);
 			[temp insertIntoDatabase:db];
 		}
 	}
-	
-	[db commitTransaction];
-	[db closeSavingChanges:YES];
 	[anidbFacade logout];
-	return YES;
 }
 
 - (void)fillMylistVerbose:(BOOL)verbose {
 	[self setMylist:[NSMutableArray array]];
 	
-	//See ADBCachedFacade -init
 	NSMutableDictionary* cache = [NSMutableDictionary dictionary];
 	QuickLiteCursor* cursor;
 	ADBMylistEntry* temp;
@@ -275,15 +411,15 @@
 	cursor = [db performQuery:@"select * from mylist" cacheMethod:DoNotCacheData];
 	for (int i = 0; i < [cursor rowCount]; i++) {
 		temp = [ADBMylistEntry mylistEntryWithQuickliteRow:[cursor rowAtIndex:i]];
-		if (verbose) NSLog(@"MylistEntry: lid=%@", [temp valueForKeyPath:@"att.mylistID"]);
+		if (verbose) NSLog(@"MylistEntry: (l%@)", [temp valueForKeyPath:@"att.mylistID"]);
 		[temp setGroup:[cache valueForKey:[NSString stringWithFormat:@"groups(%@)", [temp valueForKeyPath:@"att.groupID"]]]];
-		if (verbose) NSLog(@"	Group: %@", [temp valueForKeyPath:@"group.att.name"]);
+		if (verbose) NSLog(@"	Group: %@ (g%@)", [temp valueForKeyPath:@"group.att.name"], [temp valueForKeyPath:@"group.att.groupID"]);
 		[temp setAnime:[cache valueForKey:[NSString stringWithFormat:@"anime(%@)", [temp valueForKeyPath:@"att.animeID"]]]];
-		if (verbose) NSLog(@"	Anime: %@", [temp valueForKeyPath:@"anime.att.romaji"]);
+		if (verbose) NSLog(@"	Anime: %@ (a%@)", [temp valueForKeyPath:@"anime.att.romaji"], [temp valueForKeyPath:@"anime.att.animeID"]);
 		[temp setEpisode:[cache valueForKey:[NSString stringWithFormat:@"episodes(%@)", [temp valueForKeyPath:@"att.episodeID"]]]];
-		if (verbose) NSLog(@"	Episode: %@", [temp valueForKeyPath:@"episode.att.romaji"]);
+		if (verbose) NSLog(@"	Episode: %@ (e%@)", [temp valueForKeyPath:@"episode.att.romaji"], [temp valueForKeyPath:@"episode.att.episodeID"]);
 		[temp setFile:[cache valueForKey:[NSString stringWithFormat:@"files(%@)", [temp valueForKeyPath:@"att.fileID"]]]];
-		if (verbose) NSLog(@"	File: %@", [temp valueForKeyPath:@"file.att.filename"]);
+		if (verbose) NSLog(@"	File: (f%@)", [temp valueForKeyPath:@"file.att.fileID"]);
 		[mylist addObject:temp];
 	}
 }

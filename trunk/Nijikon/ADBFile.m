@@ -27,6 +27,13 @@
 	[super dealloc];
 }
 
+- (NSString*)description {
+	NSMutableString* description = [NSMutableString stringWithFormat:@"%@ {\n", [super description]];
+	for (int i = 0; i < [att count]; i++)
+		[description appendFormat:@"[%@]: %@\n", [[att allKeys] objectAtIndex:i], [[att allValues] objectAtIndex:i]];
+	return [description stringByAppendingFormat:@"}"];
+}
+
 + (ADBFile*)fileWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent {
 	ADBFile* temp = [[ADBFile alloc] init];
 	[temp setAtt:newAtt];

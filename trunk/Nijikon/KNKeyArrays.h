@@ -6,6 +6,6 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#define KNNodeKeyArray [NSArray arrayWithObjects:@"type", @"name", @"watchedValue", @"watchedMax", nil]
+#define KNNodeKeyArray [NSArray arrayWithObjects:@"type", @"name", @"watchedValue", @"watchedMax", @"haveValue", @"haveMax", nil]
 
-#define KNPreferencesKeyArray [NSArray arrayWithObjects:@"username", @"password", @"localport", @"animeName", @"episodeName", nil]
+#define KNPreferencesKeyArray [NSArray arrayWithObjects:@"databasePath", @"databaseFile", @"username", @"password", @"server", @"remotePort", @"localport", @"animeName", @"episodeName", nil]

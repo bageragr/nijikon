@@ -20,7 +20,7 @@
 	ADBConnection* anidb;
 }
 
-+ (ADBFacade*)facadeWithLocalPort:(int)localPort;
++ (ADBFacade*)facadeWithHost:(NSHost*)host remotePort:(int)remotePort andLocalPort:(int)localPort;
 
 - (BOOL)login:(NSString*)username withPassword:(NSString*)password;
 - (BOOL)logout;
@@ -30,10 +30,6 @@
 - (ADBMylistEntry*)findMylistEntryByID:(NSString*)mylistID;
 - (ADBMylistEntry*)findMylistEntryByFileID:(NSString*)fileID;
 - (ADBMylistEntry*)findMylistEntryBySize:(NSString*)sizeInBytes andED2k:(NSString*)hash;
-- (ADBMylistEntry*)findMylistEntryByAnimeName:(NSString*)animeName groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber;
-- (ADBMylistEntry*)findMylistEntryByAnimeName:(NSString*)animeName groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber;
-- (ADBMylistEntry*)findMylistEntryByAnimeID:(NSString*)animeID groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber;
-- (ADBMylistEntry*)findMylistEntryByAnimeID:(NSString*)animeID groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber;
 
 - (ADBGroup*)findGroupByID:(NSString*)groupID;
 - (ADBGroup*)findGroupByName:(NSString*)name;

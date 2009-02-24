@@ -21,6 +21,13 @@
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database;
 
+- (BOOL)isSpecial;
+- (BOOL)isCredits;
+- (BOOL)isTrailer;
+- (BOOL)isParody;
+- (BOOL)isOther;
+- (BOOL)isNormal;
+
 - (ADBMylistEntry*)parent;
 - (void)setParent:(ADBMylistEntry*)newParent;
 

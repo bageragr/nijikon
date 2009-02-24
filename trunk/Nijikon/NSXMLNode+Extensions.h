@@ -11,7 +11,7 @@
 
 @interface NSXMLNode(KNExtensions)
 
-- (NSXMLNode *)childNamed:(NSString *)name;
+- (NSXMLNode *)childForName:(NSString *)name;
 - (NSArray *)childrenAsStrings;
 
 @end

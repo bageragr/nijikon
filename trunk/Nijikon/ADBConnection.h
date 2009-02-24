@@ -19,13 +19,12 @@
 @interface ADBConnection : NSObject {
 	EDUDPSocket* udpSocket;
 	NSDate* lastAccess;
-	NSMutableArray* connectionLog;
 	
 	NSNumber* status;
 	NSString* sessionKey;
 }
 
-+ (ADBConnection*)connectionWithLocalPort:(int)localPort;
++ (ADBConnection*)connectionWithHost:(NSHost*)host remotePort:(int)remotePort andLocalPort:(int)localPort;
 
 - (void)send:(NSString*)aString usingEncoding:(NSStringEncoding)encoding;
 - (NSString*)receiveUsingEncoding:(NSStringEncoding)encoding;
@@ -40,9 +39,6 @@
 - (void)setSessionKey:(NSString*)newSessionKey;
 - (void)setSession:(NSString*)newSessionKey;
 - (void)clearSession;
-
-- (NSString*)tailLog;
-- (NSArray*)log;
 
 - (void)logLine:(NSString*)logEntry;
 @end

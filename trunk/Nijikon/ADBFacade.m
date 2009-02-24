@@ -25,10 +25,10 @@
 	[super dealloc];
 }
 
-+ (ADBFacade*)facadeWithLocalPort:(int)localPort
++ (ADBFacade*)facadeWithHost:(NSHost*)host remotePort:(int)remotePort andLocalPort:(int)localPort
 {
 	ADBFacade* temp = [[ADBFacade alloc] init];
-	[temp setConnection:[ADBConnection connectionWithLocalPort:localPort]];
+	[temp setConnection:[ADBConnection connectionWithHost:host remotePort:remotePort andLocalPort:localPort]];
 	return temp;
 }
 
@@ -38,11 +38,12 @@
 }
 
 - (BOOL)login:(NSString*)aUsername withPassword:(NSString*)aPassword {
+	if ([[anidb status] intValue] >= 2)
+		return YES;
 	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"AUTH user=%@&pass=%@&protover=%@&client=%@&clientver=%@&nat=%@&enc=%@", [aUsername lowercaseString], aPassword, PROTOCOLVER, CLIENT, CLIENTVER, @"1", DEFAULT_ENCODING]
 																   appendSessionKey:NO];
 	switch ([[response objectAtIndex:0] intValue]) {
 		case RC_LOGIN_ACCEPTED:
-			NSLog(@"Logged in (%@)", [[response objectAtIndex:1] substringToIndex:5]);
 			[anidb setSession:[[response objectAtIndex:1] substringToIndex:5]];
 			return YES;
 		case RC_BANNED:
@@ -161,66 +162,6 @@
 			return nil;
 	}
 }
-- (ADBMylistEntry*)findMylistEntryByAnimeName:(NSString*)animeName groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
-																   appendSessionKey:YES];
-	NSMutableArray* values = [NSMutableArray array];
-	for (int i = 2; i < [response count]; i++)
-		[values addObject:[response objectAtIndex:i]];
-	
-	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
-			return nil;
-		default:
-			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
-			return nil;
-	}
-}
-- (ADBMylistEntry*)findMylistEntryByAnimeName:(NSString*)animeName groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
-																   appendSessionKey:YES];
-	NSMutableArray* values = [NSMutableArray array];
-	for (int i = 2; i < [response count]; i++)
-		[values addObject:[response objectAtIndex:i]];
-	
-	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
-			return nil;
-		default:
-			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
-			return nil;
-	}
-}
-- (ADBMylistEntry*)findMylistEntryByAnimeID:(NSString*)animeID groupName:(NSString*)groupName andEpNumber:(NSString*)epnumber {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
-																   appendSessionKey:YES];
-	NSMutableArray* values = [NSMutableArray array];
-	for (int i = 2; i < [response count]; i++)
-		[values addObject:[response objectAtIndex:i]];
-	
-	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
-			return nil;
-		default:
-			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
-			return nil;
-	}
-}
-- (ADBMylistEntry*)findMylistEntryByAnimeID:(NSString*)animeID groupID:(NSString*)groupID andEpNumber:(NSString*)epnumber {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
-																   appendSessionKey:YES];
-	NSMutableArray* values = [NSMutableArray array];
-	for (int i = 2; i < [response count]; i++)
-		[values addObject:[response objectAtIndex:i]];
-	
-	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
-			return nil;
-		default:
-			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
-			return nil;
-	}
-}
 
 - (ADBGroup*)findGroupByID:(NSString*)groupID {
 	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"GROUP gid=%@&s=", groupID]
@@ -241,14 +182,17 @@
 	}
 }
 - (ADBGroup*)findGroupByName:(NSString*)name {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"GROUP gname=%@&s=", name]
 																   appendSessionKey:YES];
 	NSMutableArray* values = [NSMutableArray array];
 	for (int i = 2; i < [response count]; i++)
 		[values addObject:[response objectAtIndex:i]];
 	
 	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
+		case RC_GROUP:
+			return [ADBGroup groupWithAttributes:[NSDictionary dictionaryWithObjects:values
+																			 forKeys:ADBGroupKeyArray] andParent:nil];
+		case RC_NO_SUCH_GROUP:
 			return nil;
 		default:
 			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
@@ -268,20 +212,26 @@
 		case RC_ANIME:
 			return [ADBAnime animeWithAttributes:[NSDictionary dictionaryWithObjects:values
 																			 forKeys:ADBAnimeKeyArray] andParent:nil];
+		case RC_NO_SUCH_ANIME:
+			return nil;
 		default:
 			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
 			return nil;
 	}
 }
 - (ADBAnime*)findAnimeByName:(NSString*)name {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"ANIME aname=%@&amask=%@&s=", name, DEFAULT_AMASK]
 																   appendSessionKey:YES];
 	NSMutableArray* values = [NSMutableArray array];
 	for (int i = 2; i < [response count]; i++)
 		[values addObject:[response objectAtIndex:i]];
+	[values addObject:@"No description"];
 	
 	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
+		case RC_ANIME:
+			return [ADBAnime animeWithAttributes:[NSDictionary dictionaryWithObjects:values
+																			 forKeys:ADBAnimeKeyArray] andParent:nil];
+		case RC_NO_SUCH_ANIME:
 			return nil;
 		default:
 			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
@@ -289,15 +239,16 @@
 	}
 }
 - (NSString*)findDescriptionForAnimeByID:(NSString*)animeID {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"ANIMEDESC aid=%@&part=%@&s=", animeID, @"0"]
 																   appendSessionKey:YES];
-	NSMutableArray* values = [NSMutableArray array];
-	for (int i = 2; i < [response count]; i++)
-		[values addObject:[response objectAtIndex:i]];
-	
 	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
+		case RC_ANIME_DESCRIPTION:
+			//NSMutableString* description = [NSMutableString stringWithString:[response objectAtIndex:4]];
 			return nil;
+		case RC_NO_SUCH_ANIME:
+			return nil;
+		case RC_NO_SUCH_ANIME_DESCRIPTION:
+			return @"No description";
 		default:
 			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
 			return nil;

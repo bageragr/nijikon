@@ -6,8 +6,6 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#define COMMA_SEPARATED_LISTS [NSArray array]//WithObjects:@"categList", @"categWeightList", @"categIDList", nil]
-#define APOSTROPHE_SEPARATED_LISTS [NSArray array]//WithObjects:@"relList", @"relType", @"others", @"shortNames", @"synonyms", @"prodNameList", @"prodIDList", nil]
 #define TABLE @"anime"
 
 #import "ADBAnime.h"
@@ -27,6 +25,13 @@
 	[super dealloc];
 }
 
+- (NSString*)description {
+	NSMutableString* description = [NSMutableString stringWithFormat:@"%@ {\n", [super description]];
+	for (int i = 0; i < [att count]; i++)
+		[description appendFormat:@"[%@]: %@\n", [[att allKeys] objectAtIndex:i], [[att allValues] objectAtIndex:i]];
+	return [description stringByAppendingFormat:@"}"];
+}
+
 + (ADBAnime*)animeWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent {
 	ADBAnime* temp = [[ADBAnime alloc] init];
 	[temp setAtt:newAtt];
@@ -44,8 +49,6 @@
 }
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database {
-	for (int i = 0; i < [att count]; i++)
-		NSLog(@"[%@]\t\t%@", [[att allKeys] objectAtIndex:i], [[att allValues] objectAtIndex:i]);
 	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
 				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
 }

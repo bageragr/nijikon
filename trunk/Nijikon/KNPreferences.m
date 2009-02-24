@@ -15,7 +15,7 @@
 	if ([super init]) {
 		path = nil;
 		document = nil;
-		[self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"", @"", @"19442", @"romaji", @"romaji", nil]
+		[self setAtt:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"~/Library/Application Support/Nijikon", @"nijikon.db", @"", @"", @"api.anidb.info", @"9000", @"19442", @"romaji", @"english", nil]
 														forKeys:KNPreferencesKeyArray]];
 	}
 	return self;
