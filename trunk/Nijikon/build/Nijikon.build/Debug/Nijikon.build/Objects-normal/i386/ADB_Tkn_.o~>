@@ -1,0 +1,9 @@
+In file included from /Users/Pipelynx/Documents/[Projects]/Nijikon/ADB_Tkn_.m:13:
+/Users/Pipelynx/Documents/[Projects]/Nijikon/ADB_Tkn_.h:12: error: cannot find interface declaration for 'ADBObject', superclass of 'ADB_Tkn_'
+/Users/Pipelynx/Documents/[Projects]/Nijikon/ADB_Tkn_.h:13: error: syntax error before 'ADBMylistEntry'
+/Users/Pipelynx/Documents/[Projects]/Nijikon/ADB_Tkn_.h:17: error: syntax error before 'ADBMylistEntry'
+/Users/Pipelynx/Documents/[Projects]/Nijikon/ADB_Tkn_.h:18: error: syntax error before 'QuickLiteRow'
+/Users/Pipelynx/Documents/[Projects]/Nijikon/ADB_Tkn_.h:20: error: syntax error before 'QuickLiteDatabase'
+/Users/Pipelynx/Documents/[Projects]/Nijikon/ADB_Tkn_.h:22: fatal error: method definition not in @implementation context
+compilation terminated.
+{standard input}:32:FATAL:.abort  detected.  Assembly stopping.

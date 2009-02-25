@@ -1,0 +1,2 @@
+In file included from /Users/Pipelynx/Documents/[Projects]/Nijikon/KNMacController.m:9:
+/Users/Pipelynx/Documents/[Projects]/Nijikon/KNMacController.h:12: error: cannot find interface declaration for 'KNController', superclass of 'KNMacController'
