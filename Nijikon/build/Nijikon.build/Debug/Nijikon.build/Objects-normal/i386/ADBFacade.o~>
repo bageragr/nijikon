@@ -1,0 +1,2 @@
+/Users/Pipelynx/Documents/[Projects]/Nijikon/ADBFacade.m: In function '-[ADBFacade login:withPassword:]':
+/Users/Pipelynx/Documents/[Projects]/Nijikon/ADBFacade.m:41: warning: comparison between pointer and integer
