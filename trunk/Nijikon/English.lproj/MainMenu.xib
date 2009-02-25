@@ -8,8 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
-			<integer value="29"/>
+			<integer value="556"/>
 			<integer value="780"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -2609,7 +2608,7 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 				<string key="NSClassName">NSFontManager</string>
 			</object>
 			<object class="NSCustomObject" id="65989237">
-				<string key="NSClassName">KNMacController</string>
+				<string key="NSClassName">PLMacController</string>
 			</object>
 			<object class="NSObjectController" id="615251010">
 				<object class="NSMutableArray" key="NSDeclaredKeys">
@@ -2660,7 +2659,7 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 					<string>att.haveMax</string>
 					<string>att.haveValue</string>
 				</object>
-				<string key="NSObjectClassName">KNNode</string>
+				<string key="NSObjectClassName">PLNode</string>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
 				<bool key="NSAvoidsEmptySelection">YES</bool>
 				<bool key="NSPreservesSelection">YES</bool>
@@ -2678,7 +2677,7 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 					<string>att.haveValue</string>
 					<string>att.haveMax</string>
 				</object>
-				<string key="NSObjectClassName">KNNode</string>
+				<string key="NSObjectClassName">PLNode</string>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
 				<bool key="NSAvoidsEmptySelection">YES</bool>
 				<bool key="NSPreservesSelection">YES</bool>
@@ -3357,46 +3356,6 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectedTag: selection.animeName</string>
-						<reference key="source" ref="799099123"/>
-						<reference key="destination" ref="205242965"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="799099123"/>
-							<reference key="NSDestination" ref="205242965"/>
-							<string key="NSLabel">selectedTag: selection.animeName</string>
-							<string key="NSBinding">selectedTag</string>
-							<string key="NSKeyPath">selection.animeName</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">KNDisplayedNameTransformer</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">889</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectedTag: selection.episodeName</string>
-						<reference key="source" ref="366063516"/>
-						<reference key="destination" ref="205242965"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="366063516"/>
-							<reference key="NSDestination" ref="205242965"/>
-							<string key="NSLabel">selectedTag: selection.episodeName</string>
-							<string key="NSBinding">selectedTag</string>
-							<string key="NSKeyPath">selection.episodeName</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">KNDisplayedNameTransformer</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">892</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentArray: selection.byAnime</string>
 						<reference key="source" ref="346085518"/>
 						<reference key="destination" ref="615251010"/>
@@ -3589,6 +3548,46 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 						</object>
 					</object>
 					<int key="connectionID">943</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectedTag: selection.animeName</string>
+						<reference key="source" ref="799099123"/>
+						<reference key="destination" ref="205242965"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="799099123"/>
+							<reference key="NSDestination" ref="205242965"/>
+							<string key="NSLabel">selectedTag: selection.animeName</string>
+							<string key="NSBinding">selectedTag</string>
+							<string key="NSKeyPath">selection.animeName</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">PLDisplayedNameTransformer</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">946</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectedTag: selection.episodeName</string>
+						<reference key="source" ref="366063516"/>
+						<reference key="destination" ref="205242965"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="366063516"/>
+							<reference key="NSDestination" ref="205242965"/>
+							<string key="NSLabel">selectedTag: selection.episodeName</string>
+							<string key="NSBinding">selectedTag</string>
+							<string key="NSKeyPath">selection.episodeName</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">PLDisplayedNameTransformer</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">947</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -5860,13 +5859,20 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">945</int>
+			<int key="maxID">947</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">KNController</string>
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NSObject+Extensions.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PLController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -5902,11 +5908,11 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">KNController.h</string>
+						<string key="minorKey">PLController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">KNController</string>
+					<string key="className">PLController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
@@ -5914,18 +5920,19 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">KNMacController</string>
-					<string key="superclassName">KNController</string>
+					<string key="className">PLMacController</string>
+					<string key="superclassName">PLController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">KNMacController.h</string>
+						<string key="minorKey">PLMacController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
+					<string key="className">PLMacController</string>
+					<string key="superclassName">PLController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+Extensions.h</string>
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
 					</object>
 				</object>
 			</object>
