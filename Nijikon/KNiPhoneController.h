@@ -11,7 +11,7 @@
 #import 
 
 
-@interface KNiPhoneController : KNController {
+@interface KNiPhoneController : PLController {
 
 }
 
