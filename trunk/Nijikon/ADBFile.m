@@ -3,11 +3,9 @@
 //  Nijikon
 //
 //  Created by Pipelynx on 2/17/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Martin Fellner. All rights reserved.
 //
 
-#define COMMA_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
-#define APOSTROPHE_SEPARATED_LISTS [NSArray arrayWithObjects:nil]
 #define TABLE @"files"
 
 #import "ADBFile.h"
@@ -15,9 +13,9 @@
 @implementation ADBFile
 - (id)init {
 	if ([super init]) {
-		parent = nil;
-		att = [NSMutableDictionary dictionaryWithObjects:ADBFileKeyArray
-												 forKeys:ADBFileKeyArray];
+		[self setParent:nil];
+		[self setAnidbAtt:[NSMutableDictionary dictionaryWithObjects:ADBFileKeyArray
+														forKeys:ADBFileKeyArray]];
 	}
 	return self;
 }
@@ -29,14 +27,14 @@
 
 - (NSString*)description {
 	NSMutableString* description = [NSMutableString stringWithFormat:@"%@ {\n", [super description]];
-	for (int i = 0; i < [att count]; i++)
-		[description appendFormat:@"[%@]: %@\n", [[att allKeys] objectAtIndex:i], [[att allValues] objectAtIndex:i]];
+	for (int i = 0; i < [anidbAtt count]; i++)
+		[description appendFormat:@"[%@]: %@\n", [[anidbAtt allKeys] objectAtIndex:i], [[anidbAtt allValues] objectAtIndex:i]];
 	return [description stringByAppendingFormat:@"}"];
 }
 
 + (ADBFile*)fileWithAttributes:(NSDictionary*)newAtt andParent:(ADBMylistEntry*)newParent {
 	ADBFile* temp = [[ADBFile alloc] init];
-	[temp setAtt:newAtt];
+	[temp setAnidbAtt:newAtt];
 	[temp setParent:newParent];
 	return temp;
 }
@@ -44,15 +42,19 @@
 + (ADBFile*)fileWithQuickliteRow:(QuickLiteRow*)row {
 	ADBFile* temp = [[ADBFile alloc] init];
 	
-	for (int i = 0; i < [[[temp att] allKeys] count]; i++)
-		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp att] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"att.%@", [[[temp att] allKeys] objectAtIndex:i]]];
+	for (int i = 0; i < [[[temp anidbAtt] allKeys] count]; i++)
+		[temp setValue:[row valueForColumn:[NSString stringWithFormat:@"%@.%@", TABLE, [[[temp anidbAtt] allKeys] objectAtIndex:i]]] forKeyPath:[NSString stringWithFormat:@"anidbAtt.%@", [[[temp anidbAtt] allKeys] objectAtIndex:i]]];
 	
 	return temp;
 }
 
 - (void)insertIntoDatabase:(QuickLiteDatabase*)database {
-	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[att allValues]]
-				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[att allKeys]] inTable:TABLE];
+	[database insertValues:[[NSArray arrayWithObject:[NSNull null]] arrayByAddingObjectsFromArray:[anidbAtt allValues]]
+				forColumns:[[NSArray arrayWithObject:QLRecordUID] arrayByAddingObjectsFromArray:[anidbAtt allKeys]] inTable:TABLE];
+}
+
+- (NSString*)name {
+	return [NSString stringWithFormat:@"f%@", [anidbAtt valueForKey:@"fileID"]];
 }
 
 - (ADBMylistEntry*)parent {

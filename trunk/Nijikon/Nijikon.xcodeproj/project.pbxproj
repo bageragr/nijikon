@@ -18,6 +18,24 @@
 		4B48C0810F4B50E2007B8F51 /* ADBCachedFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B48C0800F4B50E2007B8F51 /* ADBCachedFacade.m */; };
 		4B5B70810F48949000B070E5 /* PLED2k.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B70800F48949000B070E5 /* PLED2k.m */; };
 		4B5B73060F49919500B070E5 /* PLPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B73050F49919500B070E5 /* PLPreferences.m */; };
+		4B60ACED1009D7E4000923CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B60ACEC1009D7E4000923CD /* Foundation.framework */; };
+		4B60AD661009DD6C000923CD /* PLED2k.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5B70800F48949000B070E5 /* PLED2k.m */; };
+		4B60AD671009DD6C000923CD /* ed2kgen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B60ACE11009D791000923CD /* ed2kgen.m */; };
+		4B60AD681009DD6C000923CD /* ADBFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AA040F45CA4D007E5ECA /* ADBFacade.m */; };
+		4B60AD6A1009DD85000923CD /* ADBObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B48BE1B0F4B01C8007B8F51 /* ADBObject.m */; };
+		4B60AD6B1009DD85000923CD /* ADBGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C4580F39FE3500123B94 /* ADBGroup.m */; };
+		4B60AD6C1009DD85000923CD /* ADBFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C4560F39FE3500123B94 /* ADBFile.m */; };
+		4B60AD6D1009DD85000923CD /* ADBEpisode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C4540F39FE3500123B94 /* ADBEpisode.m */; };
+		4B60AD6E1009DD85000923CD /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
+		4B60AD6F1009DD85000923CD /* ADBAnime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C4520F39FE3500123B94 /* ADBAnime.m */; };
+		4B60AD8B1009DDA5000923CD /* QuickLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BA700790F3AC8A8000E6A65 /* QuickLite.framework */; };
+		4B60AD8D1009DDC2000923CD /* EDUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F240F3C4C200073CAB4 /* EDUDPSocket.m */; };
+		4B60AD8E1009DDC2000923CD /* ADBMylistEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B81E04A0F45771A0030D3AC /* ADBMylistEntry.m */; };
+		4B60AD901009DDD9000923CD /* NSObject+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F290F3C4C470073CAB4 /* NSObject+Extensions.m */; };
+		4B60AD911009DDD9000923CD /* NSFileHandle+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F3D0F3C4C9D0073CAB4 /* NSFileHandle+Extensions.m */; };
+		4B60AD921009DDD9000923CD /* functions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F390F3C4C7E0073CAB4 /* functions.m */; };
+		4B60AD931009DDD9000923CD /* EDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F1F0F3C4C200073CAB4 /* EDSocket.m */; };
+		4B60AD941009DDD9000923CD /* EDIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAB8F210F3C4C200073CAB4 /* EDIPSocket.m */; };
 		4B60ECA30F541B7100AB64F8 /* PLMacController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B60ECA20F541B7100AB64F8 /* PLMacController.m */; };
 		4B808EDF0F3BF88300001AF0 /* ADBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B808EDE0F3BF88300001AF0 /* ADBConnection.m */; };
 		4B81E04B0F45771A0030D3AC /* ADBMylistEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B81E04A0F45771A0030D3AC /* ADBMylistEntry.m */; };
@@ -36,6 +54,7 @@
 		4BE6C4630F39FE3500123B94 /* PLLocalizeKeyTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C45A0F39FE3500123B94 /* PLLocalizeKeyTransformer.m */; };
 		4BE6C4640F39FE3500123B94 /* PLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C45C0F39FE3500123B94 /* PLNode.m */; };
 		4BE6C4650F39FE3500123B94 /* PLPropertiesTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6C45E0F39FE3500123B94 /* PLPropertiesTransformer.m */; };
+		4BF3FB840F713A130002C54F /* Ergo Proxy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4BF3FB830F713A130002C54F /* Ergo Proxy.jpg */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -70,10 +89,13 @@
 		4B5B70800F48949000B070E5 /* PLED2k.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLED2k.m; sourceTree = "<group>"; };
 		4B5B73040F49919500B070E5 /* PLPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLPreferences.h; sourceTree = "<group>"; };
 		4B5B73050F49919500B070E5 /* PLPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLPreferences.m; sourceTree = "<group>"; };
-		4B5B73120F49931000B070E5 /* KNKeyArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNKeyArrays.h; sourceTree = "<group>"; };
-		4B60EC7F0F54172400AB64F8 /* Nijikon iPhone-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Nijikon iPhone-Info.plist"; sourceTree = "<group>"; };
-		4B60EC8F0F54189600AB64F8 /* KNiPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNiPhoneController.h; sourceTree = "<group>"; };
-		4B60EC900F54189600AB64F8 /* KNiPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNiPhoneController.m; sourceTree = "<group>"; };
+		4B5B73120F49931000B070E5 /* PLKeyArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLKeyArrays.h; sourceTree = "<group>"; };
+		4B60ACE11009D791000923CD /* ed2kgen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ed2kgen.m; sourceTree = "<group>"; };
+		4B60ACE21009D791000923CD /* ed2kgen_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ed2kgen_Prefix.pch; sourceTree = "<group>"; };
+		4B60ACE71009D7B6000923CD /* ed2kgen */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = ed2kgen; path = build/Debug/ed2kgen; sourceTree = "<group>"; };
+		4B60ACEC1009D7E4000923CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		4B60EC8F0F54189600AB64F8 /* PLiPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLiPhoneController.h; sourceTree = "<group>"; };
+		4B60EC900F54189600AB64F8 /* PLiPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLiPhoneController.m; sourceTree = "<group>"; };
 		4B60ECA10F541B7100AB64F8 /* PLMacController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLMacController.h; sourceTree = "<group>"; };
 		4B60ECA20F541B7100AB64F8 /* PLMacController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLMacController.m; sourceTree = "<group>"; };
 		4B808EDD0F3BF88300001AF0 /* ADBConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBConnection.h; sourceTree = "<group>"; };
@@ -113,11 +135,21 @@
 		4BE6C45C0F39FE3500123B94 /* PLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLNode.m; sourceTree = "<group>"; };
 		4BE6C45D0F39FE3500123B94 /* PLPropertiesTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLPropertiesTransformer.h; sourceTree = "<group>"; };
 		4BE6C45E0F39FE3500123B94 /* PLPropertiesTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLPropertiesTransformer.m; sourceTree = "<group>"; };
+		4BF3FB830F713A130002C54F /* Ergo Proxy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Ergo Proxy.jpg"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Nijikon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nijikon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4B60ACE51009D7B6000923CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B60ACED1009D7E4000923CD /* Foundation.framework in Frameworks */,
+				4B60AD8B1009DDA5000923CD /* QuickLite.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D11072E0486CEB800E47090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -133,7 +165,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				4B5B73120F49931000B070E5 /* KNKeyArrays.h */,
+				4B5B73120F49931000B070E5 /* PLKeyArrays.h */,
 				4BE6C44B0F39FBD000123B94 /* PLController.h */,
 				4BE6C44C0F39FBD000123B94 /* PLController.m */,
 				4BE6C45B0F39FE3500123B94 /* PLNode.h */,
@@ -145,7 +177,6 @@
 				4BAB8F190F3C4B8A0073CAB4 /* AniDB classes */,
 				4BAB8F1E0F3C4BB90073CAB4 /* Networking classes */,
 				4B5B70770F4893D200B070E5 /* Hashing classes */,
-				4B4845510F3E185200DD56C5 /* Transformer classes */,
 				4B60EC8D0F54185100AB64F8 /* Mac specific classes */,
 				4B60EC8E0F54186200AB64F8 /* iPhone specific classes */,
 			);
@@ -175,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* Nijikon.app */,
+				4B60ACE71009D7B6000923CD /* ed2kgen */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -187,6 +219,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				4B60ACEC1009D7E4000923CD /* Foundation.framework */,
 			);
 			name = Nijikon;
 			sourceTree = "<group>";
@@ -204,9 +237,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4BF3FB830F713A130002C54F /* Ergo Proxy.jpg */,
 				4B4845D20F3EC9DA00DD56C5 /* Localizable.strings */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				4B60EC7F0F54172400AB64F8 /* Nijikon iPhone-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 			);
@@ -275,6 +308,9 @@
 		4B60EC8D0F54185100AB64F8 /* Mac specific classes */ = {
 			isa = PBXGroup;
 			children = (
+				4B60ACE11009D791000923CD /* ed2kgen.m */,
+				4B60ACE21009D791000923CD /* ed2kgen_Prefix.pch */,
+				4B4845510F3E185200DD56C5 /* Transformer classes */,
 				4B60ECA10F541B7100AB64F8 /* PLMacController.h */,
 				4B60ECA20F541B7100AB64F8 /* PLMacController.m */,
 			);
@@ -284,8 +320,8 @@
 		4B60EC8E0F54186200AB64F8 /* iPhone specific classes */ = {
 			isa = PBXGroup;
 			children = (
-				4B60EC8F0F54189600AB64F8 /* KNiPhoneController.h */,
-				4B60EC900F54189600AB64F8 /* KNiPhoneController.m */,
+				4B60EC8F0F54189600AB64F8 /* PLiPhoneController.h */,
+				4B60EC900F54189600AB64F8 /* PLiPhoneController.m */,
 			);
 			name = "iPhone specific classes";
 			sourceTree = "<group>";
@@ -333,6 +369,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4B60ACE61009D7B6000923CD /* ed2kgen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B60ACEB1009D7D6000923CD /* Build configuration list for PBXNativeTarget "ed2kgen" */;
+			buildPhases = (
+				4B60ACE41009D7B6000923CD /* Sources */,
+				4B60ACE51009D7B6000923CD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ed2kgen;
+			productName = ed2kgen;
+			productReference = 4B60ACE71009D7B6000923CD /* ed2kgen */;
+			productType = "com.apple.product-type.tool";
+		};
 		8D1107260486CEB800E47090 /* Nijikon */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Nijikon" */;
@@ -364,6 +416,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Nijikon */,
+				4B60ACE61009D7B6000923CD /* ed2kgen */,
 			);
 		};
 /* End PBXProject section */
@@ -376,12 +429,36 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				4B4845D30F3EC9DA00DD56C5 /* Localizable.strings in Resources */,
+				4BF3FB840F713A130002C54F /* Ergo Proxy.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4B60ACE41009D7B6000923CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B60AD661009DD6C000923CD /* PLED2k.m in Sources */,
+				4B60AD671009DD6C000923CD /* ed2kgen.m in Sources */,
+				4B60AD681009DD6C000923CD /* ADBFacade.m in Sources */,
+				4B60AD6A1009DD85000923CD /* ADBObject.m in Sources */,
+				4B60AD6B1009DD85000923CD /* ADBGroup.m in Sources */,
+				4B60AD6C1009DD85000923CD /* ADBFile.m in Sources */,
+				4B60AD6D1009DD85000923CD /* ADBEpisode.m in Sources */,
+				4B60AD6E1009DD85000923CD /* ADBConnection.m in Sources */,
+				4B60AD6F1009DD85000923CD /* ADBAnime.m in Sources */,
+				4B60AD8D1009DDC2000923CD /* EDUDPSocket.m in Sources */,
+				4B60AD8E1009DDC2000923CD /* ADBMylistEntry.m in Sources */,
+				4B60AD901009DDD9000923CD /* NSObject+Extensions.m in Sources */,
+				4B60AD911009DDD9000923CD /* NSFileHandle+Extensions.m in Sources */,
+				4B60AD921009DDD9000923CD /* functions.m in Sources */,
+				4B60AD931009DDD9000923CD /* EDSocket.m in Sources */,
+				4B60AD941009DDD9000923CD /* EDIPSocket.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D11072C0486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -446,6 +523,52 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4B60ACE91009D7B8000923CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ed2kgen;
+			};
+			name = Debug;
+		};
+		4B60ACEA1009D7B8000923CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ed2kgen;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -506,6 +629,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4B60ACEB1009D7D6000923CD /* Build configuration list for PBXNativeTarget "ed2kgen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B60ACE91009D7B8000923CD /* Debug */,
+				4B60ACEA1009D7B8000923CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Nijikon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

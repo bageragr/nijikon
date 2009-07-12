@@ -71,7 +71,7 @@
 			return NO;
 		case BANNED:
 			return NO;
-		case UNKNOWN_COMMAND:
+		case UNPLOWN_COMMAND:
 			return NO;
 		case INTERNAL_SERVER_ERROR:
 			return NO;
@@ -81,6 +81,8 @@
 			return NO;*/
 }
 - (BOOL)logout {
+	if ([[anidb status] intValue] <= 1)
+		return YES;
 	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:@"LOGOUT s="
 																   appendSessionKey:YES];
 	switch ([[response objectAtIndex:0] intValue]) {
@@ -98,7 +100,7 @@
 			return NO;
 		case BANNED:
 			return NO;
-		case UNKNOWN_COMMAND:
+		case UNPLOWN_COMMAND:
 			return NO;
 		case INTERNAL_SERVER_ERROR:
 			return NO;
@@ -157,6 +159,24 @@
 																						 forKeys:ADBMylistEntryKeyArray]];
 		case RC_NO_SUCH_ENTRY:
 			return nil;
+		default:
+			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
+			return nil;
+	}
+}
+- (NSArray*)findMylistEntriesByAnimeID:(NSString*)animeID {
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"MYLIST aid=%@&s=", animeID]
+																   appendSessionKey:YES];
+	NSMutableArray* values = [NSMutableArray array];
+	for (int i = 2; i < [response count]; i++)
+		[values addObject:[response objectAtIndex:i]];
+	
+	switch ([[response objectAtIndex:0] intValue]) {
+		/*case RC_EPISODE:
+			return [ADBEpisode episodeWithAttributes:[NSDictionary dictionaryWithObjects:values
+																				 forKeys:ADBEpisodeKeyArray] andParent:nil];
+		case RC_NO_SUCH_EPISODE:
+			return nil;*/
 		default:
 			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
 			return nil;
@@ -323,10 +343,18 @@
 	}
 }
 - (ADBFile*)findFileBySize:(NSString*)sizeInBytes andED2k:(NSString*)hash {
-	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@""]
+	NSLog([NSString stringWithFormat:@"FILE size=%@&ed2k=%@&fmask=%@&amask=%@&s=", sizeInBytes, hash, DEFAULT_FMASK, @"00000000"]);
+	NSArray* response = [anidb sendAndReceiveUsingDefaultEncodingAndPrepareResponse:[NSString stringWithFormat:@"FILE size=%@&ed2k=%@&fmask=%@&amask=%@&s=", sizeInBytes, hash, DEFAULT_FMASK, @"00000000"]
 																   appendSessionKey:YES];
+	NSMutableArray* values = [NSMutableArray array];
+	for (int i = 2; i < [response count]; i++)
+		[values addObject:[response objectAtIndex:i]];
+	
 	switch ([[response objectAtIndex:0] intValue]) {
-		case 0:
+		case RC_FILE:
+			return [ADBFile fileWithAttributes:[NSDictionary dictionaryWithObjects:values
+																		   forKeys:ADBFileKeyArray] andParent:nil];
+		case RC_NO_SUCH_FILE:
 			return nil;
 		default:
 			NSLog(@"%@ %@", [response objectAtIndex:0], [response objectAtIndex:1]);
