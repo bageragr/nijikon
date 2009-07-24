@@ -37,7 +37,7 @@ int main (int argc, const char * argv[]) {
 	
 	[facade login:user withPassword:password];
 	
-	//iteraterating through parameters
+	//iterating through parameters
 	while (param < paramCount) {
 		//assign parameter to variable
 		path = [NSString stringWithUTF8String:argv[param + 3]];
